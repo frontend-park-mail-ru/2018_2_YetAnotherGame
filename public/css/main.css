@@ -1,0 +1,43 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+
+#header {
+    display: flex;
+    flex-direction: row-reverse;
+    border-bottom: 1px solid #000;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+}
+
+.header-button {
+    background-color: #ffffff;
+    width: 100px;
+    margin: 10px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 15px;
+}
+
+#mainMenu {
+    text-align: center;
+    margin: auto;
+    margin-top: 10%;
+    width: 600px;
+}
+
+#logo {
+    margin-bottom: 30px;
+}
+
+.menu-button {
+    line-height: 50px;
+    margin-top: 15px;
+    display: inline-block;
+    border: 2px solid lightblue;
+    width: 400px;
+}
