@@ -68,7 +68,7 @@ function slice(obj, start, end) {
         i++;
     }
 
-    return sliced;
+    return Object.values(sliced);
 }
 
 

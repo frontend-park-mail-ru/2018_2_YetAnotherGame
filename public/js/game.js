@@ -1,7 +1,7 @@
 'use strict';
 
 const game = document.getElementById('game');
-
+let offset = 1;
 
 function ajax(callback, method, path, body) {
     const xhr = new XMLHttpRequest();
@@ -276,7 +276,7 @@ function createSignUp() {
     game.appendChild(signUpSection);
 }
 
-function createLeaderboard(users) {
+function createLeaderboard(users, offset) {
     const leaderboardSection = document.createElement('section');
     leaderboardSection.dataset.sectionName = 'leaderboard';
 
@@ -293,7 +293,7 @@ function createLeaderboard(users) {
         thead.innerHTML = `
 		<tr>
 			<th>Email</th>
-			<th>Age</th>
+			<!--<th>Age</th>-->
 			<th>Score</th>
 		</th>
 		`;
@@ -303,7 +303,7 @@ function createLeaderboard(users) {
         table.appendChild(tbody);
         table.border = 1;
         table.cellSpacing = table.cellPadding = 0;
-
+        //console.log(users)
         users.forEach(function (user) {
             const email = user.email;
             const age = user.age;
@@ -325,8 +325,34 @@ function createLeaderboard(users) {
             tbody.appendChild(tr);
 
             leaderboardSection.appendChild(table);
+
+
+            //
+            // const input = document.createElement("button");
+            // input.type = "button";
+            // input.value = "add";
+            // input.setAttribute('onclick', 'paginate(users,3);')
+            //
+            // game.appendChild(input);
+            game.appendChild(leaderboardSection);
+
         });
+        const a = document.createElement('input');
+        a.type = "button";
+        a.value = "->";
+        a.setAttribute("onclick", "paginate()");
+        a.textContent = "kek";
+        const a2 = document.createElement('input');
+        a2.type = "button";
+        a2.value = "<-";
+        a2.setAttribute("onclick", "otrpaginate()");
+        a2.textContent = "kek";
+
+
+        header.appendChild(a);
+        header.appendChild(a2);
     } else {
+
         const em = document.createElement('em');
         em.textContent = 'Loading';
         leaderboardSection.appendChild(em);
@@ -334,12 +360,36 @@ function createLeaderboard(users) {
         ajax(function (xhr) {
             const users = JSON.parse(xhr.responseText);
             game.innerHTML = '';
-            createLeaderboard(users);
-        }, 'GET', '/users');
-    }
+            createLeaderboard(users,offset);
+        }, 'GET', `/leaders?offset=${offset}`);
 
-    game.appendChild(leaderboardSection);
+
+    }
+    //
+
+
 }
+
+function otrpaginate(users){
+
+
+
+        offset-=1;
+    console.log(offset);
+    createLeaderboard(users, offset);
+
+}
+
+function paginate(users){
+
+
+    offset+=1;
+
+    console.log(offset);
+    createLeaderboard(users, offset);
+
+}
+
 
 function createProfile(me) {
     const profileSection = document.createElement('section');
@@ -388,7 +438,7 @@ const pages = {
     menu: createMenu,
     sign_in: createSignIn,
     sign_up: createSignUp,
-    leaders: createLeaderboard,
+    leaders: paginate,
     me: createProfile
 };
 
@@ -408,6 +458,7 @@ game.addEventListener('click', function (event) {
     });
 
     game.innerHTML = '';
-
+    console.log(link.dataset.href)
     pages[link.dataset.href]();
+
 });
