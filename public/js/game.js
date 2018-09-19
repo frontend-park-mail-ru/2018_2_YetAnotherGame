@@ -265,6 +265,7 @@ function createSignUp() {
 
         ajax(function (xhr) {
             game.innerHTML = '';
+
             createProfile();
         }, 'POST', '/signup', {
             email: email,
@@ -407,6 +408,7 @@ function paginate(users){
 
 
 function createProfile(me) {
+    console.log(me)
     const profileSection = document.createElement('section');
     profileSection.dataset.sectionName = 'profile';
 

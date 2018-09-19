@@ -19,7 +19,7 @@ app.listen(port, function () {
     console.log(`Server listening port ${port}`);
 });
 
-const users = {
+let users = {
 
     '1': {
         email: 'sdfv@corp.mail.ru',
@@ -87,6 +87,34 @@ function slice(obj, start, end) {
 
     return Object.values(sliced);
 }
+
+app.post('/signup', function (req, res) {
+
+    const password = req.body.password;
+    const email = req.body.email;
+    const age = req.body.age;
+    if (
+        !password || !email || !age ||
+        !password.match(/^\S{4,}$/) ||
+        !email.match(/@/) ||
+        !(typeof age === 'number' && age > 10 && age < 100)
+    ) {
+        return res.status(400).json({error: 'Не валидные данные пользователя'});
+    }
+    if (users[email]) {
+        return res.status(400).json({error: 'Пользователь уже существует'});
+    }
+
+    const id = uuid();
+    const user = {password, email, age, score: 0};
+    ids[id] = email;
+    users[email] = user;
+
+    res.cookie('sessionid', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
+    console.log(users)
+    res.status(201).json({id});
+});
+
 
 
 app.get('/me', function (req, res) {
