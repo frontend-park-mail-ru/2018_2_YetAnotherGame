@@ -54,12 +54,29 @@ const users = {
         password: 'password4',
         score: 1
     },
+    '5': {
+        email: 'f355fe@corp.mail.ru',
+        first_name: 'f45',
+        last_name: 'l4',
+        username: 'u4',
+        password: 'password4',
+        score: 16
+    },
+    '6': {
+        email: 'fe35e@corp.mail.ru',
+        first_name: '5f4',
+        last_name: 'l4',
+        username: 'u4',
+        password: 'password4',
+        score: 17
+    },
 };
 const ids = {};
 
 function slice(obj, start, end) {
 
     let sliced = {};
+    sliced['len']= obj.length;
     let i = 0;
     for (let k in obj) {
         if (i >= start && i < end)
@@ -136,7 +153,7 @@ app.get('/leaders', function (req, res) {
             }
         });
 
-  
+
     res.json(slice(scorelist, offset, limit + offset));
 
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const game = document.getElementById('game');
-let offset = 1;
+let offset = 2;
 
 function ajax(callback, method, path, body) {
     const xhr = new XMLHttpRequest();
@@ -276,7 +276,7 @@ function createSignUp() {
     game.appendChild(signUpSection);
 }
 
-function createLeaderboard(users, offset) {
+function createLeaderboard(users, offset,limit) {
     const leaderboardSection = document.createElement('section');
     leaderboardSection.dataset.sectionName = 'leaderboard';
 
@@ -338,16 +338,17 @@ function createLeaderboard(users, offset) {
 
         });
         const a = document.createElement('input');
+        a.id="btn1";
         a.type = "button";
-        a.value = "->";
+        a.value = "<-";
         a.setAttribute("onclick", "paginate()");
         a.textContent = "kek";
         const a2 = document.createElement('input');
         a2.type = "button";
-        a2.value = "<-";
-        a2.setAttribute("onclick", "otrpaginate()");
+        a2.value = "->";
+        a2.setAttribute("onclick", "negpaginate()");
         a2.textContent = "kek";
-
+        a2.id="btn2";
 
         header.appendChild(a);
         header.appendChild(a2);
@@ -359,9 +360,22 @@ function createLeaderboard(users, offset) {
 
         ajax(function (xhr) {
             const users = JSON.parse(xhr.responseText);
+            const el = document.getElementById('btn2');
+            const el2 = document.getElementById('btn1');
+            //console.log(el)
+           const lim=users[2];
+            if(offset>=lim-offset&&el2!==null)
+                el2.disabled=true;
+            else if(offset<0)
+                el.disabled=true;
+            else{
+                if(el!==null||el2!==null)
+                { el.disabled=false;
+                el2.disabled=false;}
             game.innerHTML = '';
-            createLeaderboard(users,offset);
-        }, 'GET', `/leaders?offset=${offset}`);
+            createLeaderboard(users,offset);}
+
+        }, 'GET', `/leaders?offset=${offset}&limit=${limit}`);
 
 
     }
@@ -370,23 +384,24 @@ function createLeaderboard(users, offset) {
 
 }
 
-function otrpaginate(users){
+function negpaginate(users){
 
 
-
-        offset-=1;
-    console.log(offset);
-    createLeaderboard(users, offset);
+const limit =2;
+        offset-=2;
+        if(offset<0){ console.log("kek1");}
+    //console.log(offset);
+    createLeaderboard(users, offset,limit);
 
 }
 
 function paginate(users){
 
+    const limit =2;
+    offset+=2;
 
-    offset+=1;
-
-    console.log(offset);
-    createLeaderboard(users, offset);
+  //  console.log(offset);
+    createLeaderboard(users, offset,limit);
 
 }
 
