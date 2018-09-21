@@ -127,10 +127,10 @@ app.post('/login', function (req, res) {
         return res.status(400).json({error: 'Не верный E-Mail и/или пароль'});
     }
 
-    const id = uuid();
-    ids[email] = id;
 
-    res.cookie('sessionid', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
+    ids[email] = user_id;
+
+    res.cookie('sessionid', user_id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
     res.status(201).json({id});
 });
 
