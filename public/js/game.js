@@ -49,6 +49,7 @@ function createMenu() {
     const logoHeader = document.createElement('h1');
     logoHeader.textContent = 'Yet Another Game';
 
+
     logo.appendChild(logoHeader);
 
 
@@ -61,12 +62,15 @@ function createMenu() {
     const register = {
         sign_in: 'Sign in',
         sign_up: 'Sign up',
+        log_out: 'Log out'
     };
 
     const titles = {
         new_game: 'New Game',
         leaders: 'Leaderboard',
-        me: 'Profile'
+        me: 'Profile',
+        update: 'Update'
+
     };
 
 
@@ -181,9 +185,19 @@ function createSignUp() {
             placeholder: 'Email'
         },
         {
-            name: 'age',
-            type: 'number',
-            placeholder: 'Your Age'
+            name: 'username',
+            type: 'text',
+            placeholder: 'Username'
+        },
+        {
+            name: 'first_name',
+            type: 'text',
+            placeholder: 'First Name'
+        },
+        {
+            name: 'last_name',
+            type: 'text',
+            placeholder: 'Last Name'
         },
         {
             name: 'password',
@@ -220,8 +234,11 @@ function createSignUp() {
     form.addEventListener('submit', function (event) {
         event.preventDefault();
 
+
         const email = form.elements['email'].value;
-        const age = parseInt(form.elements['age'].value);
+        const username = form.elements['username'].value;
+        const fist_name = form.elements['first_name'].value;
+        const last_name = form.elements['last_name'].value;
         const password = form.elements['password'].value;
         const password_repeat = form.elements['password_repeat'].value;
         //validation block
@@ -243,20 +260,7 @@ function createSignUp() {
             err.appendChild(att);
             return;
         }
-        if (age < 0) {
-            if (document.getElementById('err') !== null) {
-                const el = document.getElementById('err');
-                el.parentNode.removeChild(el);
-            }
-            const err = document.createElement('div');
-            err.setAttribute("id", "err")
 
-            form.appendChild(err);
-            const att2 = document.createElement('p');
-            att2.textContent = 'age cannot be negative';
-            err.appendChild(att2);
-            return;
-        }
         if (password !== password_repeat) {
             alert('Passwords is not equals');
 
@@ -269,7 +273,9 @@ function createSignUp() {
             createProfile();
         }, 'POST', '/signup', {
             email: email,
-            age: age,
+            username: username,
+            first_name: fist_name,
+            last_name: last_name,
             password: password
         });
     });
@@ -277,7 +283,16 @@ function createSignUp() {
     game.appendChild(signUpSection);
 }
 
-function createLeaderboard(users, offset,limit) {
+function createLogOut() {
+
+    ajax(function (xhr) {
+        game.innerHTML = '';
+        createMenu();
+    }, 'POST', '/logout', {});
+
+}
+
+function createLeaderboard(users, offset, limit) {
     const leaderboardSection = document.createElement('section');
     leaderboardSection.dataset.sectionName = 'leaderboard';
 
@@ -339,7 +354,7 @@ function createLeaderboard(users, offset,limit) {
 
         });
         const a = document.createElement('input');
-        a.id="btn1";
+        a.id = "btn1";
         a.type = "button";
         a.value = "<-";
         a.setAttribute("onclick", "paginate()");
@@ -349,7 +364,7 @@ function createLeaderboard(users, offset,limit) {
         a2.value = "->";
         a2.setAttribute("onclick", "negpaginate()");
         a2.textContent = "kek";
-        a2.id="btn2";
+        a2.id = "btn2";
 
         header.appendChild(a);
         header.appendChild(a2);
@@ -364,17 +379,19 @@ function createLeaderboard(users, offset,limit) {
             const el = document.getElementById('btn2');
             const el2 = document.getElementById('btn1');
             //console.log(el)
-           const lim=users[2];
-            if(offset>=lim-offset&&el2!==null)
-                el2.disabled=true;
-            else if(offset<0)
-                el.disabled=true;
-            else{
-                if(el!==null||el2!==null)
-                { el.disabled=false;
-                el2.disabled=false;}
-            game.innerHTML = '';
-            createLeaderboard(users,offset);}
+            const lim = users[2];
+            if (offset >= lim - offset && el2 !== null)
+                el2.disabled = true;
+            else if (offset < 0)
+                el.disabled = true;
+            else {
+                if (el !== null || el2 !== null) {
+                    el.disabled = false;
+                    el2.disabled = false;
+                }
+                game.innerHTML = '';
+                createLeaderboard(users, offset);
+            }
 
         }, 'GET', `/leaders?offset=${offset}&limit=${limit}`);
 
@@ -385,24 +402,26 @@ function createLeaderboard(users, offset,limit) {
 
 }
 
-function negpaginate(users){
+function negpaginate(users) {
 
 
-const limit =2;
-        offset-=2;
-        if(offset<0){ console.log("kek1");}
+    const limit = 2;
+    offset -= 2;
+    if (offset < 0) {
+        console.log("kek1");
+    }
     //console.log(offset);
-    createLeaderboard(users, offset,limit);
+    createLeaderboard(users, offset, limit);
 
 }
 
-function paginate(users){
+function paginate(users) {
 
-    const limit =2;
-    offset+=2;
+    const limit = 2;
+    offset += 2;
 
-  //  console.log(offset);
-    createLeaderboard(users, offset,limit);
+    //  console.log(offset);
+    createLeaderboard(users, offset, limit);
 
 }
 
@@ -423,14 +442,23 @@ function createProfile(me) {
 
         const div1 = document.createElement('div');
         div1.textContent = `Email ${me.email}`;
+
         const div2 = document.createElement('div');
-        div2.textContent = `Age ${me.age}`;
+        div2.textContent = `Username ${me.username}`;
         const div3 = document.createElement('div');
-        div3.textContent = `Score ${me.score}`;
+        div3.textContent = `First Name ${me.first_name}`;
+        const div4 = document.createElement('div');
+        div4.textContent = `Last Name ${me.last_name}`;
+        const div5 = document.createElement('div');
+        div5.textContent = `Score ${me.score}`;
+
+
 
         p.appendChild(div1);
+        p.appendChild(div2);
         p.appendChild(div3);
-        p.appendChild(div3);
+        p.appendChild(div4);
+        p.appendChild(div5);
 
         profileSection.appendChild(p);
     } else {
@@ -451,12 +479,94 @@ function createProfile(me) {
     game.appendChild(profileSection);
 }
 
+function createUpdate() {
+    const updateSection = document.createElement('section');
+    updateSection.dataset.sectionName = 'update';
+
+    const header = document.createElement('h1');
+    header.textContent = 'Update Profile';
+
+
+    const form = document.createElement('form');
+
+    const inputs = [
+        {
+            name: 'email',
+            type: 'email',
+            placeholder: 'Email'
+        },
+        {
+            name: 'username',
+            type: 'text',
+            placeholder: 'Username'
+        },
+        {
+            name: 'first_name',
+            type: 'text',
+            placeholder: 'First Name'
+        },
+        {
+            name: 'last_name',
+            type: 'text',
+            placeholder: 'Last Name'
+        },
+
+        {
+            name: 'submit',
+            type: 'submit'
+        }
+    ];
+
+    inputs.forEach(function (item) {
+        const input = document.createElement('input');
+
+        input.name = item.name;
+        input.type = item.type;
+
+        input.placeholder = item.placeholder;
+
+        form.appendChild(input);
+        form.appendChild(document.createElement('br'));
+    });
+
+    updateSection.appendChild(header);
+    updateSection.appendChild(form);
+    updateSection.appendChild(createMenuLink());
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const email = form.elements['email'].value;
+        const username = form.elements['username'].value;
+        const fist_name = form.elements['first_name'].value;
+        const last_name = form.elements['last_name'].value;
+
+
+
+        ajax(function (xhr) {
+            game.innerHTML = '';
+
+            createProfile();
+        }, 'POST', '/update', {
+            email: email,
+            username: username,
+            first_name: fist_name,
+            last_name: last_name,
+
+        });
+    });
+
+    game.appendChild(updateSection);
+}
+
 const pages = {
     menu: createMenu,
     sign_in: createSignIn,
     sign_up: createSignUp,
+    log_out: createLogOut,
     leaders: paginate,
-    me: createProfile
+    me: createProfile,
+    update: createUpdate
 };
 
 createMenu();

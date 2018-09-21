@@ -22,11 +22,11 @@ app.listen(port, function () {
 let users = {
 
     '1': {
-        email: 'sdfv@corp.mail.ru',
+        email: 'a@a',
         first_name: 'f1',
         last_name: 'l1',
         username: 'u1',
-        password: 'password1',
+        password: 'qwerty',
         score: 5
     },
 
@@ -76,7 +76,7 @@ const ids = {};
 function slice(obj, start, end) {
 
     let sliced = {};
-    sliced['len']= obj.length;
+    sliced['len'] = obj.length;
     let i = 0;
     for (let k in obj) {
         if (i >= start && i < end)
@@ -92,41 +92,93 @@ app.post('/signup', function (req, res) {
 
     const password = req.body.password;
     const email = req.body.email;
-    const age = req.body.age;
+    const username = req.body.username;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+
     if (
-        !password || !email || !age ||
+        !password || !email || !first_name || !last_name || !username ||
         !password.match(/^\S{4,}$/) ||
-        !email.match(/@/) ||
-        !(typeof age === 'number' && age > 10 && age < 100)
+        !email.match(/@/)
     ) {
         return res.status(400).json({error: 'Не валидные данные пользователя'});
     }
-    if (users[email]) {
+    if (ids[email]) {
         return res.status(400).json({error: 'Пользователь уже существует'});
     }
 
     const id = uuid();
-    const user = {password, email, age, score: 0};
-    ids[id] = email;
-    users[email] = user;
+    const user = {email, first_name, last_name, username, password, score: 0};
+    ids[email] = id;
+    users[id] = user;
 
     res.cookie('sessionid', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
-    console.log(users)
+
+    res.status(201).json({id});
+});
+app.post('/login', function (req, res) {
+    const password = req.body.password;
+    const email = req.body.email;
+    const user_id = ids[email];
+    if (!password || !email) {
+        return res.status(400).json({error: 'Не указан E-Mail или пароль'});
+    }
+    if (!users[user_id] || users[user_id].password !== password) {
+        return res.status(400).json({error: 'Не верный E-Mail и/или пароль'});
+    }
+
+    const id = uuid();
+    ids[email] = id;
+
+    res.cookie('sessionid', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
     res.status(201).json({id});
 });
 
+app.post('/update', function (req, res) {
+    const user_id = req.cookies['sessionid'];
 
+
+    const email = req.body.email;
+    const username = req.body.username;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+
+
+    if (
+        !email ||
+        !email.match(/@/)
+
+    ) {
+        return res.status(400).json({error: 'Не валидные данные пользователя'});
+    }
+    if (!users[user_id]) {
+        return res.status(400).json({error: 'Пользователя не существует'});
+    }
+
+
+    const user = users[user_id];
+    user["email"] = email;
+    user["username"] = username;
+    user["first_name"] = first_name;
+    user["last_name"] = last_name;
+
+    users[user_id] = user;
+
+
+
+    res.status(201).json(user[user_id]);
+});
 
 app.get('/me', function (req, res) {
     const id = req.cookies['sessionid'];
-    const username = ids[id];
-    if (!username || !users[username]) {
+
+    if (!users[id]) {
         return res.status(401).end();
     }
 
-    users[username].score += 1;
+    users[id].score += 1;
 
-    res.json(users[username]);
+    res.json(users[id]);
 });
 app.get('/users', function (req, res) {
     const scorelist = Object.values(users)
@@ -185,4 +237,17 @@ app.get('/leaders', function (req, res) {
     res.json(slice(scorelist, offset, limit + offset));
 
 
+});
+app.get('/ids', function (req, res) {
+
+
+    res.json(ids);
+
+
+});
+
+app.post('/logout', function (req, res) {
+    const id = req.cookies['sessionid'];
+    res.cookie('sessionid', id, {expires: new Date(Date.now())});
+    res.json({user: id})
 });
