@@ -116,6 +116,7 @@ app.post('/signup', function (req, res) {
 
     res.status(201).json({id});
 });
+
 app.post('/login', function (req, res) {
     const password = req.body.password;
     const email = req.body.email;
@@ -126,7 +127,6 @@ app.post('/login', function (req, res) {
     if (!users[user_id] || users[user_id].password !== password) {
         return res.status(400).json({error: 'Не верный E-Mail и/или пароль'});
     }
-
 
     ids[email] = user_id;
 
@@ -180,6 +180,7 @@ app.get('/me', function (req, res) {
 
     res.json(users[id]);
 });
+
 app.get('/users', function (req, res) {
     const scorelist = Object.values(users)
         .map(user => {
