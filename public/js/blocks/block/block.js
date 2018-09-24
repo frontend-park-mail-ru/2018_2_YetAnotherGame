@@ -48,6 +48,16 @@
 			this.el.textContent = text;
 		}
 
+		setAttribute(attrs = {}) {
+			for (let name in attrs) {
+				this.el.setAttribute(name, attrs[name]);
+			}
+		}
+
+		setInner(str = '') {
+			this.el.innerHTML = str;
+		}
+
 		/**
 		 * Очищает содержимое блока
 		 */

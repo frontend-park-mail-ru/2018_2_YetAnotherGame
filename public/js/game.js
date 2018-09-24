@@ -5,6 +5,7 @@ const AJAX = window.AjaxModule;
 const Block = window.Block;
 const Form = window.Form;
 const Scoreboard = window.Scoreboard;
+
 const signIn = window.signInFields;
 const signUp = window.signUpFields;
 const update = window.updateFields;
@@ -255,15 +256,17 @@ function createScoreboard(users, offset, limit) {
         scoreboard.data = users;
         scoreboard.render();
 
-        const a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-'}, [], 'kek');
-        a.on('click', paginate());
+        const a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'paginate()'}, [], 'kek');
 
-        const a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->'}, [], 'kek');
-        a2.on('click', negpaginate());
+        const a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->', 'onclick': 'negpaginate()'}, [], 'kek');
 
         header
             .append(a)
             .append(a2);
+
+            game.append(scoreboardSection);
+
+            console.log(users);
     } else {
         scoreboardSection.append(Block.Create('em', {}, [], 'Loading'));
 
@@ -290,8 +293,6 @@ function createScoreboard(users, offset, limit) {
            path: `/leaders?offset=${offset}&limit=${limit}`,
        });
     }
-
-    game.append(scoreboardSection);
 }
 
 function negpaginate(users) {
