@@ -253,7 +253,7 @@ function createScoreboard(users, offset, limit) {
 
     if (users) {
         const scoreboard = new Scoreboard({el: tableWrapper});
-        scoreboard.data = users;
+        scoreboard.data = users.slice(0,users.length-1);
         scoreboard.render();
 
         const a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'paginate()'}, [], 'kek');
