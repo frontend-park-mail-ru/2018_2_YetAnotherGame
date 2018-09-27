@@ -1,4 +1,4 @@
-#YetAnotherGame    
+# YetAnotherGame    
 Можно потыкать [туточки](https://www.google.com)  
 Репа бэкенда [здесь](https://github.com/go-park-mail-ru/2018_2_YetAnotherGame)  
 Локально можно запустить – node index.js  
