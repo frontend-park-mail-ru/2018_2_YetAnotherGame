@@ -9,7 +9,7 @@ const Scoreboard = window.Scoreboard;
 const signIn = window.signInFields;
 const signUp = window.signUpFields;
 const update = window.updateFields;
-
+const server = "https://backend-yag.now.sh"
 let offset = 2;
 
 const game = new Block(document.getElementById('game'));
@@ -79,7 +79,7 @@ function createSignIn() {
                     game.clear();
                     createProfile();
                 },
-                path: '/login',
+                path: server+'/login',
                 body: {
                     email: formdata.email,
                     password: formdata.password,
@@ -136,7 +136,7 @@ function createSignUp() {
                     game.clear();
                     createProfile();
                 },
-                path: '/signup',
+                path: server+'/signup',
                 body: {
                     email: email,
                     username: username,
@@ -157,7 +157,7 @@ function createLogOut() {
             game.clear();
             createMenu();
         },
-        path: '/logout',
+        path: server+'/logout',
         body: {},
     });
 }
@@ -180,7 +180,7 @@ function createUpdate() {
                     game.clear();
                     createProfile();
     			},
-    			path: '/update',
+    			path: server+'/update',
                 body: {
                     email: formdata.email,
                     username: formdata.username,
@@ -232,7 +232,7 @@ function createProfile(me) {
                 game.clear();
                 createProfile(user);
             },
-            path: '/me',
+            path: server+'/me',
         });
     }
 
@@ -273,11 +273,17 @@ function createScoreboard(users, offset, limit) {
         AJAX.doGet({
            callback(xhr) {
                const users = JSON.parse(xhr.responseText);
+
                const el = document.getElementById('btn2');
                const el2 = document.getElementById('btn1');
-               const lim = users[2];
+               let lim = users[2];
+               if (lim===undefined)
+               {
+                   lim=6
+               }
+               console.log(offset)
 
-               if (offset >= lim - offset && el2 !== null) {
+               if (offset === lim && el2 !== null) {
                    el2.disabled = true;
                } else if (offset < 0) {
                    el.disabled = true;
@@ -287,10 +293,12 @@ function createScoreboard(users, offset, limit) {
                        el2.disabled = false;
                    }
                    game.clear();
+
+
                    createScoreboard(users, offset);
                }
            },
-           path: `/leaders?offset=${offset}&limit=${limit}`,
+           path: server+`/leaders?offset=${offset}&limit=${limit}`,
        });
     }
 }
@@ -299,7 +307,7 @@ function negpaginate(users) {
     const limit = 2;
     offset -= 2;
     if (offset < 0) {
-        console.log("kek1");
+
     }
     createScoreboard(users, offset, limit);
 }
