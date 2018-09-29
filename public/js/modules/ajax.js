@@ -1,8 +1,8 @@
 (function () {
     const noop = () => null;
-
+    
     class AjaxModule {
-        _ajax({callback = noop, method = 'GET', path = 'https://backend-yag.now.sh/', body} = {}) {
+        _ajax({callback = noop, method = 'GET', path = '/', body} = {}) {
             const xhr = new XMLHttpRequest();
             xhr.open(method, path, true);
             xhr.withCredentials = true;
@@ -26,13 +26,13 @@
             }
         }
 
-        doGet(params = {}) {
-            this._ajax({...params, method: 'GET'});
-        }
+        doGet (params = {}) {
+			this._ajax({...params, method: 'GET'});
+		}
 
-        doPost(params = {}) {
-            this._ajax({...params, method: 'POST'});
-        }
+		doPost (params = {}) {
+			this._ajax({...params, method: 'POST'});
+		}
     }
 
     window.AjaxModule = new AjaxModule();

@@ -6,15 +6,12 @@
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
-    "fest": "^0.12.1",
     "morgan": "^1.9.1",
-"express-http-proxy": "^1.4.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node server",
-    "prestart": "fest-build --dir=public",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -9,8 +9,19 @@ const Scoreboard = window.Scoreboard;
 const signIn = window.signInFields;
 const signUp = window.signUpFields;
 const update = window.updateFields;
-const server = "https://backend-yag.now.sh"
+
+// const server = "https://backend-yag.now.sh"
+const server = ""
 let offset = 2;
+
+// let user = undefined;
+let user =
+AJAX.doGet({
+    callback(xhr) {
+        const user = JSON.parse(xhr.responseText);
+    },
+    path: server+'/me',
+});
 
 const game = new Block(document.getElementById('game'));
 
@@ -36,6 +47,7 @@ function createMenu() {
        sign_in: Block.Create('a', {'href': 'sign_in', 'data-href': 'sign_in'}, ['header-button'], 'Sign in'),
        sign_up: Block.Create('a', {'href': 'sign_up', 'data-href': 'sign_up'}, ['header-button'], 'Sign up'),
        log_out: Block.Create('a', {'href': 'log_out', 'data-href': 'log_out'}, ['header-button'], 'Log out'),
+       profile: Block.Create('a', {'href': 'me', 'data-href': 'me'}, ['header-button']),
     };
 
     const titles = {
@@ -45,9 +57,16 @@ function createMenu() {
        update: Block.Create('a', {'href': 'update', 'data-href': 'update'}, ['menu-button'], 'Update'),
     };
 
-    Object.entries(register).forEach(function (elem) {
-        header.append(elem[1]);
-    });
+    if (user === undefined) {
+        header
+            .append(register.sign_up)
+            .append(register.sign_in);
+    } else {
+        register.profile.setText(`${user.username}`);
+        header
+            .append(register.log_out)
+            .append(register.profile);
+    }
 
     Object.entries(titles).forEach(function (elem) {
         mainInner.append(elem[1]);
@@ -74,6 +93,21 @@ function createSignIn() {
 
     form.onSubmit(
         function (formdata) {
+            if (formdata.password.length < 4) {
+                if (document.getElementById('err') !== null) {
+                    const el = document.getElementById('err');
+                    el.parentNode.removeChild(el)
+                }
+
+                const err = Block.Create('div', {'id': 'err'}, []);
+                form.append(err);
+
+                const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
+                err.append(att);
+
+                return;
+            }
+
             AJAX.doPost({
                 callback(xhr) {
                     game.clear();
@@ -106,7 +140,7 @@ function createSignUp() {
         function (formdata) {
             const email = formdata.email;
             const username = formdata.username;
-            const fist_name = formdata.first_name;
+            const first_name = formdata.first_name;
             const last_name = formdata.last_name;
             const password = formdata.password;
             const password_repeat = formdata.password_repeat;
@@ -140,7 +174,7 @@ function createSignUp() {
                 body: {
                     email: email,
                     username: username,
-                    first_name: fist_name,
+                    first_name: first_name,
                     last_name: last_name,
                     password: password,
                 },
@@ -155,6 +189,7 @@ function createLogOut() {
     AJAX.doPost({
         callback(xhr) {
             game.clear();
+            user = undefined
             createMenu();
         },
         path: server+'/logout',
@@ -163,6 +198,23 @@ function createLogOut() {
 }
 
 function createUpdate() {
+    if (user === undefined) {
+        AJAX.doGet({
+            callback(xhr) {
+                if (!xhr.responseText) {
+                    alert('Unauthorized');
+                    game.clear();
+                    createMenu();
+                    return;
+                }
+                user = JSON.parse(xhr.responseText);
+                game.clear();
+            },
+            path: server+'/me',
+        });
+        return;
+    }
+
     const updateSection = Block.Create('section', {'data-section-name': 'update'}, []);
     const header = Block.Create('h1', {}, [], 'Update');
 
@@ -184,8 +236,9 @@ function createUpdate() {
                 body: {
                     email: formdata.email,
                     username: formdata.username,
-                    first_name: formdata.fist_name,
+                    first_name: formdata.first_name,
                     last_name: formdata.last_name,
+                    image: formdata.image,
                 }
     		});
         }
@@ -211,12 +264,19 @@ function createProfile(me) {
         const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
         const score = Block.Create('div', {}, [], `Score ${me.score}`);
 
+        const avatar = Block.Create('img', {'src': 'https://picsum.photos/32/32'}, []);
+        // const avatar = Block.Create('img', {'src': `${me.img}`}, []);
+        // if (avatar === undefined) {
+        //     avatar.setAttribute({'src': '../img/1.jpeg'})
+        // }
+
         p
             .append(email)
             .append(username)
             .append(first_name)
             .append(last_name)
-            .append(score);
+            .append(score)
+            .append(avatar);
 
         profileSection.append(p);
     } else {
@@ -228,7 +288,7 @@ function createProfile(me) {
                     createMenu();
                     return;
                 }
-                const user = JSON.parse(xhr.responseText);
+                /*const*/ user = JSON.parse(xhr.responseText);
                 game.clear();
                 createProfile(user);
             },
