@@ -13,7 +13,7 @@ const update = window.updateFields;
 // const server = "https://backend-yag.now.sh"
 const server = ""
 let offset = 2;
-
+let lim=0
 // let user = undefined;
 let user =
 AJAX.doGet({
@@ -331,36 +331,46 @@ function createScoreboard(users, offset, limit) {
         scoreboardSection.append(Block.Create('em', {}, [], 'Loading'));
 
         AJAX.doGet({
-           callback(xhr) {
-               const users = JSON.parse(xhr.responseText);
-
-               const el = document.getElementById('btn2');
-               const el2 = document.getElementById('btn1');
-               let lim = users[2];
-               if (lim===undefined)
-               {
-                   lim=6
-               }
-               console.log(offset)
-
-               if (offset === lim && el2 !== null) {
-                   el2.disabled = true;
-               } else if (offset < 0) {
-                   el.disabled = true;
-               } else {
-                   if (el !== null || el2 !== null) {
-                       el.disabled = false;
-                       el2.disabled = false;
-                   }
-                   game.clear();
-
-
-                   createScoreboard(users, offset);
-               }
-           },
-           path: server+`/leaders?offset=${offset}&limit=${limit}`,
-       });
+               callback (xhr) {
+     //   debugger
+        var users
+         try {
+       users = JSON.parse(xhr.responseText)
+    } catch(e) {
+       users=undefined // error in the above string (in this case, yes)!
     }
+        
+      
+
+        const el = document.getElementById('btn2')
+        const el2 = document.getElementById('btn1')
+
+        
+        if (users !== undefined) {
+          lim = users[2]
+        }
+         console.log(lim)
+
+        console.log(offset)
+      //  debugger
+        if (offset === lim && el2 !== null) {
+          el2.disabled = true
+        } else if (offset < 0) {
+
+          el.disabled = true
+        } else {
+          if (el !== null || el2 !== null) {
+            el.disabled = false
+            el2.disabled = false
+          }
+          game.clear()
+
+          createScoreboard(users, offset)
+        }
+      },
+      path: server + `/leaders?offset=${offset}&limit=${limit}`
+    })
+  }
 }
 
 function negpaginate(users) {
