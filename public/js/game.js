@@ -13,12 +13,16 @@ const update = window.updateFields;
 let offset = 2;
 
 const game = new Block(document.getElementById('game'));
-
+/**
+ * Создание ссылки "Back to main menu" для возврата в главное меню
+ */
 function createMenuLink() {
     const menuLink = Block.Create('a', {'href': 'menu', 'data-href': 'menu'}, [], 'Back to main menu');
     return menuLink;
 }
-
+/**
+ * Создание шапки с регистрацией, логином и выходом
+ */
 function createMenu() {
     const menuSection = Block.Create('section', {'data-section-name': 'menu', 'id': 'mainMenu'}, []);
     const header = Block.Create('div', {'id': 'header'}, []);
@@ -61,6 +65,9 @@ function createMenu() {
     game.append(menuSection);
 }
 
+/**
+ * Создание страницы входа
+ */
 function createSignIn() {
     const signInSection = Block.Create('section', {'data-section-name': 'sign_in'}, []);
     const header = Block.Create('h1', {}, [], 'Sign In');
@@ -91,6 +98,9 @@ function createSignIn() {
     game.append(signInSection);
 }
 
+/**
+ * Создание формы регистрации
+ */
 function createSignUp() {
     const signUpSection = Block.Create('section', {'data-section-name': 'sign_up'}, []);
     const header = Block.Create('h1', {}, [], 'Sign Up');
@@ -151,6 +161,9 @@ function createSignUp() {
     game.append(signUpSection);
 }
 
+/**
+ * Создание выхода из учетной записи
+ */
 function createLogOut() {
     AJAX.doPost({
         callback(xhr) {
@@ -162,6 +175,9 @@ function createLogOut() {
     });
 }
 
+/**
+ * Обновление данных учетной записи
+ */
 function createUpdate() {
     const updateSection = Block.Create('section', {'data-section-name': 'update'}, []);
     const header = Block.Create('h1', {}, [], 'Update');
@@ -194,6 +210,10 @@ function createUpdate() {
     game.append(updateSection);
 }
 
+/**
+ * Создание страницы профиля
+ * @param {*} me Объект пользователя
+ */
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
     const header = Block.Create('h1', {}, [], 'Profile');
@@ -239,6 +259,12 @@ function createProfile(me) {
     game.append(profileSection);
 }
 
+/**
+ * Создание доски лидеров
+ * @param {Object} users Объекты пользователей
+ * @param {*} offset 
+ * @param {number} limit Количество пользователей на странице
+ */
 function createScoreboard(users, offset, limit) {
     const scoreboardSection = Block.Create('section', {'data-section-name': 'scoreboard'}, []);
     const header = Block.Create('h1', {}, [], 'Leaders');

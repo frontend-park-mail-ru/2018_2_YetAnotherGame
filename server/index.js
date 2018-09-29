@@ -73,23 +73,23 @@ let users = {
 };
 const ids = {};
 
-function slice(obj, start, end) {
 
+function slice(obj, start, end) {
     let sliced = {};
     sliced['len'] = obj.length;
+
     let i = 0;
     for (let k in obj) {
         if (i >= start && i < end)
             sliced[k] = obj[k];
-
         i++;
     }
 
     return Object.values(sliced);
 }
 
-app.post('/signup', function (req, res) {
 
+app.post('/signup', function (req, res) {
     const password = req.body.password;
     const email = req.body.email;
     const username = req.body.username;
@@ -116,6 +116,8 @@ app.post('/signup', function (req, res) {
 
     res.status(201).json({id});
 });
+
+
 app.post('/login', function (req, res) {
     const password = req.body.password;
     const email = req.body.email;
@@ -127,22 +129,20 @@ app.post('/login', function (req, res) {
         return res.status(400).json({error: 'Не верный E-Mail и/или пароль'});
     }
 
-
     ids[email] = user_id;
 
     res.cookie('sessionid', user_id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
     res.status(201).json({id});
 });
 
+
 app.post('/update', function (req, res) {
     const user_id = req.cookies['sessionid'];
-
 
     const email = req.body.email;
     const username = req.body.username;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
-
 
     if (
         !email ||
@@ -155,7 +155,6 @@ app.post('/update', function (req, res) {
         return res.status(400).json({error: 'Пользователя не существует'});
     }
 
-
     const user = users[user_id];
     user["email"] = email;
     user["username"] = username;
@@ -163,8 +162,6 @@ app.post('/update', function (req, res) {
     user["last_name"] = last_name;
 
     users[user_id] = user;
-
-
 
     res.status(201).json(user[user_id]);
 });
@@ -177,9 +174,9 @@ app.get('/me', function (req, res) {
     }
 
     users[id].score += 1;
-
     res.json(users[id]);
 });
+
 app.get('/users', function (req, res) {
     const scorelist = Object.values(users)
         .map(user => {
@@ -194,6 +191,7 @@ app.get('/users', function (req, res) {
 
     res.json(scorelist);
 });
+
 app.get('/users/:id', function (req, res) {
     const scorelist = Object.values(users)
         .filter(user => user.username === req.params.id)
@@ -209,6 +207,7 @@ app.get('/users/:id', function (req, res) {
 
     res.json(scorelist);
 });
+
 app.get('/leaders', function (req, res) {
     let limit = Object.keys(users).length
     let offset = 0
@@ -222,7 +221,6 @@ app.get('/leaders', function (req, res) {
     }
     const scorelist = Object.values(users)
         .sort((l, r) => r.score - l.score)
-
         .map(user => {
             return {
                 username: user.username,
@@ -235,15 +233,10 @@ app.get('/leaders', function (req, res) {
 
 
     res.json(slice(scorelist, offset, limit + offset));
-
-
 });
+
 app.get('/ids', function (req, res) {
-
-
     res.json(ids);
-
-
 });
 
 app.post('/logout', function (req, res) {
