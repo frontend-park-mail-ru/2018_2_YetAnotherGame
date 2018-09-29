@@ -1,350 +1,358 @@
-'use strict';
+'use strict'
 
-const AJAX = window.AjaxModule;
+const AJAX = window.AjaxModule
 
-const Block = window.Block;
-const Form = window.Form;
-const Scoreboard = window.Scoreboard;
+const Block = window.Block
+const Form = window.Form
+const Scoreboard = window.Scoreboard
 
-const signIn = window.signInFields;
-const signUp = window.signUpFields;
-const update = window.updateFields;
-const server = "https://backend-yag.now.sh"
-let offset = 2;
+const signIn = window.signInFields
+const signUp = window.signUpFields
+const update = window.updateFields
+const server = 'https://backend-yag.now.sh'
+let offset = 2
 
-const game = new Block(document.getElementById('game'));
+const game = new Block(document.getElementById('game'))
 
-function createMenuLink() {
-    const menuLink = Block.Create('a', {'href': 'menu', 'data-href': 'menu'}, [], 'Back to main menu');
-    return menuLink;
+function createMenuLink () {
+  const menuLink = Block.Create('a', { 'href': 'menu', 'data-href': 'menu' }, [], 'Back to main menu')
+  return menuLink
 }
 
-function createMenu() {
-    const menuSection = Block.Create('section', {'data-section-name': 'menu', 'id': 'mainMenu'}, []);
-    const header = Block.Create('div', {'id': 'header'}, []);
-    const logo = Block.Create('div', {'id': 'logo'}, [])
-    const logoHeader = Block.Create('h1', {}, [], 'Yet Another Game')
+function createMenu () {
+  const menuSection = Block.Create('section', { 'data-section-name': 'menu', 'id': 'mainMenu' }, [])
+  const header = Block.Create('div', { 'id': 'header' }, [])
+  const logo = Block.Create('div', { 'id': 'logo' }, [])
+  const logoHeader = Block.Create('h1', {}, [], 'Yet Another Game')
 
-    logo.append(logoHeader);
+  logo.append(logoHeader)
 
-    const main = Block.Create('div', {'id': 'main'}, []);
-    const mainInner = Block.Create('div', {}, []);
+  const main = Block.Create('div', { 'id': 'main' }, [])
+  const mainInner = Block.Create('div', {}, [])
 
-    main.append(mainInner);
+  main.append(mainInner)
 
-    const register = {
-       sign_in: Block.Create('a', {'href': 'sign_in', 'data-href': 'sign_in'}, ['header-button'], 'Sign in'),
-       sign_up: Block.Create('a', {'href': 'sign_up', 'data-href': 'sign_up'}, ['header-button'], 'Sign up'),
-       log_out: Block.Create('a', {'href': 'log_out', 'data-href': 'log_out'}, ['header-button'], 'Log out'),
-    };
+  const register = {
+    sign_in: Block.Create('a', { 'href': 'sign_in', 'data-href': 'sign_in' }, ['header-button'], 'Sign in'),
+    sign_up: Block.Create('a', { 'href': 'sign_up', 'data-href': 'sign_up' }, ['header-button'], 'Sign up'),
+    log_out: Block.Create('a', { 'href': 'log_out', 'data-href': 'log_out' }, ['header-button'], 'Log out')
+  }
 
-    const titles = {
-       new_game: Block.Create('a', {'href': 'new_game', 'data-href': 'new_game'}, ['menu-button'], 'New Game'),
-       leaders: Block.Create('a', {'href': 'leaders', 'data-href': 'leaders'}, ['menu-button'], 'Scoreboard'),
-       me: Block.Create('a', {'href': 'me', 'data-href': 'me'}, ['menu-button'], 'Profile'),
-       update: Block.Create('a', {'href': 'update', 'data-href': 'update'}, ['menu-button'], 'Update'),
-    };
+  const titles = {
+    new_game: Block.Create('a', { 'href': 'new_game', 'data-href': 'new_game' }, ['menu-button'], 'New Game'),
+    leaders: Block.Create('a', { 'href': 'leaders', 'data-href': 'leaders' }, ['menu-button'], 'Scoreboard'),
+    me: Block.Create('a', { 'href': 'me', 'data-href': 'me' }, ['menu-button'], 'Profile'),
+    update: Block.Create('a', { 'href': 'update', 'data-href': 'update' }, ['menu-button'], 'Update')
+  }
 
-    Object.entries(register).forEach(function (elem) {
-        header.append(elem[1]);
-    });
+  Object.entries(register).forEach(function (elem) {
+    header.append(elem[1])
+  })
 
-    Object.entries(titles).forEach(function (elem) {
-        mainInner.append(elem[1]);
-    });
+  Object.entries(titles).forEach(function (elem) {
+    mainInner.append(elem[1])
+  })
 
-    menuSection
-        .append(header)
-        .append(logo)
-        .append(main);
+  menuSection
+    .append(header)
+    .append(logo)
+    .append(main)
 
-    game.append(menuSection);
+  game.append(menuSection)
 }
 
-function createSignIn() {
-    const signInSection = Block.Create('section', {'data-section-name': 'sign_in'}, []);
-    const header = Block.Create('h1', {}, [], 'Sign In');
+function createSignIn () {
+  const signInSection = Block.Create('section', { 'data-section-name': 'sign_in' }, [])
+  const header = Block.Create('h1', {}, [], 'Sign In')
 
-    const form = new Form(signIn);
+  const form = new Form(signIn)
 
-    signInSection
-        .append(header)
-        .append(createMenuLink())
-        .append(form)
+  signInSection
+    .append(header)
+    .append(createMenuLink())
+    .append(form)
 
-    form.onSubmit(
-        function (formdata) {
-            AJAX.doPost({
-                callback(xhr) {
-                    game.clear();
-                    createProfile();
-                },
-                path: server+'/login',
-                body: {
-                    email: formdata.email,
-                    password: formdata.password,
-                },
-            });
-        }
-    );
-
-    game.append(signInSection);
-}
-
-function createSignUp() {
-    const signUpSection = Block.Create('section', {'data-section-name': 'sign_up'}, []);
-    const header = Block.Create('h1', {}, [], 'Sign Up');
-
-    const form = new Form(signUp);
-
-    signUpSection
-        .append(header)
-        .append(createMenuLink())
-        .append(form);
-
-    form.onSubmit(
-        function (formdata) {
-            const email = formdata.email;
-            const username = formdata.username;
-            const fist_name = formdata.first_name;
-            const last_name = formdata.last_name;
-            const password = formdata.password;
-            const password_repeat = formdata.password_repeat;
-
-            if (password.length < 4) {
-                if (document.getElementById('err') !== null) {
-                    const el = document.getElementById('err');
-                    el.parentNode.removeChild(el)
-                }
-
-                const err = Block.Create('div', {'id': 'err'}, []);
-                form.append(err);
-
-                const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
-                err.append(att);
-
-                return;
-            }
-
-            if (password !== password_repeat) {
-                alert('Passwords is not equals');
-                return;
-            }
-
-            AJAX.doPost({
-                callback(xhr) {
-                    game.clear();
-                    createProfile();
-                },
-                path: server+'/signup',
-                body: {
-                    email: email,
-                    username: username,
-                    first_name: fist_name,
-                    last_name: last_name,
-                    password: password,
-                },
-            });
-        }
-    );
-
-    game.append(signUpSection);
-}
-
-function createLogOut() {
-    AJAX.doPost({
-        callback(xhr) {
-            game.clear();
-            createMenu();
+  form.onSubmit(
+    function (formdata) {
+      AJAX.doPost({
+        callback (xhr) {
+          game.clear()
+          createProfile()
         },
-        path: server+'/logout',
-        body: {},
-    });
-}
-
-function createUpdate() {
-    const updateSection = Block.Create('section', {'data-section-name': 'update'}, []);
-    const header = Block.Create('h1', {}, [], 'Update');
-
-    const form = new Form(update);
-
-    updateSection
-        .append(header)
-        .append(createMenuLink())
-        .append(form);
-
-    form.onSubmit(
-        function (formdata) {
-            AJAX.doPost({
-    			callback(xhr) {
-                    game.clear();
-                    createProfile();
-    			},
-    			path: server+'/update',
-                body: {
-                    email: formdata.email,
-                    username: formdata.username,
-                    first_name: formdata.fist_name,
-                    last_name: formdata.last_name,
-                }
-    		});
+        path: server + '/login',
+        body: {
+          email: formdata.email,
+          password: formdata.password
         }
-    );
-
-    game.append(updateSection);
-}
-
-function createProfile(me) {
-    const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
-    const header = Block.Create('h1', {}, [], 'Profile');
-
-    profileSection
-        .append(header)
-        .append(createMenuLink());
-
-    if (me) {
-        const p = Block.Create('p', {}, []);
-
-        const email = Block.Create('div', {}, [], `Email ${me.email}`);
-        const username = Block.Create('div', {}, [], `Username ${me.username}`);
-        const first_name = Block.Create('div', {}, [], `First Name ${me.first_name}`);
-        const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
-        const score = Block.Create('div', {}, [], `Score ${me.score}`);
-
-        p
-            .append(email)
-            .append(username)
-            .append(first_name)
-            .append(last_name)
-            .append(score);
-
-        profileSection.append(p);
-    } else {
-        AJAX.doGet({
-            callback(xhr) {
-                if (!xhr.responseText) {
-                    alert('Unauthorized');
-                    game.clear();
-                    createMenu();
-                    return;
-                }
-                const user = JSON.parse(xhr.responseText);
-                game.clear();
-                createProfile(user);
-            },
-            path: server+'/me',
-        });
+      })
     }
+  )
 
-    game.append(profileSection);
+  game.append(signInSection)
 }
 
-function createScoreboard(users, offset, limit) {
-    const scoreboardSection = Block.Create('section', {'data-section-name': 'scoreboard'}, []);
-    const header = Block.Create('h1', {}, [], 'Leaders');
+function createSignUp () {
+  const signUpSection = Block.Create('section', { 'data-section-name': 'sign_up' }, [])
+  const header = Block.Create('h1', {}, [], 'Sign Up')
 
-    const tableWrapper = Block.Create('div', {}, []);
+  const form = new Form(signUp)
 
-    scoreboardSection
-        .append(header)
-        .append(createMenuLink())
-        .append(Block.Create('br', {}, []))
-        .append(tableWrapper);
+  signUpSection
+    .append(header)
+    .append(createMenuLink())
+    .append(form)
 
-    if (users) {
-        const scoreboard = new Scoreboard({el: tableWrapper});
-        scoreboard.data = users.slice(0,users.length-1);
-        scoreboard.render();
+  form.onSubmit(
+    function (formdata) {
+      const email = formdata.email
+      const username = formdata.username
+      const firstName = formdata.first_name
+      const lastName = formdata.last_name
+      const password = formdata.password
+      const passwordRepeat = formdata.password_repeat
 
-        const a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'paginate()'}, [], 'kek');
+      if (password.length < 4) {
+        if (document.getElementById('err') !== null) {
+          const el = document.getElementById('err')
+          el.parentNode.removeChild(el)
+        }
 
-        const a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->', 'onclick': 'negpaginate()'}, [], 'kek');
+        const err = Block.Create('div', { 'id': 'err' }, [])
+        form.append(err)
 
-        header
-            .append(a)
-            .append(a2);
+        const att = Block.Create('p', {}, [], 'password must be at least 4 characters')
+        err.append(att)
 
-            game.append(scoreboardSection);
+        return
+      }
 
-            console.log(users);
-    } else {
-        scoreboardSection.append(Block.Create('em', {}, [], 'Loading'));
+      if (password !== passwordRepeat) {
+        alert('Passwords is not equals')
+        return
+      }
 
-        AJAX.doGet({
-           callback(xhr) {
-               const users = JSON.parse(xhr.responseText);
-
-               const el = document.getElementById('btn2');
-               const el2 = document.getElementById('btn1');
-               let lim = users[2];
-               if (lim===undefined)
-               {
-                   lim=6
-               }
-               console.log(offset)
-
-               if (offset === lim && el2 !== null) {
-                   el2.disabled = true;
-               } else if (offset < 0) {
-                   el.disabled = true;
-               } else {
-                   if (el !== null || el2 !== null) {
-                       el.disabled = false;
-                       el2.disabled = false;
-                   }
-                   game.clear();
-
-
-                   createScoreboard(users, offset);
-               }
-           },
-           path: server+`/leaders?offset=${offset}&limit=${limit}`,
-       });
+      AJAX.doPost({
+        callback (xhr) {
+          game.clear()
+          createProfile()
+        },
+        path: server + '/signup',
+        body: {
+          email: email,
+          username: username,
+          first_name: firstName,
+          last_name: lastName,
+          password: password
+        }
+      })
     }
+  )
+
+  game.append(signUpSection)
 }
 
-function negpaginate(users) {
-    const limit = 2;
-    offset -= 2;
-    if (offset < 0) {
+function createLogOut () {
+  AJAX.doPost({
+    callback (xhr) {
+      game.clear()
+      createMenu()
+    },
+    path: server + '/logout',
+    body: {}
+  })
+}
 
+function createUpdate () {
+  const updateSection = Block.Create('section', { 'data-section-name': 'update' }, [])
+  const header = Block.Create('h1', {}, [], 'Update')
+
+  const form = new Form(update)
+
+  updateSection
+    .append(header)
+    .append(createMenuLink())
+    .append(form)
+
+  form.onSubmit(
+    function (formdata) {
+      AJAX.doPost({
+        callback (xhr) {
+          game.clear()
+          createProfile()
+        },
+        path: server + '/update',
+        body: {
+          email: formdata.email,
+          username: formdata.username,
+          first_name: formdata.fist_name,
+          last_name: formdata.last_name
+        }
+      })
     }
-    createScoreboard(users, offset, limit);
+  )
+
+  game.append(updateSection)
 }
 
-function paginate(users) {
-    const limit = 2;
-    offset += 2;
+function createProfile (me) {
+  const profileSection = Block.Create('section', { 'data-section-name': 'profile' }, [])
+  const header = Block.Create('h1', {}, [], 'Profile')
 
-    createScoreboard(users, offset, limit);
+  profileSection
+    .append(header)
+    .append(createMenuLink())
+
+  if (me) {
+    const p = Block.Create('p', {}, [])
+
+    const email = Block.Create('div', {}, [], `Email ${me.email}`)
+    const username = Block.Create('div', {}, [], `Username ${me.username}`)
+    const firstName = Block.Create('div', {}, [], `First Name ${me.first_name}`)
+    const lastName = Block.Create('div', {}, [], `Last Name ${me.last_name}`)
+    const score = Block.Create('div', {}, [], `Score ${me.score}`)
+
+    p
+      .append(email)
+      .append(username)
+      .append(firstName)
+      .append(lastName)
+      .append(score)
+
+    profileSection.append(p)
+  } else {
+    AJAX.doGet({
+      callback (xhr) {
+        if (!xhr.responseText) {
+          alert('Unauthorized')
+          game.clear()
+          createMenu()
+          return
+        }
+        const user = JSON.parse(xhr.responseText)
+        game.clear()
+        createProfile(user)
+      },
+      path: server + '/me'
+    })
+  }
+
+  game.append(profileSection)
+}
+
+function createScoreboard (users, offset, limit) {
+  const scoreboardSection = Block.Create('section', { 'data-section-name': 'scoreboard' }, [])
+  const header = Block.Create('h1', {}, [], 'Leaders')
+
+  const tableWrapper = Block.Create('div', {}, [])
+
+  scoreboardSection
+    .append(header)
+    .append(createMenuLink())
+    .append(Block.Create('br', {}, []))
+    .append(tableWrapper)
+
+  if (users) {
+    const scoreboard = new Scoreboard({ el: tableWrapper })
+    scoreboard.data = users.slice(0, users.length - 1)
+    scoreboard.render()
+
+    const a = Block.Create('input', {
+      'id': 'btn1',
+      'type': 'button',
+      'value': '<-',
+      'onclick': 'paginate()'
+    }, [], 'kek')
+
+    const a2 = Block.Create('input', {
+      'id': 'btn2',
+      'type': 'button',
+      'value': '->',
+      'onclick': 'negpaginate()'
+    }, [], 'kek')
+
+    header
+      .append(a)
+      .append(a2)
+
+    game.append(scoreboardSection)
+
+    console.log(users)
+  } else {
+    scoreboardSection.append(Block.Create('em', {}, [], 'Loading'))
+
+    AJAX.doGet({
+      callback (xhr) {
+        const users = JSON.parse(xhr.responseText)
+
+        const el = document.getElementById('btn2')
+        const el2 = document.getElementById('btn1')
+        let lim = users[2]
+        if (lim === undefined) {
+          lim = 6
+        }
+        console.log(offset)
+
+        if (offset === lim && el2 !== null) {
+          el2.disabled = true
+        } else if (offset < 0) {
+          el.disabled = true
+        } else {
+          if (el !== null || el2 !== null) {
+            el.disabled = false
+            el2.disabled = false
+          }
+          game.clear()
+
+          createScoreboard(users, offset)
+        }
+      },
+      path: server + `/leaders?offset=${offset}&limit=${limit}`
+    })
+  }
+}
+
+function negpaginate (users) {
+  const limit = 2
+  offset -= 2
+  if (offset < 0) {
+
+  }
+  createScoreboard(users, offset, limit)
+}
+
+function paginate (users) {
+  const limit = 2
+  offset += 2
+
+  createScoreboard(users, offset, limit)
 }
 
 const pages = {
-    menu: createMenu,
-    sign_in: createSignIn,
-    sign_up: createSignUp,
-    log_out: createLogOut,
-    leaders: paginate,
-    me: createProfile,
-    update: createUpdate
-};
+  menu: createMenu,
+  sign_in: createSignIn,
+  sign_up: createSignUp,
+  log_out: createLogOut,
+  leaders: paginate,
+  me: createProfile,
+  update: createUpdate
+}
 
-createMenu();
+createMenu()
 
 game.on('click', function (event) {
-    if (!(event.target instanceof HTMLAnchorElement)) {
-       return;
-   }
+  if (!(event.target instanceof HTMLAnchorElement)) {
+    return
+  }
 
-   event.preventDefault();
-   const link = event.target;
+  event.preventDefault()
+  const link = event.target
 
-   console.log({
-       href: link.href,
-       dataHref: link.dataset.href
-   });
+  console.log({
+    href: link.href,
+    dataHref: link.dataset.href
+  })
 
-   game.clear();
-   console.log(link.dataset.href)
-   pages[link.dataset.href]();
-});
+  game.clear()
+  console.log(link.dataset.href)
+  pages[link.dataset.href]()
+})
