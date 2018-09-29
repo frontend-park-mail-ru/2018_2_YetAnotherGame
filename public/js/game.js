@@ -13,7 +13,7 @@ const update = window.updateFields;
 // const server = "https://backend-yag.now.sh"
 const server = ""
 let offset = 2;
-let lim=0
+
 // let user = undefined;
 let user =
 AJAX.doGet({
@@ -24,16 +24,12 @@ AJAX.doGet({
 });
 
 const game = new Block(document.getElementById('game'));
-/**
- * Создание ссылки "Back to main menu" для возврата в главное меню
- */
+
 function createMenuLink() {
     const menuLink = Block.Create('a', {'href': 'menu', 'data-href': 'menu'}, [], 'Back to main menu');
     return menuLink;
 }
-/**
- * Создание шапки с регистрацией, логином и выходом
- */
+
 function createMenu() {
     const menuSection = Block.Create('section', {'data-section-name': 'menu', 'id': 'mainMenu'}, []);
     const header = Block.Create('div', {'id': 'header'}, []);
@@ -84,9 +80,6 @@ function createMenu() {
     game.append(menuSection);
 }
 
-/**
- * Создание страницы входа
- */
 function createSignIn() {
     const signInSection = Block.Create('section', {'data-section-name': 'sign_in'}, []);
     const header = Block.Create('h1', {}, [], 'Sign In');
@@ -132,9 +125,6 @@ function createSignIn() {
     game.append(signInSection);
 }
 
-/**
- * Создание формы регистрации
- */
 function createSignUp() {
     const signUpSection = Block.Create('section', {'data-section-name': 'sign_up'}, []);
     const header = Block.Create('h1', {}, [], 'Sign Up');
@@ -195,9 +185,6 @@ function createSignUp() {
     game.append(signUpSection);
 }
 
-/**
- * Создание выхода из учетной записи
- */
 function createLogOut() {
     AJAX.doPost({
         callback(xhr) {
@@ -210,9 +197,6 @@ function createLogOut() {
     });
 }
 
-/**
- * Обновление данных учетной записи
- */
 function createUpdate() {
     if (user === undefined) {
         AJAX.doGet({
@@ -263,10 +247,6 @@ function createUpdate() {
     game.append(updateSection);
 }
 
-/**
- * Создание страницы профиля
- * @param {*} me Объект пользователя
- */
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
     const header = Block.Create('h1', {}, [], 'Profile');
@@ -319,12 +299,6 @@ function createProfile(me) {
     game.append(profileSection);
 }
 
-/**
- * Создание доски лидеров
- * @param {Object} users Объекты пользователей
- * @param {*} offset 
- * @param {number} limit Количество пользователей на странице
- */
 function createScoreboard(users, offset, limit) {
     const scoreboardSection = Block.Create('section', {'data-section-name': 'scoreboard'}, []);
     const header = Block.Create('h1', {}, [], 'Leaders');
@@ -357,34 +331,36 @@ function createScoreboard(users, offset, limit) {
         scoreboardSection.append(Block.Create('em', {}, [], 'Loading'));
 
         AJAX.doGet({
-               callback (xhr) {
-        const users = JSON.parse(xhr.responseText)
+           callback(xhr) {
+               const users = JSON.parse(xhr.responseText);
 
-        const el = document.getElementById('btn2')
-        const el2 = document.getElementById('btn1')
-        let lim = users[2]
-        if (lim === undefined) {
-          lim = 6
-        }
-        console.log(offset)
+               const el = document.getElementById('btn2');
+               const el2 = document.getElementById('btn1');
+               let lim = users[2];
+               if (lim===undefined)
+               {
+                   lim=6
+               }
+               console.log(offset)
 
-        if (offset === lim && el2 !== null) {
-          el2.disabled = true
-        } else if (offset < 0) {
-          el.disabled = true
-        } else {
-          if (el !== null || el2 !== null) {
-            el.disabled = false
-            el2.disabled = false
-          }
-          game.clear()
+               if (offset === lim && el2 !== null) {
+                   el2.disabled = true;
+               } else if (offset < 0) {
+                   el.disabled = true;
+               } else {
+                   if (el !== null || el2 !== null) {
+                       el.disabled = false;
+                       el2.disabled = false;
+                   }
+                   game.clear();
 
-          createScoreboard(users, offset)
-        }
-      },
-      path: server + `/leaders?offset=${offset}&limit=${limit}`
-    })
-  }
+
+                   createScoreboard(users, offset);
+               }
+           },
+           path: server+`/leaders?offset=${offset}&limit=${limit}`,
+       });
+    }
 }
 
 function negpaginate(users) {
