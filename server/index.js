@@ -19,8 +19,8 @@ app.listen(port, function () {
     console.log(`Server listening port ${port}`);
 });
 
-let users = {
 
+let users = {
     '1': {
         email: 'a@a',
         first_name: 'f1',
@@ -71,7 +71,9 @@ let users = {
         score: 17
     },
 };
+
 const ids = {};
+const avatars = {};
 
 
 function slice(obj, start, end) {
@@ -144,10 +146,11 @@ app.post('/update', function (req, res) {
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
 
+    const img = req.body.image;
+
     if (
         !email ||
         !email.match(/@/)
-
     ) {
         return res.status(400).json({error: 'Не валидные данные пользователя'});
     }
@@ -163,8 +166,12 @@ app.post('/update', function (req, res) {
 
     users[user_id] = user;
 
+
+    avatars[user_id] = img;
+
     res.status(201).json(user[user_id]);
 });
+
 
 app.get('/me', function (req, res) {
     const id = req.cookies['sessionid'];
@@ -174,8 +181,13 @@ app.get('/me', function (req, res) {
     }
 
     users[id].score += 1;
+
+    // if (avatar[id]) {
+    //     res.json(users[id], avatar[id]);
+    // }
     res.json(users[id]);
 });
+
 
 app.get('/users', function (req, res) {
     const scorelist = Object.values(users)
@@ -192,6 +204,7 @@ app.get('/users', function (req, res) {
     res.json(scorelist);
 });
 
+
 app.get('/users/:id', function (req, res) {
     const scorelist = Object.values(users)
         .filter(user => user.username === req.params.id)
@@ -207,6 +220,7 @@ app.get('/users/:id', function (req, res) {
 
     res.json(scorelist);
 });
+
 
 app.get('/leaders', function (req, res) {
     let limit = Object.keys(users).length
@@ -235,9 +249,11 @@ app.get('/leaders', function (req, res) {
     res.json(slice(scorelist, offset, limit + offset));
 });
 
+
 app.get('/ids', function (req, res) {
     res.json(ids);
 });
+
 
 app.post('/logout', function (req, res) {
     const id = req.cookies['sessionid'];
