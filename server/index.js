@@ -20,7 +20,6 @@ app.listen(port, function () {
 });
 
 let users = {
-
     '1': {
         email: 'a@a',
         first_name: 'f1',
@@ -71,7 +70,9 @@ let users = {
         score: 17
     },
 };
+
 const ids = {};
+const avatars = {};
 
 function slice(obj, start, end) {
 
@@ -116,6 +117,7 @@ app.post('/signup', function (req, res) {
 
     res.status(201).json({id});
 });
+
 app.post('/login', function (req, res) {
     const password = req.body.password;
     const email = req.body.email;
@@ -137,24 +139,21 @@ app.post('/login', function (req, res) {
 app.post('/update', function (req, res) {
     const user_id = req.cookies['sessionid'];
 
-
     const email = req.body.email;
     const username = req.body.username;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
-
+    const img = req.body.image;
 
     if (
         !email ||
         !email.match(/@/)
-
     ) {
         return res.status(400).json({error: 'Не валидные данные пользователя'});
     }
     if (!users[user_id]) {
         return res.status(400).json({error: 'Пользователя не существует'});
     }
-
 
     const user = users[user_id];
     user["email"] = email;
@@ -164,7 +163,7 @@ app.post('/update', function (req, res) {
 
     users[user_id] = user;
 
-
+    avatars[user_id] = img;
 
     res.status(201).json(user[user_id]);
 });
@@ -178,8 +177,13 @@ app.get('/me', function (req, res) {
 
     users[id].score += 1;
 
+    // if (avatar[id]) {
+    //     res.json(users[id], avatar[id]);
+    // }
+
     res.json(users[id]);
 });
+
 app.get('/users', function (req, res) {
     const scorelist = Object.values(users)
         .map(user => {
@@ -194,6 +198,7 @@ app.get('/users', function (req, res) {
 
     res.json(scorelist);
 });
+
 app.get('/users/:id', function (req, res) {
     const scorelist = Object.values(users)
         .filter(user => user.username === req.params.id)
@@ -209,6 +214,7 @@ app.get('/users/:id', function (req, res) {
 
     res.json(scorelist);
 });
+
 app.get('/leaders', function (req, res) {
     let limit = Object.keys(users).length
     let offset = 0
