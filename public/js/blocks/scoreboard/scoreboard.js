@@ -59,7 +59,6 @@
                 const tr = Block.Create('tr', {}, [])
                 tr
                     .append(Block.Create('td', {}, [], `${email}`))
-                    .append(Block.Create('td', {}, []))
                     .append(Block.Create('td', {}, [], `${score}`));
 
                 tbody.append(tr);

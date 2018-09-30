@@ -324,8 +324,8 @@ function createProfile(me) {
 /**
  * Создание доски лидеров
  * @param {Object} users Объекты пользователей
- * @param {*} offset 
- * @param {number} limit Количество пользователей на странице
+ * @param {*} offset Количество пользователей на странице
+ * @param {number} limit Количество пользователей всего
  */
 function createScoreboard(users, offset, limit) {
     const scoreboardSection = Block.Create('section', {'data-section-name': 'scoreboard'}, []);
