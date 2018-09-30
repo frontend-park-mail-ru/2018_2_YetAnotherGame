@@ -13,7 +13,8 @@ const update = window.updateFields;
 
 // const server = "https://backend-yag.now.sh"
 const server = ""
-let offset = 2
+
+let offset = -2
 const DEFOFF = 2
 const DEFLIM = 2
 
@@ -339,8 +340,8 @@ function createScoreboard(users, offset, limit) {
         // debugger;
         scoreboard.render();
         
-        let a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'paginate()'}, [], 'kek');
-        let a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->', 'onclick': 'negpaginate()'}, [], 'kek');
+        let a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'negpaginate()'}, [], 'kek');
+        let a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->', 'onclick': 'paginate()'}, [], 'kek');
 
         header
             .append(a)
