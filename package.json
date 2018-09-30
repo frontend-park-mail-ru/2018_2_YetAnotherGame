@@ -11,7 +11,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node index.js",
+    "start": "node server",
+    "prestart": "fest-build --dir=public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

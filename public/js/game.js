@@ -1,10 +1,11 @@
 'use strict';
 
+import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs";
+
 const AJAX = window.AjaxModule;
 
 const Block = window.Block;
 const Form = window.Form;
-const Scoreboard = window.Scoreboard;
 
 const signIn = window.signInFields;
 const signUp = window.signUpFields;
@@ -18,7 +19,7 @@ let offset = 2;
 let user =
 AJAX.doGet({
     callback(xhr) {
-        const user = JSON.parse(xhr.responseText);
+        const user = xhr.responseText != "" ? JSON.parse(xhr.responseText) : {};
     },
     path: server+'/me',
 });
