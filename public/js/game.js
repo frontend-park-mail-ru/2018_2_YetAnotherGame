@@ -13,6 +13,7 @@ const update = window.updateFields;
 
 // const server = "https://backend-yag.now.sh"
 const server = ""
+
 let offset = -2
 const DEFOFF = 2
 const DEFLIM = 2
