@@ -75,7 +75,6 @@ const ids = {};
 const avatars = {};
 
 function slice(obj, start, end) {
-
     let sliced = {};
     sliced['len'] = obj.length;
     let i = 0;
@@ -118,6 +117,7 @@ app.post('/signup', function (req, res) {
     res.status(201).json({id});
 });
 
+
 app.post('/login', function (req, res) {
     const password = req.body.password;
     const email = req.body.email;
@@ -129,12 +129,12 @@ app.post('/login', function (req, res) {
         return res.status(400).json({error: 'Не верный E-Mail и/или пароль'});
     }
 
-
     ids[email] = user_id;
 
     res.cookie('sessionid', user_id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
     res.status(201).json({id});
 });
+
 
 app.post('/update', function (req, res) {
     const user_id = req.cookies['sessionid'];
@@ -168,6 +168,7 @@ app.post('/update', function (req, res) {
     res.status(201).json(user[user_id]);
 });
 
+
 app.get('/me', function (req, res) {
     const id = req.cookies['sessionid'];
 
@@ -184,6 +185,7 @@ app.get('/me', function (req, res) {
     res.json(users[id]);
 });
 
+
 app.get('/users', function (req, res) {
     const scorelist = Object.values(users)
         .map(user => {
@@ -198,6 +200,7 @@ app.get('/users', function (req, res) {
 
     res.json(scorelist);
 });
+
 
 app.get('/users/:id', function (req, res) {
     const scorelist = Object.values(users)
@@ -215,13 +218,13 @@ app.get('/users/:id', function (req, res) {
     res.json(scorelist);
 });
 
+
 app.get('/leaders', function (req, res) {
     let limit = Object.keys(users).length
     let offset = 0
 
     if (req.query.limit) {
         limit = parseInt(req.query.limit);
-
     }
     if (req.query.offset) {
         offset = parseInt(req.query.offset);
@@ -239,18 +242,14 @@ app.get('/leaders', function (req, res) {
             }
         });
 
-
     res.json(slice(scorelist, offset, limit + offset));
-
-
 });
+
+
 app.get('/ids', function (req, res) {
-
-
     res.json(ids);
-
-
 });
+
 
 app.post('/logout', function (req, res) {
     const id = req.cookies['sessionid'];

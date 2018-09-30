@@ -1,12 +1,11 @@
 'use strict';
 
-import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs";
-import { Profile } from "./blocks/profile/profile.mjs";
-
 const AJAX = window.AjaxModule;
 
 const Block = window.Block;
 const Form = window.Form;
+const Scoreboard = window.Scoreboard;
+const Profile = window.Profile;
 
 const signIn = window.signInFields;
 const signUp = window.signUpFields;
@@ -14,7 +13,9 @@ const update = window.updateFields;
 
 // const server = "https://backend-yag.now.sh"
 const server = ""
-let offset = 2;
+let offset = -2
+const DEFOFF = 2
+const DEFLIM = 2
 
 // let user = undefined;
 let user =
@@ -316,10 +317,11 @@ function createProfile(me) {
 /**
  * Создание доски лидеров
  * @param {Object} users Объекты пользователей
- * @param {*} offset Количество пользователей на странице
+ * @param {number} offset Количество пользователей на странице
  * @param {number} limit Количество пользователей всего
  */
 function createScoreboard(users, offset, limit) {
+    // debugger
     const scoreboardSection = Block.Create('section', {'data-section-name': 'scoreboard'}, []);
     const header = Block.Create('h1', {}, [], 'Leaders');
 
@@ -334,12 +336,11 @@ function createScoreboard(users, offset, limit) {
     if (users) {
         const scoreboard = new Scoreboard({el: tableWrapper});
         scoreboard.data = users.slice(0,users.length-1);
-        //debugger;
+        // debugger;
         scoreboard.render();
         
-        const a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'paginate()'}, [], 'kek');
-
-        const a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->', 'onclick': 'negpaginate()'}, [], 'kek');
+        let a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'negpaginate()'}, [], 'kek');
+        let a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->', 'onclick': 'paginate()'}, [], 'kek');
 
         header
             .append(a)
@@ -384,8 +385,8 @@ function createScoreboard(users, offset, limit) {
 }
 
 function negpaginate(users) {
-    const limit = 2;
-    offset -= 2;
+    const limit = DEFLIM;
+    offset -= DEFOFF;
     createScoreboard(users, offset, limit);
 }
 
@@ -394,8 +395,9 @@ function negpaginate(users) {
  * @param {Object} users список пользователей
  */
 function paginate(users) {
-    const limit = 2;
-    offset += 2;
+    // debugger
+    const limit = DEFLIM;
+    offset += DEFOFF;
     createScoreboard(users, offset, limit);
 }
 
