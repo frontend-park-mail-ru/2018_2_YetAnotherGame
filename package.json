@@ -6,7 +6,9 @@
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
+    "fest": "^0.12.1",
     "morgan": "^1.9.1",
+    "npm": "^6.4.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {},
