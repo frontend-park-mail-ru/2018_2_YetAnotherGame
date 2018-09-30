@@ -357,8 +357,8 @@ function createScoreboard(users, offset, limit) {
            callback(xhr) {
                const users = JSON.parse(xhr.responseText);
 
-               const el = document.getElementById('btn2');
-               const el2 = document.getElementById('btn1');
+               const el2 = document.getElementById('btn2');
+               const el = document.getElementById('btn1');
                let lim = users[2];
                if (lim===undefined)
                {
