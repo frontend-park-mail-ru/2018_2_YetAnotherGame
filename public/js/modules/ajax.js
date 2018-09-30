@@ -1,6 +1,6 @@
 (function () {
     const noop = () => null;
-    
+
     class AjaxModule {
         _ajax({callback = noop, method = 'GET', path = '/', body} = {}) {
             const xhr = new XMLHttpRequest();

@@ -6,10 +6,12 @@ const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const uuid = require('uuid/v4');
 const path = require('path');
+const multer = require('multer');
+const bodyParser = require('body-parser');
 const app = express();
 
 app.use(morgan('dev'));
-app.use(express.static(path.resolve(__dirname, '..', 'public')));
+app.use(express.static(path.resolve(__dirname, '..', './public')));
 app.use(body.json());
 app.use(cookie());
 
@@ -143,7 +145,7 @@ app.post('/update', function (req, res) {
     const username = req.body.username;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
-    const img = req.body.image;
+    // const img = req.body.image;
 
     if (
         !email ||
@@ -163,10 +165,96 @@ app.post('/update', function (req, res) {
 
     users[user_id] = user;
 
-    avatars[user_id] = img;
+    // avatars[user_id] = img;
 
     res.status(201).json(user[user_id]);
 });
+
+// if (req.url == '/upload') {
+//     var length = 0;
+//     req.on('data', function(chunk) {
+//         // ничего не делаем с приходящими данными, просто считываем
+//         length += chunk.length;
+//         if (length > 50 * 1024 * 1024) {
+//             res.statusCode = 413;
+//             res.end("File too big");
+//         }
+//     }).on('end', function() {
+//         res.end('ok');
+//     });
+// } else {
+//     file.serve(req, res);
+// }
+//     const user_id = req.cookies['sessionid'];
+//
+//     const imgId = +user_id + '-' + req.file.name;
+//     const imgPath = path.join('./uploads/', imgId);
+//
+//     avatars[user_id] = filePath;
+
+// res.status(200).json(avatars[user_id]);
+const multerConfig = {
+
+storage: multer.diskStorage({
+ //Setup where the user's file will go
+ destination: function(req, file, next){
+   next(null, './public/photo-storage');
+   },
+
+    //Then give the file a unique name
+    filename: function(req, file, next){
+        console.log(file);
+        const ext = file.mimetype.split('/')[1];
+        next(null, file.fieldname + '-' + Date.now() + '.'+ext);
+      }
+    }),
+
+    //A means of ensuring only images are uploaded.
+    fileFilter: function(req, file, next){
+          if(!file){
+            next();
+          }
+        const image = file.mimetype.startsWith('image/');
+        if(image){
+          console.log('>>>>>photo uploaded');
+          next(null, true);
+        }else{
+          console.log("('>>>>>file not supported");
+
+          //TODO:  A better message response to user on failure.
+          return next();
+        }
+    }
+  };
+
+  app.post('/upload', multer(multerConfig).single('image'), function(req,res) {
+      if (req.files) {
+          console.log(">FILE");
+      } else {
+          console.log(">NOTHING");
+      }
+     res.send('Complete!');
+  });
+
+// app.post('/upload', function (req, res) {
+
+    // const user_id = req.cookies['sessionid'];
+    // req.on('data', function(chunk) {
+    //     // data += chunk.name;
+    //     // req.rawBody
+    //     // console.log(data);
+    //     const imgId = +user_id + '-' + req.rawBody.name;
+    //     const imgPath = path.join('./uploads/', imgId);
+    //
+    //     avatars[user_id] = imgPath;
+    // });
+    // req.on('end', function() {
+    //     // req.rawBody = data;
+    //     res.end(avatars[user_id]);
+    // });
+
+
+// });
 
 app.get('/me', function (req, res) {
     const id = req.cookies['sessionid'];
@@ -176,10 +264,6 @@ app.get('/me', function (req, res) {
     }
 
     users[id].score += 1;
-
-    // if (avatar[id]) {
-    //     res.json(users[id], avatar[id]);
-    // }
 
     res.json(users[id]);
 });

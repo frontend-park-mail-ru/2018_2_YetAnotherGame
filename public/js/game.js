@@ -93,7 +93,7 @@ function createSignIn() {
 
     form.onSubmit(
         function (formdata) {
-            if (formdata.password.length < 4) {
+            if (formdata.password.value.length < 4) {
                 if (document.getElementById('err') !== null) {
                     const el = document.getElementById('err');
                     el.parentNode.removeChild(el)
@@ -115,8 +115,8 @@ function createSignIn() {
                 },
                 path: server+'/login',
                 body: {
-                    email: formdata.email,
-                    password: formdata.password,
+                    email: formdata.email.value,
+                    password: formdata.password.value,
                 },
             });
         }
@@ -138,12 +138,12 @@ function createSignUp() {
 
     form.onSubmit(
         function (formdata) {
-            const email = formdata.email;
-            const username = formdata.username;
-            const first_name = formdata.first_name;
-            const last_name = formdata.last_name;
-            const password = formdata.password;
-            const password_repeat = formdata.password_repeat;
+            const email = formdata.email.value;
+            const username = formdata.username.value;
+            const first_name = formdata.first_name.value;
+            const last_name = formdata.last_name.value;
+            const password = formdata.password.value;
+            const password_repeat = formdata.password_repeat.value;
 
             if (password.length < 4) {
                 if (document.getElementById('err') !== null) {
@@ -189,7 +189,7 @@ function createLogOut() {
     AJAX.doPost({
         callback(xhr) {
             game.clear();
-            user = undefined
+            user = undefined;
             createMenu();
         },
         path: server+'/logout',
@@ -220,6 +220,8 @@ function createUpdate() {
 
     const form = new Form(update);
 
+    form.setAttribute({'enctype': 'multipart/form-data', 'method': 'POST'});
+
     updateSection
         .append(header)
         .append(createMenuLink())
@@ -227,6 +229,37 @@ function createUpdate() {
 
     form.onSubmit(
         function (formdata) {
+            const file = formdata.image.files[0];
+
+            if (file) {
+                const xhr = new XMLHttpRequest();
+
+                // обработчик для закачки
+                xhr.upload.onprogress = function(event) {
+                  console.log(event.loaded + ' / ' + event.total);
+                }
+
+                // обработчики успеха и ошибки
+                // если status == 200, то это успех, иначе ошибка
+                xhr.onload = xhr.onerror = function() {
+                    if (this.status == 200) {
+                        console.log("success");
+                    } else {
+                        console.log("error " + this.status);
+                    }
+                };
+                debugger;
+                // const fd = new FormData();
+                // fd.append("file", file);
+
+                xhr.open("POST", server + "/upload", true);
+                xhr.setRequestHeader('X-File-Id', file.name);
+                // xhr.send(fd);
+                xhr.send(file);
+            } else {
+                console.log("Avatar doesn't exisit");
+            }
+
             AJAX.doPost({
     			callback(xhr) {
                     game.clear();
@@ -234,11 +267,10 @@ function createUpdate() {
     			},
     			path: server+'/update',
                 body: {
-                    email: formdata.email,
-                    username: formdata.username,
-                    first_name: formdata.first_name,
-                    last_name: formdata.last_name,
-                    image: formdata.image,
+                    email: formdata.email.value,
+                    username: formdata.username.value,
+                    first_name: formdata.first_name.value,
+                    last_name: formdata.last_name.value,
                 }
     		});
         }
@@ -246,6 +278,32 @@ function createUpdate() {
 
     game.append(updateSection);
 }
+/*
+var file = formdata.image.files[0];
+if (file) {
+    console.log("DAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    var xhr = new XMLHttpRequest();
+    // обработчик для закачки
+    xhr.upload.onprogress = function(event) {
+      console.log(event.loaded + ' / ' + event.total);
+    }
+
+    // обработчики успеха и ошибки
+    // если status == 200, то это успех, иначе ошибка
+    xhr.onload = xhr.onerror = function() {
+        if (this.status == 200) {
+            console.log("success");
+        } else {
+            console.log("error " + this.status);
+        }
+    };
+
+    xhr.open("POST", "upload", true);
+    xhr.send(file);
+} else {
+    console.log("UBYSDBBYUDSDSSDS");
+}
+*/
 
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
