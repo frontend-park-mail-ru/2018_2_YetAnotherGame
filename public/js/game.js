@@ -1,6 +1,7 @@
 'use strict';
 
 import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs";
+import { Profile } from "./blocks/profile/profile.mjs";
 
 const AJAX = window.AjaxModule;
 
@@ -273,35 +274,25 @@ function createUpdate() {
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
     const header = Block.Create('h1', {}, [], 'Profile');
+    const profileBody = Block.Create('div', {}, []);
 
     profileSection
         .append(header)
-        .append(createMenuLink());
+        .append(createMenuLink())
+        .append(Block.Create('br', {}, []))
+        .append(profileBody);
+
 
     if (me) {
-        const p = Block.Create('p', {}, []);
+        const profile = new Profile({el: profileBody});
+        profile.data = me;
+        profile.render();
 
-        const email = Block.Create('div', {}, [], `Email ${me.email}`);
-        const username = Block.Create('div', {}, [], `Username ${me.username}`);
-        const first_name = Block.Create('div', {}, [], `First Name ${me.first_name}`);
-        const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
-        const score = Block.Create('div', {}, [], `Score ${me.score}`);
-
-        const avatar = Block.Create('img', {'src': 'https://picsum.photos/32/32'}, []);
+        // const avatar = Block.Create('img', {'src': 'https://picsum.photos/32/32'}, []);
         // const avatar = Block.Create('img', {'src': `${me.img}`}, []);
         // if (avatar === undefined) {
         //     avatar.setAttribute({'src': '../img/1.jpeg'})
         // }
-
-        p
-            .append(email)
-            .append(username)
-            .append(first_name)
-            .append(last_name)
-            .append(score)
-            .append(avatar);
-
-        profileSection.append(p);
     } else {
         AJAX.doGet({
             callback(xhr) {
@@ -343,8 +334,9 @@ function createScoreboard(users, offset, limit) {
     if (users) {
         const scoreboard = new Scoreboard({el: tableWrapper});
         scoreboard.data = users.slice(0,users.length-1);
+        //debugger;
         scoreboard.render();
-
+        
         const a = Block.Create('input', {'id': 'btn1', 'type': 'button', 'value': '<-', 'onclick': 'paginate()'}, [], 'kek');
 
         const a2 = Block.Create('input', {'id': 'btn2', 'type': 'button', 'value': '->', 'onclick': 'negpaginate()'}, [], 'kek');
@@ -353,9 +345,9 @@ function createScoreboard(users, offset, limit) {
             .append(a)
             .append(a2);
 
-            game.append(scoreboardSection);
-
-            console.log(users);
+        game.append(scoreboardSection);
+        
+        console.log(users);
     } else {
         scoreboardSection.append(Block.Create('em', {}, [], 'Loading'));
 
@@ -382,7 +374,6 @@ function createScoreboard(users, offset, limit) {
                        el2.disabled = false;
                    }
                    game.clear();
-
 
                    createScoreboard(users, offset);
                }
