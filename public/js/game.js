@@ -394,9 +394,6 @@ function createScoreboard(users, offset, limit) {
 function negpaginate(users) {
     const limit = 2;
     offset -= 2;
-    if (offset < 0) {
-
-    }
     createScoreboard(users, offset, limit);
 }
 
@@ -407,7 +404,6 @@ function negpaginate(users) {
 function paginate(users) {
     const limit = 2;
     offset += 2;
-
     createScoreboard(users, offset, limit);
 }
 
