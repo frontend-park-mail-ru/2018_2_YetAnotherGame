@@ -220,7 +220,7 @@ function createUpdate() {
 
     const form = new Form(update);
 
-    form.setAttribute({'enctype': 'multipart/form-data', 'method': 'POST'});
+    form.setAttribute({'id': 'myForm', 'name': 'myForm', 'enctype': 'multipart/form-data', 'method': 'POST'});
 
     updateSection
         .append(header)
@@ -229,36 +229,17 @@ function createUpdate() {
 
     form.onSubmit(
         function (formdata) {
-            const file = formdata.image.files[0];
-
-            if (file) {
-                const xhr = new XMLHttpRequest();
-
-                // обработчик для закачки
-                xhr.upload.onprogress = function(event) {
-                  console.log(event.loaded + ' / ' + event.total);
+            const formData = new FormData(document.forms.myForm);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+            xhr.onload = xhr.onerror = function() {
+                if (this.status == 200) {
+                    console.log("success");
+                } else {
+                    console.log("error " + this.status);
                 }
-
-                // обработчики успеха и ошибки
-                // если status == 200, то это успех, иначе ошибка
-                xhr.onload = xhr.onerror = function() {
-                    if (this.status == 200) {
-                        console.log("success");
-                    } else {
-                        console.log("error " + this.status);
-                    }
-                };
-                debugger;
-                // const fd = new FormData();
-                // fd.append("file", file);
-
-                xhr.open("POST", server + "/upload", true);
-                xhr.setRequestHeader('X-File-Id', file.name);
-                // xhr.send(fd);
-                xhr.send(file);
-            } else {
-                console.log("Avatar doesn't exisit");
             }
+            xhr.send(formData);
 
             AJAX.doPost({
     			callback(xhr) {
@@ -278,32 +259,6 @@ function createUpdate() {
 
     game.append(updateSection);
 }
-/*
-var file = formdata.image.files[0];
-if (file) {
-    console.log("DAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    var xhr = new XMLHttpRequest();
-    // обработчик для закачки
-    xhr.upload.onprogress = function(event) {
-      console.log(event.loaded + ' / ' + event.total);
-    }
-
-    // обработчики успеха и ошибки
-    // если status == 200, то это успех, иначе ошибка
-    xhr.onload = xhr.onerror = function() {
-        if (this.status == 200) {
-            console.log("success");
-        } else {
-            console.log("error " + this.status);
-        }
-    };
-
-    xhr.open("POST", "upload", true);
-    xhr.send(file);
-} else {
-    console.log("UBYSDBBYUDSDSSDS");
-}
-*/
 
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
@@ -322,11 +277,12 @@ function createProfile(me) {
         const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
         const score = Block.Create('div', {}, [], `Score ${me.score}`);
 
-        const avatar = Block.Create('img', {'src': 'https://picsum.photos/32/32'}, []);
-        // const avatar = Block.Create('img', {'src': `${me.img}`}, []);
-        // if (avatar === undefined) {
-        //     avatar.setAttribute({'src': '../img/1.jpeg'})
-        // }
+        const avatar = Block.Create('img', {}, []);
+        if (me.avatar) {
+            avatar.setAttribute({'src': `${me.avatar}`});
+        } else {
+            avatar.setAttribute({'src': `../uploads/defaultpic.jpeg`});
+        }
 
         p
             .append(email)
