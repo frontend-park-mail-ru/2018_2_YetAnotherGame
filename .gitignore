@@ -2,5 +2,7 @@
 .DS_Store
 out
 node_modules
-public/js/blocks/profile
-public/js/blocks/scoreboard
+public/js/blocks/profile/profile.tmpl.js
+public/js/blocks/profile/profile.tmpl.xml
+public/js/blocks/scoreboard/scoreboard.tmpl.js
+public/js/blocks/scoreboard/scoreboard.tmpl.xml
