@@ -6,9 +6,7 @@
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
-    
     "morgan": "^1.9.1",
-    "eslint": "^5.6.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
