@@ -185,8 +185,10 @@ const upload = multer({storage: storage}).single('image');
 
 app.post('/upload', function(req, res) {
     upload(req, res, function(err) {
-        const src = '../uploads/' + req.file.filename;
-        avatars[req.body.email] = src;
+		if (req.file) {
+			const src = '../uploads/' + req.file.filename;
+			avatars[req.body.email] = src;
+		}
         // console.log('>>>>', avatars);
         if (err) {
             return res.end("Error uploading file");

@@ -137,7 +137,7 @@ function createSignIn() {
     );
 
     game.append(signInSection);
-	
+}
 
 /**
  * Создание формы регистрации нового пользователя
@@ -339,9 +339,7 @@ function createProfile(me) {
             path: server+'/me',
         });
     }
-
     game.append(profileSection);
-
 }
 
 /**
