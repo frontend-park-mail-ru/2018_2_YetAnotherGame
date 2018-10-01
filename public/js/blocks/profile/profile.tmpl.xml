@@ -1,0 +1,21 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="user">
+<table border="1" cellpadding="5" cellspacing="0">
+		<tbody>
+			<tr>
+				<td>username</td><td><fest:value>user.username</fest:value></td>
+			</tr>
+			<tr>
+				<td>email</td><td><fest:value>user.email</fest:value></td>
+			</tr>
+			<tr>
+				<td>name</td><td><fest:value>user.first_name</fest:value></td>
+			</tr>
+			<tr>
+				<td>last name</td><td><fest:value>user.last_name</fest:value></td>
+			</tr>
+			<tr>
+				<td>score</td><td><fest:value>user.score</fest:value></td>
+			</tr>
+		</tbody>
+	</table>
+</fest:template>
