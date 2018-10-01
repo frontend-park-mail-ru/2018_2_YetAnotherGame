@@ -1,17 +1,19 @@
 "use strict"
 
-const express = require("express")
-const body = require("body-parser")
-const cookie = require("cookie-parser")
-const morgan = require("morgan")
-const uuid = require("uuid/v4")
-const path = require("path")
-const app = express()
+const express = require('express');
+const body = require('body-parser');
+const cookie = require('cookie-parser');
+const morgan = require('morgan');
+const uuid = require('uuid/v4');
+const path = require('path');
+const multer = require('multer');
+const app = express();
 
-app.use(morgan("dev"))
-app.use(express.static(path.resolve(__dirname, "..", "public")))
-app.use(body.json())
-app.use(cookie())
+app.use(morgan('dev'));
+app.use(express.static(path.resolve(__dirname, '..', './public')));
+app.use(body.json());
+app.use(cookie());
+
 
 const port = process.env.PORT || 3000
 
@@ -73,6 +75,7 @@ let users = {
 
 const ids = {}
 const avatars = {}
+
 
 function slice(obj, start, end) {
 	let sliced = {}
@@ -168,22 +171,48 @@ app.post("/update", function (req, res) {
 	res.status(201).json(user[user_id])
 })
 
-
-app.get("/me", function (req, res) {
-	const id = req.cookies["sessionid"]
-
-	if (!users[id]) {
-		return res.status(401).end()
-	}
-
-	users[id].score += 1
-
-	// if (avatar[id]) {
-	//     res.json(users[id], avatar[id]);
-	// }
-
-	res.json(users[id])
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, '../public/uploads');
+    },
+    filename: function (req, file, callback) {
+        const fileName = req.body.email + file.originalname;
+        callback(null, fileName);
+    }
 })
+
+const upload = multer({storage: storage}).single('image');
+
+app.post('/upload', function(req, res) {
+    upload(req, res, function(err) {
+        const src = '../uploads/' + req.file.filename;
+        avatars[req.body.email] = src;
+        // console.log('>>>>', avatars);
+        if (err) {
+            return res.end("Error uploading file");
+        } else {
+            res.end("File uploaded");
+        }
+    });
+});
+
+app.get('/me', function (req, res) {
+    const id = req.cookies['sessionid'];
+
+    if (!users[id]) {
+        return res.status(401).end();
+    }
+
+    users[id].score += 1;
+
+    let body = users[id];
+    if (avatars[users[id].email]) {
+        body.avatar = avatars[users[id].email];
+    }
+    // console.log(body);
+
+    res.json(body);
+});
 
 
 app.get("/users", function (req, res) {

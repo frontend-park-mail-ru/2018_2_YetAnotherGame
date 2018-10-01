@@ -94,179 +94,196 @@ function createMenu() {
  * Создание страницы входа в учетную запись пользователя
  */
 function createSignIn() {
-	const signInSection = Block.Create("section", {"data-section-name": "sign_in"}, [])
-	const header = Block.Create("h1", {}, [], "Sign In")
 
-	const form = new Form(signIn)
+    const signInSection = Block.Create('section', {'data-section-name': 'sign_in'}, []);
+    const header = Block.Create('h1', {}, [], 'Sign In');
 
-	signInSection
-		.append(header)
-		.append(createMenuLink())
-		.append(form)
+    const form = new Form(signIn);
 
-	form.onSubmit(
-		function (formdata) {
-			if (formdata.password.length < 4) {
-				if (document.getElementById("err") !== null) {
-					const el = document.getElementById("err")
-					el.parentNode.removeChild(el)
-				}
+    signInSection
+        .append(header)
+        .append(createMenuLink())
+        .append(form)
 
-				const err = Block.Create("div", {"id": "err"}, [])
-				form.append(err)
+    form.onSubmit(
+        function (formdata) {
+            if (formdata.password.value.length < 4) {
+                if (document.getElementById('err') !== null) {
+                    const el = document.getElementById('err');
+                    el.parentNode.removeChild(el)
+                }
 
-				const att = Block.Create("p", {}, [], "password must be at least 4 characters")
-				err.append(att)
+                const err = Block.Create('div', {'id': 'err'}, []);
+                form.append(err);
 
-				return
-			}
+                const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
+                err.append(att);
 
-			AJAX.doPost({
-				callback(xhr) {
-					game.clear()
-					createProfile()
-				},
-				path: server+"/login",
-				body: {
-					email: formdata.email,
-					password: formdata.password,
-				},
-			})
-		}
-	)
+                return;
+            }
 
-	game.append(signInSection)
-}
+            AJAX.doPost({
+                callback(xhr) {
+                    game.clear();
+                    createProfile();
+                },
+                path: server+'/login',
+                body: {
+                    email: formdata.email.value,
+                    password: formdata.password.value,
+                },
+            });
+        }
+    );
+
+    game.append(signInSection);
+	
 
 /**
  * Создание формы регистрации нового пользователя
  */
 function createSignUp() {
-	const signUpSection = Block.Create("section", {"data-section-name": "sign_up"}, [])
-	const header = Block.Create("h1", {}, [], "Sign Up")
 
-	const form = new Form(signUp)
+    const signUpSection = Block.Create('section', {'data-section-name': 'sign_up'}, []);
+    const header = Block.Create('h1', {}, [], 'Sign Up');
 
-	signUpSection
-		.append(header)
-		.append(createMenuLink())
-		.append(form)
+    const form = new Form(signUp);
 
-	form.onSubmit(
-		function (formdata) {
-			const email = formdata.email
-			const username = formdata.username
-			const first_name = formdata.first_name
-			const last_name = formdata.last_name
-			const password = formdata.password
-			const password_repeat = formdata.password_repeat
+    signUpSection
+        .append(header)
+        .append(createMenuLink())
+        .append(form);
 
-			if (password.length < 4) {
-				if (document.getElementById("err") !== null) {
-					const el = document.getElementById("err")
-					el.parentNode.removeChild(el)
-				}
+    form.onSubmit(
+        function (formdata) {
+            const email = formdata.email.value;
+            const username = formdata.username.value;
+            const first_name = formdata.first_name.value;
+            const last_name = formdata.last_name.value;
+            const password = formdata.password.value;
+            const password_repeat = formdata.password_repeat.value;
 
-				const err = Block.Create("div", {"id": "err"}, [])
-				form.append(err)
+            if (password.length < 4) {
+                if (document.getElementById('err') !== null) {
+                    const el = document.getElementById('err');
+                    el.parentNode.removeChild(el)
+                }
 
-				const att = Block.Create("p", {}, [], "password must be at least 4 characters")
-				err.append(att)
+                const err = Block.Create('div', {'id': 'err'}, []);
+                form.append(err);
 
-				return
-			}
+                const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
+                err.append(att);
 
-			if (password !== password_repeat) {
-				alert("Passwords is not equals")
-				return
-			}
+                return;
+            }
 
-			AJAX.doPost({
-				callback(xhr) {
-					game.clear()
-					createProfile()
-				},
-				path: server+"/signup",
-				body: {
-					email: email,
-					username: username,
-					first_name: first_name,
-					last_name: last_name,
-					password: password,
-				},
-			})
-		}
-	)
+            if (password !== password_repeat) {
+                alert('Passwords is not equals');
+                return;
+            }
 
-	game.append(signUpSection)
+            AJAX.doPost({
+                callback(xhr) {
+                    game.clear();
+                    createProfile();
+                },
+                path: server+'/signup',
+                body: {
+                    email: email,
+                    username: username,
+                    first_name: first_name,
+                    last_name: last_name,
+                    password: password,
+                },
+            });
+        }
+    );
+
+    game.append(signUpSection);
+
 }
 
 /**
  * Выход из учетной записи
  */
 function createLogOut() {
-	AJAX.doPost({
-		callback(xhr) {
-			game.clear()
-			user = undefined
-			createMenu()
-		},
-		path: server+"/logout",
-		body: {},
-	})
+    AJAX.doPost({
+        callback(xhr) {
+            game.clear();
+            user = undefined;
+            createMenu();
+        },
+        path: server+'/logout',
+        body: {},
+    });
 }
 
 /**
  * Обновление данных учетной записи
  */
 function createUpdate() {
-	if (user === undefined) {
-		AJAX.doGet({
-			callback(xhr) {
-				if (!xhr.responseText) {
-					alert("Unauthorized")
-					game.clear()
-					createMenu()
-					return
-				}
-				user = JSON.parse(xhr.responseText)
-				game.clear()
-			},
-			path: server+"/me",
-		})
-		return
-	}
+    if (user === undefined) {
+        AJAX.doGet({
+            callback(xhr) {
+                if (!xhr.responseText) {
+                    alert('Unauthorized');
+                    game.clear();
+                    createMenu();
+                    return;
+                }
+                user = JSON.parse(xhr.responseText);
+                game.clear();
+            },
+            path: server+'/me',
+        });
+        return;
+    }
 
-	const updateSection = Block.Create("section", {"data-section-name": "update"}, [])
-	const header = Block.Create("h1", {}, [], "Update")
+    const updateSection = Block.Create('section', {'data-section-name': 'update'}, []);
+    const header = Block.Create('h1', {}, [], 'Update');
 
-	const form = new Form(update)
+    const form = new Form(update);
 
-	updateSection
-		.append(header)
-		.append(createMenuLink())
-		.append(form)
+    form.setAttribute({'id': 'myForm', 'name': 'myForm', 'enctype': 'multipart/form-data', 'method': 'POST'});
 
-	form.onSubmit(
-		function (formdata) {
-			AJAX.doPost({
-				callback(xhr) {
-					game.clear()
-					createProfile()
-				},
-				path: server+"/update",
-				body: {
-					email: formdata.email,
-					username: formdata.username,
-					first_name: formdata.first_name,
-					last_name: formdata.last_name,
-					image: formdata.image,
-				}
-			})
-		}
-	)
+    updateSection
+        .append(header)
+        .append(createMenuLink())
+        .append(form);
 
-	game.append(updateSection)
+    form.onSubmit(
+        function (formdata) {
+            const formData = new FormData(document.forms.myForm);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+            xhr.onload = xhr.onerror = function() {
+                if (this.status == 200) {
+                    console.log("success");
+                } else {
+                    console.log("error " + this.status);
+                }
+            }
+            xhr.send(formData);
+
+            AJAX.doPost({
+    			callback(xhr) {
+                    game.clear();
+                    createProfile();
+    			},
+    			path: server+'/update',
+                body: {
+                    email: formdata.email.value,
+                    username: formdata.username.value,
+                    first_name: formdata.first_name.value,
+                    last_name: formdata.last_name.value,
+                }
+    		});
+        }
+    );
+
+    game.append(updateSection);
+
 }
 
 /**
@@ -274,39 +291,57 @@ function createUpdate() {
  * @param {*} me Объект пользователя
  */
 function createProfile(me) {
-	const profileSection = Block.Create("section", {"data-section-name": "profile"}, [])
-	const header = Block.Create("h1", {}, [], "Profile")
-	const profileBody = Block.Create("div", {}, [])
+    const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
+    const header = Block.Create('h1', {}, [], 'Profile');
 
-	profileSection
-		.append(header)
-		.append(createMenuLink())
-		.append(Block.Create("br", {}, []))
-		.append(profileBody)
+    profileSection
+        .append(header)
+        .append(createMenuLink());
 
+    if (me) {
+        const p = Block.Create('p', {}, []);
 
-	if (me) {
-		const profile = new Profile({el: profileBody})
-		profile.data = me
-		profile.render()
-	} else {
-		AJAX.doGet({
-			callback(xhr) {
-				if (!xhr.responseText) {
-					alert("Unauthorized")
-					game.clear()
-					createMenu()
-					return
-				}
-				/*const*/ user = JSON.parse(xhr.responseText)
-				game.clear()
-				createProfile(user)
-			},
-			path: server+"/me",
-		})
-	}
+        const email = Block.Create('div', {}, [], `Email ${me.email}`);
+        const username = Block.Create('div', {}, [], `Username ${me.username}`);
+        const first_name = Block.Create('div', {}, [], `First Name ${me.first_name}`);
+        const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
+        const score = Block.Create('div', {}, [], `Score ${me.score}`);
 
-	game.append(profileSection)
+        const avatar = Block.Create('img', {}, []);
+        if (me.avatar) {
+            avatar.setAttribute({'src': `${me.avatar}`});
+        } else {
+            avatar.setAttribute({'src': `../uploads/defaultpic.jpeg`});
+        }
+
+        p
+            .append(email)
+            .append(username)
+            .append(first_name)
+            .append(last_name)
+            .append(score)
+            .append(avatar);
+
+        profileSection.append(p);
+    } else {
+        AJAX.doGet({
+            callback(xhr) {
+                if (!xhr.responseText) {
+                    alert('Unauthorized');
+                    game.clear();
+                    createMenu();
+                    return;
+                }
+                /*const*/ user = JSON.parse(xhr.responseText);
+                game.clear();
+                createProfile(user);
+            },
+            path: server+'/me',
+        });
+    }
+
+    game.append(profileSection);
+
 }
 
 /**

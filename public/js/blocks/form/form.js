@@ -15,17 +15,17 @@
 			}.bind(this))
 		}
 
+    	onSubmit(callback) {
+    		this.el.addEventListener('submit', function (event) {
+    			event.preventDefault();
 
-		onSubmit(callback) {
-			this.el.addEventListener("submit", function (event) {
-				event.preventDefault()
+    			const formdata = {};
+    			const elements = this.el.elements;
+    			for (let iter in elements) {
+                    const name = elements[iter].name;
+    				formdata[name] = elements[iter];
+    			}
 
-				const formdata = {}
-				const elements = this.el.elements
-				for (let iter in elements) {
-					const name = elements[iter].name
-					formdata[name] = elements[iter].value
-				}
 
 				callback(formdata)
 			}.bind(this))
