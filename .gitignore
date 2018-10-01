@@ -2,3 +2,5 @@
 .DS_Store
 out
 node_modules
+public/js/blocks/profile
+public/js/blocks/scoreboard
