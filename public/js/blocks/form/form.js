@@ -1,19 +1,19 @@
 (function () {
-    'use strict';
+	"use strict"
 
-    const Block = window.Block;
+	const Block = window.Block
 
-    class Form extends Block {
-    	constructor(fields = []) {
-    		const el = document.createElement('form');
-    		super(el);
+	class Form extends Block {
+		constructor(fields = []) {
+			const el = document.createElement("form")
+			super(el)
 
-    		fields.forEach(function (field) {
-    			const f = Block.Create('input', field.attrs || {}, field.classes || []);
-    			this.append(f);
-    			this.append(Block.Create('br', {}, []));
-    		}.bind(this));
-    	}
+			fields.forEach(function (field) {
+				const f = Block.Create("input", field.attrs || {}, field.classes || [])
+				this.append(f)
+				this.append(Block.Create("br", {}, []))
+			}.bind(this))
+		}
 
     	onSubmit(callback) {
     		this.el.addEventListener('submit', function (event) {
@@ -26,14 +26,15 @@
     				formdata[name] = elements[iter];
     			}
 
-    			callback(formdata);
-    		}.bind(this));
-    	}
 
-    	reset() {
-    		this.el.reset();
-    	}
-    }
+				callback(formdata)
+			}.bind(this))
+		}
 
-    window.Form = Form;
-})();
+		reset() {
+			this.el.reset()
+		}
+	}
+
+	window.Form = Form
+})()

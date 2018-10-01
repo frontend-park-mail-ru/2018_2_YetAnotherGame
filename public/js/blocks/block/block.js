@@ -1,57 +1,57 @@
 (function () {
-	'use strict';
+	"use strict"
 
 	class Block {
 		constructor(el) {
-			this.el = el;
+			this.el = el
 		}
 
-		static Create(tagName = 'div', attrs = {}, classes = [], text = null) {
-			const el = document.createElement(tagName);
+		static Create(tagName = "div", attrs = {}, classes = [], text = null) {
+			const el = document.createElement(tagName)
 
 			classes.forEach(function (className) {
-				el.classList.add(className);
-			});
+				el.classList.add(className)
+			})
 			for (let name in attrs) {
-				el.setAttribute(name, attrs[name]);
+				el.setAttribute(name, attrs[name])
 			}
 			if (text) {
-				el.textContent = text;
+				el.textContent = text
 			}
 
-			return new Block(el);
+			return new Block(el)
 		}
 
 		setText(text) {
-			this.el.textContent = text;
+			this.el.textContent = text
 		}
 
 		setAttribute(attrs = {}) {
 			for (let name in attrs) {
-				this.el.setAttribute(name, attrs[name]);
+				this.el.setAttribute(name, attrs[name])
 			}
 		}
 
-		setInner(str = '') {
-			this.el.innerHTML = str;
+		setInner(str = "") {
+			this.el.innerHTML = str
 		}
 
 		clear() {
-			this.el.innerHTML = '';
+			this.el.innerHTML = ""
 		}
 
 		append(block) {
-			this.el.appendChild(block.el);
-			return this;
+			this.el.appendChild(block.el)
+			return this
 		}
 
 		on(event, callback) {
-			this.el.addEventListener(event, callback);
+			this.el.addEventListener(event, callback)
 			return function () {
-				this.el.removeEventListener(event, callback);
-			}.bind(this);
+				this.el.removeEventListener(event, callback)
+			}.bind(this)
 		}
 	}
 
-	window.Block = Block;
-})();
+	window.Block = Block
+})()

@@ -1,11 +1,11 @@
 (function() {
 	"use strict"
 
-	class Scoreboard {
+	class Profile {
 		constructor ({el = document.body} = {}) {
 			this._el = el
 		}
-
+        
 		get data () {
 			this._data
 		}
@@ -22,10 +22,10 @@
 		}
 
 		_renderTMPL() {
-			console.log(window.fest["js/blocks/scoreboard/scoreboard.tmpl"])
-			const template = window.fest["js/blocks/scoreboard/scoreboard.tmpl"](this._data)
+			console.log(window.fest["js/blocks/profile/profile.tmpl"])
+			const template = window.fest["js/blocks/profile/profile.tmpl"](this._data)
 			this._el.setInner(template)
 		}
 	}
-	window.Scoreboard = Scoreboard
-}())
+	window.Profile = Profile
+})()
