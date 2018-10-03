@@ -17,7 +17,7 @@
   },
   "scripts": {
     "pretest": "eslint --ignore-path .gitignore .",
-    "start": "node server",
+    "start": "node --inspect server",
     "prestart": "fest-build --dir=public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

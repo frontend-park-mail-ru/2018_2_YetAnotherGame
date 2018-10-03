@@ -1,10 +1,11 @@
 "use strict"
 
+import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs"
+
 const AJAX = window.AjaxModule
 
 const Block = window.Block
 const Form = window.Form
-const Scoreboard = window.Scoreboard
 const Profile = window.Profile
 
 const signIn = window.signInFields
@@ -13,11 +14,6 @@ const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
 const server = ""
-
-let offset = -2
-const DEFOFF = 2
-const DEFLIM = 2
-
 
 let user =
 AJAX.doGet({
@@ -348,8 +344,8 @@ function createProfile(me) {
  * @param {number} offset Количество пользователей на странице
  * @param {number} limit Количество пользователей всего
  */
-function createScoreboard(users, offset, limit) {
-	// debugger
+function createScoreboard(users, numPage) {
+	debugger
 	const scoreboardSection = Block.Create("section", {"data-section-name": "scoreboard"}, [])
 	const header = Block.Create("h1", {}, [], "Leaders")
 
@@ -362,13 +358,13 @@ function createScoreboard(users, offset, limit) {
 		.append(tableWrapper)
 
 	if (users) {
-		const scoreboard = new Scoreboard({el: tableWrapper})
-		scoreboard.data = users.slice(0,users.length-1)
-		// debugger;
+		const scoreboard = new Scoreboard({el: tableWrapper, numPage: numPage})
+		scoreboard.data = users.slice()
+		debugger;
 		scoreboard.render()
         
-		let a = Block.Create("input", {"id": "btn1", "type": "button", "value": "<-", "onclick": "negpaginate()"}, [], "kek")
-		let a2 = Block.Create("input", {"id": "btn2", "type": "button", "value": "->", "onclick": "paginate()"}, [], "kek")
+		let a = Block.Create("input", {"id": "btn1", "type": "button", "value": "<-", "onclick": "Scoreboard.nextPage())"}, [], "kek")
+		let a2 = Block.Create("input", {"id": "btn2", "type": "button", "value": "->", "onclick": "Scoreboard.prevPage()"}, [], "kek")
 
 		header
 			.append(a)
@@ -383,50 +379,13 @@ function createScoreboard(users, offset, limit) {
 		AJAX.doGet({
 			callback(xhr) {
 				const users = JSON.parse(xhr.responseText)
-
-				const el2 = document.getElementById("btn2")
-				const el = document.getElementById("btn1")
-				let lim = users[2]
-				if (lim===undefined)
-				{
-					lim=6
-				}
-
-
-				if (offset === lim && el2 !== null) {
-					el2.disabled = true
-				} else if (offset < 0) {
-					el.disabled = true
-				} else {
-					if (el !== null || el2 !== null) {
-						el.disabled = false
-						el2.disabled = false
-					}
-					game.clear()
-
-					createScoreboard(users, offset)
-				}
+                game.clear()
+                debugger
+                createScoreboard(users, numPage)
 			},
-			path: server+`/leaders?offset=${offset}&limit=${limit}`,
+			path: server+`/leaders?numPage=${numPage}`,
 		})
 	}
-}
-
-function negpaginate(users) {
-	const limit = DEFLIM
-	offset -= DEFOFF
-	createScoreboard(users, offset, limit)
-}
-
-/**
- * Создание пагинации 
- * @param {Object} users список пользователей
- */
-function paginate(users) {
-	// debugger
-	const limit = DEFLIM
-	offset += DEFOFF
-	createScoreboard(users, offset, limit)
 }
 
 const pages = {
@@ -434,7 +393,7 @@ const pages = {
 	sign_in: createSignIn,
 	sign_up: createSignUp,
 	log_out: createLogOut,
-	leaders: paginate,
+	leaders: createScoreboard,
 	me: createProfile,
 	update: createUpdate
 }

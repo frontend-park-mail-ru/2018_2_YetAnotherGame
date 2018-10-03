@@ -251,18 +251,10 @@ app.get("/users/:id", function (req, res) {
 
 
 app.get("/leaders", function (req, res) {
-	let limit = Object.keys(users).length
-	let offset = 0
-
-	if (req.query.limit) {
-		limit = parseInt(req.query.limit)
-	}
-	if (req.query.offset) {
-		offset = parseInt(req.query.offset)
-	}
+	const numPage = req.query.numPage
+	const length = Object.values(users).length
 	const scorelist = Object.values(users)
 		.sort((l, r) => r.score - l.score)
-
 		.map(user => {
 			return {
 				username: user.username,
@@ -273,7 +265,7 @@ app.get("/leaders", function (req, res) {
 			}
 		})
 
-	res.json(slice(scorelist, offset, limit + offset))
+	res.json(scorelist, length, numPage)
 })
 
 
