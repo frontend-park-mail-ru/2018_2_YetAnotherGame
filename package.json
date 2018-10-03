@@ -6,13 +6,17 @@
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
-    "fest": "^0.12.1",
+    "express-fileupload": "^1.0.0-alpha.1",
     "morgan": "^1.9.1",
-    "npm": "^6.4.1",
+    "multer": "^1.4.0",
     "uuid": "^3.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "fest": "^0.12.1",
+    "eslint": "^5.6.1"
+  },
   "scripts": {
+    "pretest": "eslint --ignore-path .gitignore .",
     "start": "node server",
     "prestart": "fest-build --dir=public",
     "test": "echo \"Error: no test specified\" && exit 1"

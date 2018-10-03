@@ -24,7 +24,7 @@
     			const elements = this.el.elements;
     			for (let iter in elements) {
                     const name = elements[iter].name;
-    				formdata[name] = elements[iter].value;
+    				formdata[name] = elements[iter];
     			}
 
     			callback(formdata);

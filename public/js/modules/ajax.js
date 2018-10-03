@@ -30,9 +30,13 @@
 			this._ajax({...params, method: 'GET'});
 		}
 
-		doPost (params = {}) {
-			this._ajax({...params, method: 'POST'});
-		}
+	doPost (params = {}) {
+		this._ajax({...params, method: 'POST'});
+	}
+
+	doDelete (params = {}) {
+		this._ajax({...params, method: 'DELETE'});
+	}
     }
 
     window.AjaxModule = new AjaxModule();
