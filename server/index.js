@@ -71,25 +71,18 @@ let users = {
 		password: "password4",
 		score: 17
 	},
+	"7": {
+		email: "fe35e@caorp.mail.ru",
+		first_name: "5fd4",
+		last_name: "ls4",
+		username: "us4",
+		password: "password4",
+		score: 100500
+	},
 }
 
 const ids = {}
 const avatars = {}
-
-
-function slice(obj, start, end) {
-	let sliced = {}
-	sliced["len"] = obj.length
-	let i = 0
-	for (let k in obj) {
-		if (i >= start && i < end)
-			sliced[k] = obj[k]
-
-		i++
-	}
-
-	return Object.values(sliced)
-}
 
 app.post("/signup", function (req, res) {
 
@@ -251,18 +244,10 @@ app.get("/users/:id", function (req, res) {
 
 
 app.get("/leaders", function (req, res) {
-	let limit = Object.keys(users).length
-	let offset = 0
-
-	if (req.query.limit) {
-		limit = parseInt(req.query.limit)
-	}
-	if (req.query.offset) {
-		offset = parseInt(req.query.offset)
-	}
+	const lengthPage = 3
+	const numPage = +req.query.numPage
 	const scorelist = Object.values(users)
 		.sort((l, r) => r.score - l.score)
-
 		.map(user => {
 			return {
 				username: user.username,
@@ -271,9 +256,10 @@ app.get("/leaders", function (req, res) {
 				email: user.email,
 				score: user.score,
 			}
-		})
+		}).slice(numPage*lengthPage, numPage*lengthPage+lengthPage)
+	scorelist.push(lengthPage)
 
-	res.json(slice(scorelist, offset, limit + offset))
+	res.json(scorelist)
 })
 
 
