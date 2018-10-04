@@ -13,7 +13,7 @@ const signUp = window.signUpFields
 const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
-const server = ""
+const server = "http://127.0.0.1:3000"
 let NumberPage = 0
 
 let user =
@@ -21,7 +21,7 @@ AJAX.doGet({
 	callback(xhr) {
 		xhr.responseText !== "" ? JSON.parse(xhr.responseText) : {}
 	},
-	path: server+"/me",
+	path: server+"/user/me",
 })
 
 const game = new Block(document.getElementById("game"))
@@ -124,7 +124,7 @@ function createSignIn() {
                     game.clear();
                     createProfile();
                 },
-                path: server+'/login',
+                path: server+'/session',
                 body: {
                     email: formdata.email.value,
                     password: formdata.password.value,
@@ -185,7 +185,7 @@ function createSignUp() {
                     game.clear();
                     createProfile();
                 },
-                path: server+'/signup',
+                path: server+'/session/new',
                 body: {
                     email: email,
                     username: username,
@@ -205,13 +205,13 @@ function createSignUp() {
  * Выход из учетной записи
  */
 function createLogOut() {
-    AJAX.doPost({
+    AJAX.doDelete({
         callback(xhr) {
             game.clear();
             user = undefined;
             createMenu();
         },
-        path: server+'/logout',
+        path: server+'/session',
         body: {},
     });
 }
@@ -232,7 +232,7 @@ function createUpdate() {
                 user = JSON.parse(xhr.responseText);
                 game.clear();
             },
-            path: server+'/me',
+            path: server+'/user/me',
         });
         return;
     }
@@ -268,7 +268,7 @@ function createUpdate() {
                     game.clear();
                     createProfile();
     			},
-    			path: server+'/update',
+    			path: server+'/user/me',
                 body: {
                     email: formdata.email.value,
                     username: formdata.username.value,
@@ -333,7 +333,7 @@ function createProfile(me) {
                 game.clear();
                 createProfile(user);
             },
-            path: server+'/me',
+            path: server+'/user/me',
         });
     }
     game.append(profileSection);
@@ -384,7 +384,7 @@ function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
                 game.clear()
                 createScoreboard(users, NumberPage, countStr)
 			},
-			path: server+`/leaders?numPage=${NumberPage}`,
+			path: server+`/user?numPage=${NumberPage}`,
 		})
     }
     const lBtn = document.getElementById("lBtn")
