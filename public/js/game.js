@@ -391,8 +391,10 @@ function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
     const rBtn = document.getElementById("rBtn")
     if (NumberPage === 0 && lBtn !== null) {
         lBtn.disabled = true
-    } else if (NumberPage*CountOfStrings > users.length) {
-        rBtn.disabled = true 
+    } else if (users) {
+        if (NumberPage*CountOfStrings > users.length) {
+            rBtn.disabled = true 
+        }
     } else {
         if (lBtn !== null || rBtn !== null) {
             lBtn.disabled = false
