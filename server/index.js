@@ -7,7 +7,6 @@ const morgan = require('morgan');
 const uuid = require('uuid/v4');
 const path = require('path');
 const app = express();
-const proxy = require('express-http-proxy');
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 app.use(body.json());
@@ -27,6 +26,3 @@ app.all('*', function(req, res, next) {
 app.listen(port, function () {
     console.log(`Server listening port ${port}`);
 });
-
-
-

@@ -25,7 +25,6 @@ export class Form extends Block {
 				formdata[name] = elements[iter];
 			}
 
-
 			callback(formdata)
 		}.bind(this))
 	}

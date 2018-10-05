@@ -297,7 +297,7 @@ function createProfile(me) {
         .append(header)
         .append(createMenuLink())
         .append(profile_block)
-		
+
     if (me) {
 		const profile = new Profile({el: profile_block})
 		profile.data = me
@@ -322,7 +322,7 @@ function createProfile(me) {
 }
 
 /**
- * Создание доски лидеров 
+ * Создание доски лидеров
  * @param {array} users Массив пользователей для страницы
  * @param {Number} scoreboardPage Номер страницы
  * @param {nubmer} CountOfStrings количество строк в таблице
@@ -331,22 +331,22 @@ function createScoreboard(users, scoreboardPage = 0) {
 	const scoreboardSection = Block.Create("section", {"data-section-name": "scoreboard"}, [])
 	const header = Block.Create("h1", {}, [], "Leaders")
     const tableWrapper = Block.Create("div", {}, [])
-    
+
 	scoreboardSection
 		.append(header)
 		.append(createMenuLink())
 		.append(Block.Create("br", {}, []))
         .append(tableWrapper)
-        
+
 	if (!users) {
 		scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
-		
+
 		AJAX.doGet({
 			callback(xhr) {
 				const response = JSON.parse(xhr.responseText)
                 canNext = response[response.length-1]
                 const users = response.slice(0,response.length-1)
-                
+
                 game.clear()
                 createScoreboard(users, scoreboardPage)
 			},
@@ -356,14 +356,14 @@ function createScoreboard(users, scoreboardPage = 0) {
 		const scoreboard = new Scoreboard({el: tableWrapper})
         scoreboard.data = users
         scoreboard.render()
-        
+
         let lb = Block.Create("input", {"id": "lBtn", "type": "button", "value": "<-", }, [], "kek")
         let rb = Block.Create("input", {"id": "rBtn", "type": "button", "value": "->", }, [], "kek")
-        
+
 		scoreboardSection
             .append(lb)
             .append(rb)
-        
+
         game.append(scoreboardSection)
         document.getElementById('rBtn').addEventListener('click', nextPage)
 		document.getElementById('lBtn').addEventListener('click', prevPage)
@@ -374,7 +374,7 @@ function createScoreboard(users, scoreboardPage = 0) {
 			lBtn.disabled = true
 		} else if (users) {
 			if (!canNext) {
-				rBtn.disabled = true 
+				rBtn.disabled = true
 			}
 		} else {
 			if (lBtn !== null || rBtn !== null) {
