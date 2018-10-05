@@ -1,10 +1,12 @@
 "use strict"
 
+import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs"
+
 const AJAX = window.AjaxModule
 
 const Block = window.Block
 const Form = window.Form
-const Scoreboard = window.Scoreboard
+// const Scoreboard = window.Scoreboard
 const Profile = window.Profile
 
 const signIn = window.signInFields
@@ -13,7 +15,7 @@ const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
 //const server = ""
-const server = "http://127.0.0.1:3000"
+const server = "http://127.0.0.1:8000"
 
 let offset = -2
 const DEFOFF = 2
@@ -221,7 +223,7 @@ function createLogOut() {
  * Обновление данных учетной записи
  */
 function createUpdate() {
-	if (user === undefined) {
+	if (typeof(user) == undefined) {
 		AJAX.doGet({
 			callback(xhr) {
 				if (!xhr.responseText) {
@@ -242,7 +244,7 @@ function createUpdate() {
 	const header = Block.Create("h1", {}, [], "Update")
 
 	const form = new Form(update)
-	form.setAttribute({'id': 'myForm', 'name': 'myForm', 'enctype': 'multipart/form-data', 'method': 'POST'});
+	form.setAttribute({'name': 'myForm', 'enctype': 'multipart/form-data', 'method': 'POST'});
 
 	updateSection
 		.append(header)
@@ -299,9 +301,33 @@ function createProfile(me) {
 
 
 	if (me) {
-		const profile = new Profile({el: profileBody})
-		profile.data = me
-		profile.render()
+		// const profile = new Profile({el: profileBody})
+		// profile.data = me
+		// profile.render()
+		const p = Block.Create('p', {}, []);
+
+	   const email = Block.Create('div', {}, [], `Email ${me.email}`);
+	   const username = Block.Create('div', {}, [], `Username ${me.username}`);
+	   const first_name = Block.Create('div', {}, [], `First Name ${me.first_name}`);
+	   const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
+	   const score = Block.Create('div', {}, [], `Score ${me.score}`);
+
+	   // const avatar = Block.Create('img', {}, []);
+	   // if (me.avatar) {
+		//    avatar.setAttribute({'src': `${me.avatar}`});
+	   // } else {
+		//    avatar.setAttribute({'src': `../uploads/defaultpic.jpeg`});
+	   // }
+
+	   p
+		   .append(email)
+		   .append(username)
+		   .append(first_name)
+		   .append(last_name)
+		   .append(score)
+		   // .append(avatar);
+
+	   profileSection.append(p);
 	} else {
 		AJAX.doGet({
 			callback(xhr) {
