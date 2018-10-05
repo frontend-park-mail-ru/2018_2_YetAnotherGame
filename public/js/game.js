@@ -1,27 +1,28 @@
 "use strict"
 
-import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs"
+import { Scoreboard } from "./modules/scoreboard/scoreboard.mjs"
+import { Profile } from "./modules/profile/profile.mjs"
+import { AjaxModule } from "./modules/ajax.mjs"
+import { Block } from "./modules/block/block.mjs"
+import { Form } from "./modules/form/form.mjs"
 
-const AJAX = window.AjaxModule
-
-const Block = window.Block
-const Form = window.Form
-const Profile = window.Profile
+const AJAX = new AjaxModule
 
 const signIn = window.signInFields
 const signUp = window.signUpFields
 const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
-const server = ""
-let NumberPage = 0
+const server = "http://127.0.0.1:8000"
+let scoreboardPage = 0
+let canNext = false
 
 let user =
 AJAX.doGet({
 	callback(xhr) {
-		xhr.responseText !== "" ? JSON.parse(xhr.responseText) : {}
+		xhr.responseText !== undefined ? JSON.parse(xhr.responseText) : {}
 	},
-	path: server+"/me",
+	path: server+"/user/me",
 })
 
 const game = new Block(document.getElementById("game"))
@@ -30,7 +31,7 @@ const game = new Block(document.getElementById("game"))
  * Создание ссылки "Back to main menu" для возврата в главное меню
  */
 function createMenuLink() {
-	const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu"}, [], "Back to main menu")
+	const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 	return menuLink
 }
 
@@ -39,7 +40,7 @@ function createMenuLink() {
  */
 function createMenu() {
 	const menuSection = Block.Create("section", {"data-section-name": "menu", "id": "mainMenu"}, [])
-	const header = Block.Create("div", {"id": "header"}, [])
+	const header = Block.Create("div", {"id": "header"}, ["background_white"])
 	const logo = Block.Create("div", {"id": "logo"}, [])
 	const logoHeader = Block.Create("h1", {}, [], "Yet Another Game")
 
@@ -120,11 +121,11 @@ function createSignIn() {
             }
 
             AJAX.doPost({
-                callback(xhr) {
+                callback() {
                     game.clear();
                     createProfile();
                 },
-                path: server+'/login',
+                path: server+'/session',
                 body: {
                     email: formdata.email.value,
                     password: formdata.password.value,
@@ -185,7 +186,7 @@ function createSignUp() {
                     game.clear();
                     createProfile();
                 },
-                path: server+'/signup',
+                path: server+'/session/new',
                 body: {
                     email: email,
                     username: username,
@@ -205,13 +206,13 @@ function createSignUp() {
  * Выход из учетной записи
  */
 function createLogOut() {
-    AJAX.doPost({
+    AJAX.doDelete({
         callback(xhr) {
             game.clear();
             user = undefined;
             createMenu();
         },
-        path: server+'/logout',
+        path: server+'/session',
         body: {},
     });
 }
@@ -232,7 +233,7 @@ function createUpdate() {
                 user = JSON.parse(xhr.responseText);
                 game.clear();
             },
-            path: server+'/me',
+            path: server+'/user/me',
         });
         return;
     }
@@ -268,7 +269,7 @@ function createUpdate() {
                     game.clear();
                     createProfile();
     			},
-    			path: server+'/update',
+    			path: server+'/user/me',
                 body: {
                     email: formdata.email.value,
                     username: formdata.username.value,
@@ -290,36 +291,17 @@ function createUpdate() {
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
     const header = Block.Create('h1', {}, [], 'Profile');
+	const profile_block = Block.Create('p', {}, []);
 
     profileSection
         .append(header)
-        .append(createMenuLink());
-
+        .append(createMenuLink())
+        .append(profile_block)
+		
     if (me) {
-        const p = Block.Create('p', {}, []);
-
-        const email = Block.Create('div', {}, [], `Email ${me.email}`);
-        const username = Block.Create('div', {}, [], `Username ${me.username}`);
-        const first_name = Block.Create('div', {}, [], `First Name ${me.first_name}`);
-        const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
-        const score = Block.Create('div', {}, [], `Score ${me.score}`);
-
-        const avatar = Block.Create('img', {}, []);
-        if (me.avatar) {
-            avatar.setAttribute({'src': `${me.avatar}`});
-        } else {
-            avatar.setAttribute({'src': `../uploads/defaultpic.jpeg`});
-        }
-
-        p
-            .append(email)
-            .append(username)
-            .append(first_name)
-            .append(last_name)
-            .append(score)
-            .append(avatar);
-
-        profileSection.append(p);
+		const profile = new Profile({el: profile_block})
+		profile.data = me
+		profile.render()
     } else {
         AJAX.doGet({
             callback(xhr) {
@@ -333,7 +315,7 @@ function createProfile(me) {
                 game.clear();
                 createProfile(user);
             },
-            path: server+'/me',
+            path: server+'/user/me',
         });
     }
     game.append(profileSection);
@@ -342,11 +324,10 @@ function createProfile(me) {
 /**
  * Создание доски лидеров 
  * @param {array} users Массив пользователей для страницы
- * @param {Number} NumberPage Номер страницы
+ * @param {Number} scoreboardPage Номер страницы
  * @param {nubmer} CountOfStrings количество строк в таблице
  */
-function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
-    game.clear()
+function createScoreboard(users, scoreboardPage = 0) {
 	const scoreboardSection = Block.Create("section", {"data-section-name": "scoreboard"}, [])
 	const header = Block.Create("h1", {}, [], "Leaders")
     const tableWrapper = Block.Create("div", {}, [])
@@ -357,7 +338,21 @@ function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
 		.append(Block.Create("br", {}, []))
         .append(tableWrapper)
         
-	if (users) {
+	if (!users) {
+		scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
+		
+		AJAX.doGet({
+			callback(xhr) {
+				const response = JSON.parse(xhr.responseText)
+                canNext = response[response.length-1]
+                const users = response.slice(0,response.length-1)
+                
+                game.clear()
+                createScoreboard(users, scoreboardPage)
+			},
+			path: server+`/user?numPage=${scoreboardPage}`,
+		})
+	} else {
 		const scoreboard = new Scoreboard({el: tableWrapper})
         scoreboard.data = users
         scoreboard.render()
@@ -371,46 +366,37 @@ function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
         
         game.append(scoreboardSection)
         document.getElementById('rBtn').addEventListener('click', nextPage)
-        document.getElementById('lBtn').addEventListener('click', prevPage)
-	} else {
-        scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
-
-		AJAX.doGet({
-			callback(xhr) {
-                const response = JSON.parse(xhr.responseText)
-                const countStr = response[response.length-1]
-                const users = response.slice(0,response.length-1)
-                
-                game.clear()
-                createScoreboard(users, NumberPage, countStr)
-			},
-			path: server+`/leaders?numPage=${NumberPage}`,
-		})
-    }
-    const lBtn = document.getElementById("lBtn")
-    const rBtn = document.getElementById("rBtn")
-    if (NumberPage === 0 && lBtn !== null) {
-        lBtn.disabled = true
-    } else if (users) {
-        if (NumberPage*CountOfStrings > users.length) {
-            rBtn.disabled = true 
-        }
-    } else {
-        if (lBtn !== null || rBtn !== null) {
-            lBtn.disabled = false
-            rBtn.disabled = false
-        }
+		document.getElementById('lBtn').addEventListener('click', prevPage)
+		const lBtn = document.getElementById("lBtn")
+		const rBtn = document.getElementById("rBtn")
+		document.getElementById('back_button').addEventListener('click', scoreboardStartPage)
+		if (scoreboardPage === 0 && lBtn !== null) {
+			lBtn.disabled = true
+		} else if (users) {
+			if (!canNext) {
+				rBtn.disabled = true 
+			}
+		} else {
+			if (lBtn !== null || rBtn !== null) {
+				lBtn.disabled = false
+				rBtn.disabled = false
+			}
+		}
     }
 }
 
 function nextPage() {
-    NumberPage++
-    createScoreboard(undefined ,NumberPage)
+    scoreboardPage++
+    createScoreboard(undefined ,scoreboardPage)
 }
 
 function prevPage() {
-    NumberPage--
-    createScoreboard(undefined ,NumberPage)
+    scoreboardPage--
+    createScoreboard(undefined ,scoreboardPage)
+}
+
+function scoreboardStartPage() {
+	scoreboardPage = 0
 }
 
 const pages = {

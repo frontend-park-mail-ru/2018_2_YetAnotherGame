@@ -17,13 +17,12 @@ export class Scoreboard {
 		if (!this._data) {
 			return
 		}
-		debugger
 		this._renderTMPL()
 	}
 
 	_renderTMPL() {
 		console.log(this._data)
-		const template = window.fest["js/blocks/scoreboard/scoreboard.tmpl"](this._data)
+		const template = window.fest["js/modules/scoreboard/scoreboard.tmpl"](this._data)
 		this._el.setInner(template)
 	}
 }
