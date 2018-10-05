@@ -22,7 +22,7 @@ export class Scoreboard {
 
 	_renderTMPL() {
 		console.log(this._data)
-		const template = window.fest["js/modules/scoreboard/scoreboard.tmpl"](this._data)
+		const template = window.fest["js/components/scoreboard/scoreboard.tmpl"](this._data)
 		this._el.setInner(template)
 	}
 }

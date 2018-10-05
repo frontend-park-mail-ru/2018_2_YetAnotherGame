@@ -13,7 +13,7 @@ export class Profile {
 		this._data = data
 	}
 
-	render () {
+	render() {
 		if (!this._data) {
 			return
 		}
@@ -22,7 +22,7 @@ export class Profile {
 
 	_renderTMPL() {
 		console.log(this._data)
-		const template = window.fest["js/modules/profile/profile.tmpl"](this._data)
+		const template = window.fest["js/components/profile/profile.tmpl"](this._data)
 		this._el.setInner(template)
 	}
 }
