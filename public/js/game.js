@@ -1,12 +1,12 @@
 "use strict"
 
-import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs"
-import { Profile } from "./blocks/profile/profile.mjs"
+import { Scoreboard } from "./modules/scoreboard/scoreboard.mjs"
+import { Profile } from "./modules/profile/profile.mjs"
+import { AjaxModule } from "./modules/ajax.mjs"
+import { Block } from "./modules/block/block.mjs"
+import { Form } from "./modules/form/form.mjs"
 
-const AJAX = window.AjaxModule
-
-const Block = window.Block
-const Form = window.Form
+const AJAX = new AjaxModule
 
 const signIn = window.signInFields
 const signUp = window.signUpFields
@@ -14,12 +14,13 @@ const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
 const server = "http://127.0.0.1:8000"
-let NumberPage = 0
+let scoreboardPage = 0
+let canNext = false
 
 let user =
 AJAX.doGet({
 	callback(xhr) {
-		xhr.responseText !== "" ? JSON.parse(xhr.responseText) : {}
+		xhr.responseText !== undefined ? JSON.parse(xhr.responseText) : {}
 	},
 	path: server+"/user/me",
 })
@@ -30,7 +31,7 @@ const game = new Block(document.getElementById("game"))
  * Создание ссылки "Back to main menu" для возврата в главное меню
  */
 function createMenuLink() {
-	const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu"}, [], "Back to main menu")
+	const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 	return menuLink
 }
 
@@ -120,7 +121,7 @@ function createSignIn() {
             }
 
             AJAX.doPost({
-                callback(xhr) {
+                callback() {
                     game.clear();
                     createProfile();
                 },
@@ -323,11 +324,10 @@ function createProfile(me) {
 /**
  * Создание доски лидеров 
  * @param {array} users Массив пользователей для страницы
- * @param {Number} NumberPage Номер страницы
+ * @param {Number} scoreboardPage Номер страницы
  * @param {nubmer} CountOfStrings количество строк в таблице
  */
-function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
-    game.clear()
+function createScoreboard(users, scoreboardPage = 0) {
 	const scoreboardSection = Block.Create("section", {"data-section-name": "scoreboard"}, [])
 	const header = Block.Create("h1", {}, [], "Leaders")
     const tableWrapper = Block.Create("div", {}, [])
@@ -338,7 +338,21 @@ function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
 		.append(Block.Create("br", {}, []))
         .append(tableWrapper)
         
-	if (users) {
+	if (!users) {
+		scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
+		
+		AJAX.doGet({
+			callback(xhr) {
+				const response = JSON.parse(xhr.responseText)
+                canNext = response[response.length-1]
+                const users = response.slice(0,response.length-1)
+                
+                game.clear()
+                createScoreboard(users, scoreboardPage)
+			},
+			path: server+`/user?numPage=${scoreboardPage}`,
+		})
+	} else {
 		const scoreboard = new Scoreboard({el: tableWrapper})
         scoreboard.data = users
         scoreboard.render()
@@ -352,46 +366,37 @@ function createScoreboard(users, NumberPage = 0, CountOfStrings = 0) {
         
         game.append(scoreboardSection)
         document.getElementById('rBtn').addEventListener('click', nextPage)
-        document.getElementById('lBtn').addEventListener('click', prevPage)
-	} else {
-        scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
-
-		AJAX.doGet({
-			callback(xhr) {
-                const response = JSON.parse(xhr.responseText)
-                const countStr = response[response.length-1]
-                const users = response.slice(0,response.length-1)
-                
-                game.clear()
-                createScoreboard(users, NumberPage, countStr)
-			},
-			path: server+`/user?numPage=${NumberPage}`,
-		})
-    }
-    const lBtn = document.getElementById("lBtn")
-    const rBtn = document.getElementById("rBtn")
-    if (NumberPage === 0 && lBtn !== null) {
-        lBtn.disabled = true
-    } else if (users) {
-        if (NumberPage*CountOfStrings > users.length) {
-            rBtn.disabled = true 
-        }
-    } else {
-        if (lBtn !== null || rBtn !== null) {
-            lBtn.disabled = false
-            rBtn.disabled = false
-        }
+		document.getElementById('lBtn').addEventListener('click', prevPage)
+		const lBtn = document.getElementById("lBtn")
+		const rBtn = document.getElementById("rBtn")
+		document.getElementById('back_button').addEventListener('click', scoreboardStartPage)
+		if (scoreboardPage === 0 && lBtn !== null) {
+			lBtn.disabled = true
+		} else if (users) {
+			if (!canNext) {
+				rBtn.disabled = true 
+			}
+		} else {
+			if (lBtn !== null || rBtn !== null) {
+				lBtn.disabled = false
+				rBtn.disabled = false
+			}
+		}
     }
 }
 
 function nextPage() {
-    NumberPage++
-    createScoreboard(undefined ,NumberPage)
+    scoreboardPage++
+    createScoreboard(undefined ,scoreboardPage)
 }
 
 function prevPage() {
-    NumberPage--
-    createScoreboard(undefined ,NumberPage)
+    scoreboardPage--
+    createScoreboard(undefined ,scoreboardPage)
+}
+
+function scoreboardStartPage() {
+	scoreboardPage = 0
 }
 
 const pages = {

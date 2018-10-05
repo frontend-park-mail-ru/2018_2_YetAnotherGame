@@ -1,10 +1,10 @@
 "use strict"
 
-export class Scoreboard {
+export class Profile {
 	constructor ({el = document.body} = {}) {
 		this._el = el
 	}
-
+	
 	get data () {
 		this._data
 	}
@@ -13,17 +13,16 @@ export class Scoreboard {
 		this._data = data
 	}
 
-	render() {
+	render () {
 		if (!this._data) {
 			return
 		}
-		debugger
 		this._renderTMPL()
 	}
 
 	_renderTMPL() {
 		console.log(this._data)
-		const template = window.fest["js/blocks/scoreboard/scoreboard.tmpl"](this._data)
+		const template = window.fest["js/modules/profile/profile.tmpl"](this._data)
 		this._el.setInner(template)
 	}
 }
