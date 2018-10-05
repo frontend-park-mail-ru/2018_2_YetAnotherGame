@@ -1,19 +1,19 @@
 "use strict"
 
 import { Scoreboard } from "./blocks/scoreboard/scoreboard.mjs"
+import { Profile } from "./blocks/profile/profile.mjs"
 
 const AJAX = window.AjaxModule
 
 const Block = window.Block
 const Form = window.Form
-const Profile = window.Profile
 
 const signIn = window.signInFields
 const signUp = window.signUpFields
 const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
-const server = "http://127.0.0.1:3000"
+const server = "http://127.0.0.1:8000"
 let NumberPage = 0
 
 let user =
@@ -39,7 +39,7 @@ function createMenuLink() {
  */
 function createMenu() {
 	const menuSection = Block.Create("section", {"data-section-name": "menu", "id": "mainMenu"}, [])
-	const header = Block.Create("div", {"id": "header"}, [])
+	const header = Block.Create("div", {"id": "header"}, ["background_white"])
 	const logo = Block.Create("div", {"id": "logo"}, [])
 	const logoHeader = Block.Create("h1", {}, [], "Yet Another Game")
 
@@ -290,36 +290,17 @@ function createUpdate() {
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
     const header = Block.Create('h1', {}, [], 'Profile');
+	const profile_block = Block.Create('p', {}, []);
 
     profileSection
         .append(header)
-        .append(createMenuLink());
-
+        .append(createMenuLink())
+        .append(profile_block)
+		
     if (me) {
-        const p = Block.Create('p', {}, []);
-
-        const email = Block.Create('div', {}, [], `Email ${me.email}`);
-        const username = Block.Create('div', {}, [], `Username ${me.username}`);
-        const first_name = Block.Create('div', {}, [], `First Name ${me.first_name}`);
-        const last_name = Block.Create('div', {}, [], `Last Name ${me.last_name}`);
-        const score = Block.Create('div', {}, [], `Score ${me.score}`);
-
-        const avatar = Block.Create('img', {}, []);
-        if (me.avatar) {
-            avatar.setAttribute({'src': `${me.avatar}`});
-        } else {
-            avatar.setAttribute({'src': `../uploads/defaultpic.jpeg`});
-        }
-
-        p
-            .append(email)
-            .append(username)
-            .append(first_name)
-            .append(last_name)
-            .append(score)
-            .append(avatar);
-
-        profileSection.append(p);
+		const profile = new Profile({el: profile_block})
+		profile.data = me
+		profile.render()
     } else {
         AJAX.doGet({
             callback(xhr) {

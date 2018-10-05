@@ -2,6 +2,9 @@
 <table border="1" cellpadding="5" cellspacing="0">
 		<tbody>
 			<tr>
+				<td>username</td><td><fest:value>user.avatar</fest:value></td>
+			</tr>
+			<tr>
 				<td>username</td><td><fest:value>user.username</fest:value></td>
 			</tr>
 			<tr>
