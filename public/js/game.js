@@ -1,10 +1,10 @@
 "use strict"
 
-import { Scoreboard } from "./modules/scoreboard/scoreboard.mjs"
-import { Profile } from "./modules/profile/profile.mjs"
 import { AjaxModule } from "./modules/ajax.mjs"
-import { Block } from "./modules/block/block.mjs"
-import { Form } from "./modules/form/form.mjs"
+import { Scoreboard } from "./components/scoreboard/scoreboard.mjs"
+import { Profile } from "./components/profile/profile.mjs"
+import { Block } from "./components/block/block.mjs"
+import { Form } from "./components/form/form.mjs"
 
 const AJAX = new AjaxModule
 
@@ -15,12 +15,11 @@ const update = window.updateFields
 // const server = "https://backend-yag.now.sh"
 const server = "http://127.0.0.1:8000"
 let scoreboardPage = 0
-let canNext = false
 
 let user =
 AJAX.doGet({
 	callback(xhr) {
-		xhr.responseText !== undefined ? JSON.parse(xhr.responseText) : {}
+		xhr.responseText !== "" ? JSON.parse(xhr.responseText) : undefined
 	},
 	path: server+"/user/me",
 })
@@ -207,7 +206,7 @@ function createSignUp() {
  */
 function createLogOut() {
     AJAX.doDelete({
-        callback(xhr) {
+        callback() {
             game.clear();
             user = undefined;
             createMenu();
@@ -306,10 +305,10 @@ function createProfile(me) {
         AJAX.doGet({
             callback(xhr) {
                 if (!xhr.responseText) {
-                    alert('Unauthorized');
-                    game.clear();
-                    createMenu();
-                    return;
+					alert("Unauthorized")
+					game.clear()
+					createMenu();
+					return;
                 }
                 /*const*/ user = JSON.parse(xhr.responseText);
                 game.clear();
@@ -330,8 +329,9 @@ function createProfile(me) {
 function createScoreboard(users, scoreboardPage = 0) {
 	const scoreboardSection = Block.Create("section", {"data-section-name": "scoreboard"}, [])
 	const header = Block.Create("h1", {}, [], "Leaders")
-    const tableWrapper = Block.Create("div", {}, [])
-
+	const tableWrapper = Block.Create("div", {}, [])
+	let canNext = false
+    
 	scoreboardSection
 		.append(header)
 		.append(createMenuLink())
