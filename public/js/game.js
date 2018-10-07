@@ -350,9 +350,11 @@ function createScoreboard(users, scoreboardPage = 0) {
 
 		AJAX.doGet({
 			callback(xhr) {
-				const response = JSON.parse(xhr.responseText)
-                canNext = response[response.length-1]
-                const users = response.slice(0,response.length-1)
+		const response = JSON.parse(xhr.responseText)
+               
+                canNext = response["CanNext"]
+             
+                const users = response["Users"]
 
                 game.clear()
                 createScoreboard(users, scoreboardPage)
