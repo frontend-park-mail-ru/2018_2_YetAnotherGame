@@ -21,7 +21,8 @@ AJAX.doGet({
 	callback(xhr) {
 		xhr.responseText !== "" ? JSON.parse(xhr.responseText) : undefined
 	},
-	path: server+"/user/me",
+	path: "/user/me",
+	baseURL: server,
 })
 
 const game = new Block(document.getElementById("game"))
@@ -64,7 +65,7 @@ function createMenu() {
 		update: Block.Create("a", {"href": "update", "data-href": "update"}, ["menu-button"], "Update"),
 	}
 
-	if (user === undefined) {
+	if (typeof user === "undefined") {
 		header
 			.append(register.sign_up)
 			.append(register.sign_in)
@@ -124,7 +125,8 @@ function createSignIn() {
                     game.clear();
                     createProfile();
                 },
-                path: server+'/session',
+				path: '/session',
+				baseURL: server,
                 body: {
                     email: formdata.email.value,
                     password: formdata.password.value,
@@ -185,7 +187,8 @@ function createSignUp() {
                     game.clear();
                     createProfile();
                 },
-                path: server+'/session/new',
+				path: '/session/new',
+				baseURL: server,
                 body: {
                     email: email,
                     username: username,
@@ -211,7 +214,8 @@ function createLogOut() {
             user = undefined;
             createMenu();
         },
-        path: server+'/session',
+		path: '/session',
+		baseURL: server,
         body: {},
     });
 }
@@ -220,7 +224,7 @@ function createLogOut() {
  * Обновление данных учетной записи
  */
 function createUpdate() {
-    if (user === undefined) {
+    if (typeof user === "undefined") {
         AJAX.doGet({
             callback(xhr) {
                 if (!xhr.responseText) {
@@ -232,7 +236,8 @@ function createUpdate() {
                 user = JSON.parse(xhr.responseText);
                 game.clear();
             },
-            path: server+'/user/me',
+			path: '/user/me',
+			baseURL: server,
         });
         return;
     }
@@ -268,7 +273,8 @@ function createUpdate() {
                     game.clear();
                     createProfile();
     			},
-    			path: server+'/user/me',
+				path: '/user/me',
+				baseURL: server,
                 body: {
                     email: formdata.email.value,
                     username: formdata.username.value,
@@ -293,30 +299,31 @@ function createProfile(me) {
 	const profile_block = Block.Create('p', {}, []);
 
     profileSection
-        .append(header)
+		.append(header)
         .append(createMenuLink())
         .append(profile_block)
 
-    if (me) {
-		const profile = new Profile({el: profile_block})
-		profile.data = me
-		profile.render()
-    } else {
-        AJAX.doGet({
-            callback(xhr) {
-                if (!xhr.responseText) {
-					alert("Unauthorized")
-					game.clear()
-					createMenu();
-					return;
-                }
-                /*const*/ user = JSON.parse(xhr.responseText);
-                game.clear();
-                createProfile(user);
-            },
-            path: server+'/user/me',
-        });
-    }
+		if (me) {
+			const profile = new Profile({el: profile_block})
+			profile.data = me
+			profile.render()
+		} else {
+			AJAX.doGet({
+				callback(xhr) {
+					if (!xhr.responseText) {
+						alert("Unauthorized")
+						game.clear()
+						createMenu();
+						return;
+					}
+					/*const*/ user = JSON.parse(xhr.responseText);
+					game.clear();
+					createProfile(user);
+				},
+			path: '/user/me',
+			baseURL: server,
+			});
+		}
     game.append(profileSection);
 }
 
@@ -350,7 +357,8 @@ function createScoreboard(users, scoreboardPage = 0) {
                 game.clear()
                 createScoreboard(users, scoreboardPage)
 			},
-			path: server+`/user?numPage=${scoreboardPage}`,
+			path: `/user?numPage=${scoreboardPage}`,
+			baseURL: server,
 		})
 	} else {
 		const scoreboard = new Scoreboard({el: tableWrapper})
