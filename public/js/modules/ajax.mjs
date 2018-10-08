@@ -1,5 +1,7 @@
 const noop = () => null;
 
+// const baseURL = "http://127.0.0.1:8000/api"
+
 export class AjaxModule {
     _ajax({callback = noop, method = 'GET', path = '/', body, baseURL = ""} = {}) {
         const xhr = new XMLHttpRequest();
@@ -24,6 +26,10 @@ export class AjaxModule {
             xhr.send();
         }
     }
+
+    // static get baseURL() {
+    //     return baseURL
+    // }
 
     doGet (params = {}) {
         this._ajax({...params, method: 'GET'});

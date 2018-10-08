@@ -13,7 +13,7 @@ const signUp = window.signUpFields
 const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
-const server = "http://127.0.0.1:8000"
+const server = "http://127.0.0.1:8000/api"
 let scoreboardPage = 0
 
 let user =
@@ -59,7 +59,7 @@ function createMenu() {
 	}
 
 	const titles = {
-		new_game: Block.Create("a", {"href": "new_game", "data-href": "new_game"}, ["menu-button"], "New Game"),
+		new_game: Block.Create("a", {"href": "new_game", "data-href": "new_game"}, ["menu-button", "disableb"], "New Game"),
 		leaders: Block.Create("a", {"href": "leaders", "data-href": "leaders"}, ["menu-button"], "Scoreboard"),
 		me: Block.Create("a", {"href": "me", "data-href": "me"}, ["menu-button"], "Profile"),
 		update: Block.Create("a", {"href": "update", "data-href": "update"}, ["menu-button"], "Update"),
@@ -69,16 +69,20 @@ function createMenu() {
 		header
 			.append(register.sign_up)
 			.append(register.sign_in)
+
+		mainInner
+			.append(titles.new_game)
+			.append(titles.leaders)
 	} else {
 		register.profile.setText(`${user.username}`)
 		header
 			.append(register.log_out)
 			.append(register.profile)
-	}
 
-	Object.entries(titles).forEach(function (elem) {
-		mainInner.append(elem[1])
-	})
+		Object.entries(titles).forEach(function (elem) {
+			mainInner.append(elem[1])
+		})
+	}
 
 	menuSection
 		.append(header)
@@ -258,7 +262,8 @@ function createUpdate() {
         function (formdata) {
             const formData = new FormData(document.forms.myForm);
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/upload', true);
+            xhr.open('POST', server+'/upload', true);
+			xhr.withCredentials = true;
             xhr.onload = xhr.onerror = function() {
                 if (this.status == 200) {
                     console.log("success");
@@ -286,7 +291,6 @@ function createUpdate() {
     );
 
     game.append(updateSection);
-
 }
 
 /**
@@ -296,34 +300,37 @@ function createUpdate() {
 function createProfile(me) {
     const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
     const header = Block.Create('h1', {}, [], 'Profile');
-	const profile_block = Block.Create('p', {}, []);
+	const profileBlock = Block.Create('p', {}, []);
 
     profileSection
 		.append(header)
         .append(createMenuLink())
-        .append(profile_block)
+        .append(profileBlock)
 
-		if (me) {
-			const profile = new Profile({el: profile_block})
-			profile.data = me
-			profile.render()
-		} else {
-			AJAX.doGet({
-				callback(xhr) {
-					if (!xhr.responseText) {
-						alert("Unauthorized")
-						game.clear()
-						createMenu();
-						return;
-					}
-					/*const*/ user = JSON.parse(xhr.responseText);
-					game.clear();
-					createProfile(user);
-				},
-			path: '/user/me',
-			baseURL: server,
-			});
-		}
+
+    if (me) {
+		const profile = new Profile({el: profileBlock})
+		profile.data = me
+		profile.render()
+
+		const img = Block.Create('img', {'src': `${me.avatar}`}, [])
+		profileSection.append(img)
+    } else {
+        AJAX.doGet({
+            callback(xhr) {
+                if (!xhr.responseText) {
+					alert("Unauthorized")
+					game.clear()
+					createMenu();
+					return;
+                }
+                /*const*/ user = JSON.parse(xhr.responseText);
+                game.clear();
+                createProfile(user);
+            },
+            path: server+'/user/me',
+        });
+    }
     game.append(profileSection);
 }
 
@@ -338,7 +345,7 @@ function createScoreboard(users, scoreboardPage = 0) {
 	const header = Block.Create("h1", {}, [], "Leaders")
 	const tableWrapper = Block.Create("div", {}, [])
 	let canNext = false
-    
+
 	scoreboardSection
 		.append(header)
 		.append(createMenuLink())
@@ -351,9 +358,8 @@ function createScoreboard(users, scoreboardPage = 0) {
 		AJAX.doGet({
 			callback(xhr) {
 				const response = JSON.parse(xhr.responseText)
-                canNext = response[response.length-1]
-                const users = response.slice(0,response.length-1)
-
+                canNext = response["CanNext"]
+                const users = response["Users"]
                 game.clear()
                 createScoreboard(users, scoreboardPage)
 			},
