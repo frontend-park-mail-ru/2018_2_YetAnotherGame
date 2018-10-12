@@ -39,3 +39,9 @@
     border: 2px solid lightblue;
     width: 400px;
 }
+
+.disableb {
+    pointer-events: none;
+    cursor: default;
+    color: #888;
+}

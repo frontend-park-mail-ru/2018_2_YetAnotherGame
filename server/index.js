@@ -9,6 +9,7 @@ const path = require('path');
 const app = express();
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
+app.use(express.static(path.resolve('/')));
 app.use(body.json());
 app.use(cookie());
 
@@ -26,6 +27,3 @@ app.all('*', function(req, res, next) {
 app.listen(port, function () {
     console.log(`Server listening port ${port}`);
 });
-
-
-
