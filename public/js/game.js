@@ -24,13 +24,6 @@ AJAX.doGet({
 	path: "/user/me",
 	baseURL: server,
 })
-// AJAX.doPromiseGet({
-// 	baseURL: server,
-// 	path: '/user/me',
-// })
-// .then(xhr => {
-// 	xhr.responseText !== "" ? JSON.parse(xhr.responseText) : undefined
-// })
 
 const game = new Block(document.getElementById("game"))
 
@@ -131,26 +124,21 @@ function createSignIn() {
                 return;
             }
 
-			AJAX.doFetchPost({
-				baseURL: server,
+            AJAX.doPost({
+                callback() {
+                    game.clear();
+                    createProfile();
+                },
 				path: '/session',
-				body: {
+				baseURL: server,
+                body: {
                     email: formdata.email.value,
                     password: formdata.password.value,
                 },
-			})
-				.then(function (response) {
-					if (response.status >= 300) {
-						throw response;
-					}
-					game.clear();
-					createProfile();
-				})
-				.catch(function (error) {
-					console.error(error);
-				});
-		}
-	)
+            });
+        }
+    );
+
     game.append(signInSection);
 }
 
@@ -198,31 +186,26 @@ function createSignUp() {
                 return;
             }
 
-			AJAX.doFetchPost({
-				baseURL: server,
+            AJAX.doPost({
+                callback(xhr) {
+                    game.clear();
+                    createProfile();
+                },
 				path: '/session/new',
-				body: {
-					email: email,
+				baseURL: server,
+                body: {
+                    email: email,
                     username: username,
                     first_name: first_name,
                     last_name: last_name,
                     password: password,
                 },
-			})
-				.then((response) => {
-					if (response.status >= 300) {
-						throw response;
-					}
-					game.clear();
-					createProfile();
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+            });
         }
     );
 
     game.append(signUpSection);
+
 }
 
 /**
@@ -246,22 +229,20 @@ function createLogOut() {
  */
 function createUpdate() {
     if (typeof user === "undefined") {
-
-		AJAX.doPromiseGet({
-			baseURL: server,
+        AJAX.doGet({
+            callback(xhr) {
+                if (!xhr.responseText) {
+                    alert('Unauthorized');
+                    game.clear();
+                    createMenu();
+                    return;
+                }
+                user = JSON.parse(xhr.responseText);
+                game.clear();
+            },
 			path: '/user/me',
-		})
-			.then(xhr => {
-				if (!xhr.responseText) {
-	                alert('Unauthorized');
-	                game.clear();
-	                createMenu();
-	                return;
-	            }
-	            user = JSON.parse(xhr.responseText);
-	            game.clear();
-			})
-
+			baseURL: server,
+        });
         return;
     }
 
@@ -280,43 +261,32 @@ function createUpdate() {
     form.onSubmit(
         function (formdata) {
             const formData = new FormData(document.forms.myForm);
-			fetch(server+'/upload', {
-				method: 'POST',
-				mode: 'cors',
-				credentials: 'include',
-				body: formData,
-			})
-				.then((response) => {
-					if (response.status >= 300) {
-						throw response;
-					}
-					console.log("success");
-				})
-				.then(() => {
-					AJAX.doFetchPost({
-						baseURL: server,
-						path: '/user/me',
-						body: {
-					        email: formdata.email.value,
-		                    username: formdata.username.value,
-		                    first_name: formdata.first_name.value,
-		                    last_name: formdata.last_name.value,
-		                },
-					})
-						.then((response) => {
-							if (response.status >= 300) {
-								throw response;
-							}
-							game.clear();
-							createProfile();
-						})
-						.catch((error) => {
-							console.error(error);
-						});
-				})
-				.catch((err) => {
-					console.log("error " + err.status);
-				})
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', server+'/upload', true);
+			xhr.withCredentials = true;
+            xhr.onload = xhr.onerror = function() {
+                if (this.status == 200) {
+                    console.log("success");
+                } else {
+                    console.log("error " + this.status);
+                }
+            }
+            xhr.send(formData);
+
+            AJAX.doPost({
+    			callback(xhr) {
+                    game.clear();
+                    createProfile();
+    			},
+				path: '/user/me',
+				baseURL: server,
+                body: {
+                    email: formdata.email.value,
+                    username: formdata.username.value,
+                    first_name: formdata.first_name.value,
+                    last_name: formdata.last_name.value,
+                }
+    		});
         }
     );
 
@@ -346,27 +316,20 @@ function createProfile(me) {
 		const img = Block.Create('img', {'src': `${me.avatar}`}, [])
 		profileSection.append(img)
     } else {
-		AJAX.doPromiseGet({
-			baseURL: server,
-			path: '/user/me',
-		})
-		.then(xhr => {
-			if (!xhr.responseText) {
-				throw xhr.responseText;
-            }
-			return xhr;
-		})
-		.then(xhr => {
-			user = JSON.parse(xhr.responseText);
-			game.clear();
-			createProfile(user);
-		})
-		.catch(xhr => {
-			alert("Unauthorized");
-			game.clear();
-			createMenu();
-			return;
-		});
+        AJAX.doGet({
+            callback(xhr) {
+                if (!xhr.responseText) {
+					alert("Unauthorized")
+					game.clear()
+					createMenu();
+					return;
+                }
+                /*const*/ user = JSON.parse(xhr.responseText);
+                game.clear();
+                createProfile(user);
+            },
+            path: server+'/user/me',
+        });
     }
     game.append(profileSection);
 }
@@ -392,17 +355,17 @@ function createScoreboard(users, scoreboardPage = 0) {
 	if (!users) {
 		scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
 
-		AJAX.doPromiseGet({
-			baseURL: server,
-			path: `/user?numPage=${scoreboardPage}`,
-		})
-			.then(xhr => {
+		AJAX.doGet({
+			callback(xhr) {
 				const response = JSON.parse(xhr.responseText)
-	            canNext = response["CanNext"]
-	            const users = response["Users"]
-	            game.clear()
-	            createScoreboard(users, scoreboardPage)
-			})
+                canNext = response["CanNext"]
+                const users = response["Users"]
+                game.clear()
+                createScoreboard(users, scoreboardPage)
+			},
+			path: `/user?numPage=${scoreboardPage}`,
+			baseURL: server,
+		})
 	} else {
 		const scoreboard = new Scoreboard({el: tableWrapper})
         scoreboard.data = users
