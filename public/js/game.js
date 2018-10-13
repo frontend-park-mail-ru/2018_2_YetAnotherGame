@@ -13,24 +13,21 @@ const signUp = window.signUpFields
 const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
-const server = "http://127.0.0.1:8000/api"
+// const server = "http://127.0.0.1:8000/api"
 let scoreboardPage = 0
 
-let user =
+let user = undefined;
 AJAX.doGet({
-	callback(xhr) {
-		xhr.responseText !== "" ? JSON.parse(xhr.responseText) : undefined
-	},
-	path: "/user/me",
-	baseURL: server,
+	path: '/user/me',
 })
-// AJAX.doPromiseGet({
-// 	baseURL: server,
-// 	path: '/user/me',
-// })
-// .then(xhr => {
-// 	xhr.responseText !== "" ? JSON.parse(xhr.responseText) : undefined
-// })
+	.then(res => res.tex())
+	.then(res => {
+		if (res !== "") {
+			user = JSON.parse(res);
+		} else {
+			user = undefined;
+		}
+	})
 
 const game = new Block(document.getElementById("game"))
 
@@ -131,22 +128,21 @@ function createSignIn() {
                 return;
             }
 
-			AJAX.doFetchPost({
-				baseURL: server,
+			AJAX.doPost({
 				path: '/session',
 				body: {
                     email: formdata.email.value,
                     password: formdata.password.value,
                 },
 			})
-				.then(function (response) {
+				.then(response => {
 					if (response.status >= 300) {
 						throw response;
 					}
 					game.clear();
 					createProfile();
 				})
-				.catch(function (error) {
+				.catch(error => {
 					console.error(error);
 				});
 		}
@@ -198,8 +194,7 @@ function createSignUp() {
                 return;
             }
 
-			AJAX.doFetchPost({
-				baseURL: server,
+			AJAX.doPost({
 				path: '/session/new',
 				body: {
 					email: email,
@@ -230,15 +225,13 @@ function createSignUp() {
  */
 function createLogOut() {
     AJAX.doDelete({
-        callback() {
-            game.clear();
-            user = undefined;
-            createMenu();
-        },
 		path: '/session',
-		baseURL: server,
-        body: {},
-    });
+    })
+		.then(res => {
+			game.clear();
+			user = undefined;
+			createMenu();
+		})
 }
 
 /**
@@ -247,19 +240,19 @@ function createLogOut() {
 function createUpdate() {
     if (typeof user === "undefined") {
 
-		AJAX.doPromiseGet({
-			baseURL: server,
+		AJAX.doGet({
 			path: '/user/me',
 		})
-			.then(xhr => {
-				if (!xhr.responseText) {
-	                alert('Unauthorized');
-	                game.clear();
-	                createMenu();
-	                return;
+			.then(res => res.text())
+			.then(res => {
+				if (!res) {
+	               throw err
 	            }
-	            user = JSON.parse(xhr.responseText);
+	            user = JSON.parse(res);
 	            game.clear();
+			})
+			.catch(err => {
+				console.error(err)
 			})
 
         return;
@@ -280,10 +273,8 @@ function createUpdate() {
     form.onSubmit(
         function (formdata) {
             const formData = new FormData(document.forms.myForm);
-			fetch(server+'/upload', {
-				method: 'POST',
-				mode: 'cors',
-				credentials: 'include',
+			AJAX.doPost({
+				path: '/upload',
 				body: formData,
 			})
 				.then((response) => {
@@ -293,8 +284,7 @@ function createUpdate() {
 					console.log("success");
 				})
 				.then(() => {
-					AJAX.doFetchPost({
-						baseURL: server,
+					AJAX.doPost({
 						path: '/user/me',
 						body: {
 					        email: formdata.email.value,
@@ -346,26 +336,22 @@ function createProfile(me) {
 		const img = Block.Create('img', {'src': `${me.avatar}`}, [])
 		profileSection.append(img)
     } else {
-		AJAX.doPromiseGet({
-			baseURL: server,
+		AJAX.doGet({
 			path: '/user/me',
 		})
-		.then(xhr => {
-			if (!xhr.responseText) {
-				throw xhr.responseText;
-            }
-			return xhr;
-		})
-		.then(xhr => {
-			user = JSON.parse(xhr.responseText);
+		.then(res => res.text())
+		.then(res => {
+			if (!res) {
+				throw res
+			}
+			user = JSON.parse(res);
 			game.clear();
 			createProfile(user);
 		})
-		.catch(xhr => {
+		.catch(err => {
 			alert("Unauthorized");
 			game.clear();
 			createMenu();
-			return;
 		});
     }
     game.append(profileSection);
@@ -392,16 +378,19 @@ function createScoreboard(users, scoreboardPage = 0) {
 	if (!users) {
 		scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
 
-		AJAX.doPromiseGet({
-			baseURL: server,
+		AJAX.doGet({
 			path: `/user?numPage=${scoreboardPage}`,
 		})
-			.then(xhr => {
-				const response = JSON.parse(xhr.responseText)
-	            canNext = response["CanNext"]
+			.then(res => res.text())
+			.then(res => {
+				const response = JSON.parse(res)
+				canNext = response["CanNext"]
 	            const users = response["Users"]
 	            game.clear()
 	            createScoreboard(users, scoreboardPage)
+			})
+			.catch(err => {
+				console.error(err)
 			})
 	} else {
 		const scoreboard = new Scoreboard({el: tableWrapper})

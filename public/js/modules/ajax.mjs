@@ -1,6 +1,6 @@
 const noop = () => null;
 
-// const baseURL = "http://127.0.0.1:8000/api"
+const baseURL = "http://127.0.0.1:8000/api"
 
 export class AjaxModule {
     static _ajax({callback = noop, method = 'GET', path = '/', body, baseURL = ""} = {}) {
@@ -27,43 +27,38 @@ export class AjaxModule {
         }
     }
 
-    // static get baseURL() {
-    //     return baseURL
-    // }
-
-    doGet (params = {}) {
+    doXHRGet (params = {}) {
         AjaxModule._ajax({...params, method: 'GET'});
     }
 
+    static _send ({method = 'GET', path = '/', body} = {}) {
+        const fetchURL = baseURL + path;
+        const fetchOptions = {
+            method: method,
+            mode: 'cors',
+            credentials: 'include',
+        };
+        if (method === 'POST') {
+            if (body && body instanceof FormData) {
+                fetchOptions.body = body;
+            } else {
+                fetchOptions.headers = {'Content-Type': 'application/json; charset=utf-8'};
+                fetchOptions.body = JSON.stringify(body);
+            }
+        }
+
+        return fetch(fetchURL, fetchOptions);
+    }
+
     doPost (params = {}) {
-        AjaxModule._ajax({...params, method: 'POST'});
+        return AjaxModule._send({...params, method: 'POST'})
+    }
+
+    doGet (params = {}) {
+        return AjaxModule._send({...params, method: 'GET'});
     }
 
     doDelete (params = {}) {
-        AjaxModule._ajax({...params, method: 'DELETE'});
-    }
-
-    doPromiseGet (params = {}) {
-        return new Promise(function (resolve, reject) {
-			AjaxModule._ajax({
-				...params,
-				method: 'GET',
-				callback (xhr) {
-					resolve(xhr);
-				}
-			});
-		});
-    }
-
-    doFetchPost (params = {}) {
-        return fetch(params.baseURL + params.path, {
-			method: 'POST',
-			mode: 'cors',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8'
-			},
-			body: JSON.stringify(params.body)
-		});
+        return AjaxModule._send({...params, method: 'DELETE'});
     }
 }
