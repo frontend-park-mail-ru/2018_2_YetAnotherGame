@@ -45,3 +45,11 @@
     cursor: default;
     color: #888;
 }
+.error {
+      border-width: 2px;
+      border-color: red;
+    }
+.ok {
+    border-width: 2px;
+    border-color: green;
+}
