@@ -5,7 +5,7 @@
  * @module Block
  */
 
-export class Block {
+export default class Block {
 	/**
 	 * @param {HTMLElement} el - корневой элемент блока
 	 * @constructor
@@ -89,5 +89,17 @@ export class Block {
 		return function () {
 			this.el.removeEventListener(event, callback)
 		}.bind(this)
+	}
+
+	hide() {
+		this.el.hidden = true;
+	}
+
+	show() {
+		this.el.hidden = false;
+	}
+
+	isActive () {
+		return !this.el.hidden
 	}
 }
