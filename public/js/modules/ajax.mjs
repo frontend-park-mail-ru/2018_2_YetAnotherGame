@@ -78,4 +78,4 @@ export class AjaxModule {
     }
 }
 
-// export default new AjaxModule
+export default new AjaxModule

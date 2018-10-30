@@ -1,29 +1,33 @@
 "use strict"
 
-import { AjaxModule } from "./modules/ajax.mjs"
+import Block from "./components/block/block.mjs"
+import AjaxModule from "./modules/ajax.mjs" 
 import { Scoreboard } from "./components/scoreboard/scoreboard.mjs"
 import { Profile } from "./components/profile/profile.mjs"
-import { Block } from "./components/block/block.mjs"
 import { Form } from "./components/form/form.mjs"
 
-const AJAX = new AjaxModule
+const AJAX = AjaxModule
 
 const signIn = window.signInFields
 const signUp = window.signUpFields
 const update = window.updateFields
 
 // const server = "https://backend-yag.now.sh"
-const server = "http://127.0.0.1:8000/api"
+// const server = "http://127.0.0.1:8000/api"
 let scoreboardPage = 0
 
-let user =
+let user = undefined;
 AJAX.doGet({
-	callback(xhr) {
-		xhr.responseText !== "" ? JSON.parse(xhr.responseText) : undefined
-	},
-	path: "/user/me",
-	baseURL: server,
+	path: '/user/me',
 })
+	.then(res => res.tex())
+	.then(res => {
+		if (res !== "") {
+			user = JSON.parse(res);
+		} else {
+			user = undefined;
+		}
+	})
 
 const game = new Block(document.getElementById("game"))
 
@@ -124,21 +128,25 @@ function createSignIn() {
                 return;
             }
 
-            AJAX.doPost({
-                callback() {
-                    game.clear();
-                    createProfile();
-                },
+			AJAX.doPost({
 				path: '/session',
-				baseURL: server,
-                body: {
+				body: {
                     email: formdata.email.value,
                     password: formdata.password.value,
                 },
-            });
-        }
-    );
-
+			})
+				.then(response => {
+					if (response.status >= 300) {
+						throw response;
+					}
+					game.clear();
+					createProfile();
+				})
+				.catch(error => {
+					console.error(error);
+				});
+		}
+	)
     game.append(signInSection);
 }
 
@@ -156,6 +164,54 @@ function createSignUp() {
         .append(header)
         .append(createMenuLink())
         .append(form);
+game.append(signUpSection);
+    const check = document.getElementsByName("password")[0]
+
+    const check2 = document.getElementsByName("password_repeat")[0]
+    check.addEventListener("keyup", ()=>{
+        if (check.value.length<4){
+            check.setAttribute("class", "error")
+			if (document.getElementById('err') !== null) {
+				const el = document.getElementById('err');
+				el.parentNode.removeChild(el)
+			}
+
+			const err = Block.Create('div', {'id': 'err'}, []);
+			form.append(err);
+
+			const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
+			err.append(att);
+        }
+        else{
+            check.setAttribute("class", "ok")
+			const el = document.getElementById('err');
+			el.parentNode.removeChild(el)
+        }
+
+    });
+    check2.addEventListener("keyup", ()=>{
+
+        if(check2.value!==check.value){
+			if (document.getElementById('err') !== null) {
+				const el = document.getElementById('err');
+				el.parentNode.removeChild(el)
+			}
+			check2.setAttribute("class", "error")
+			const err = Block.Create('div', {'id': 'err'}, []);
+			form.append(err);
+
+			const att = Block.Create('p', {}, [], 'password must be equal');
+			err.append(att);
+        }
+        else{
+			check2.setAttribute("class", "ok")
+			const el = document.getElementById('err');
+			console.log(el)
+			el.parentNode.removeChild(el)
+		}
+
+    });
+    
 
     form.onSubmit(
         function (formdata) {
@@ -186,21 +242,26 @@ function createSignUp() {
                 return;
             }
 
-            AJAX.doPost({
-                callback(xhr) {
-                    game.clear();
-                    createProfile();
-                },
+			AJAX.doPost({
 				path: '/session/new',
-				baseURL: server,
-                body: {
-                    email: email,
+				body: {
+					email: email,
                     username: username,
                     first_name: first_name,
                     last_name: last_name,
                     password: password,
                 },
-            });
+			})
+				.then((response) => {
+					if (response.status >= 300) {
+						throw response;
+					}
+					game.clear();
+					createProfile();
+				})
+				.catch((error) => {
+					console.error(error);
+				});
         }
     );
 
@@ -213,15 +274,13 @@ function createSignUp() {
  */
 function createLogOut() {
     AJAX.doDelete({
-        callback() {
-            game.clear();
-            user = undefined;
-            createMenu();
-        },
 		path: '/session',
-		baseURL: server,
-        body: {},
-    });
+    })
+		.then(res => {
+			game.clear();
+			user = undefined;
+			createMenu();
+		})
 }
 
 /**
@@ -229,20 +288,22 @@ function createLogOut() {
  */
 function createUpdate() {
     if (typeof user === "undefined") {
-        AJAX.doGet({
-            callback(xhr) {
-                if (!xhr.responseText) {
-                    alert('Unauthorized');
-                    game.clear();
-                    createMenu();
-                    return;
-                }
-                user = JSON.parse(xhr.responseText);
-                game.clear();
-            },
+
+		AJAX.doGet({
 			path: '/user/me',
-			baseURL: server,
-        });
+		})
+			.then(res => res.text())
+			.then(res => {
+				if (!res) {
+	               throw err
+	            }
+	            user = JSON.parse(res);
+	            game.clear();
+			})
+			.catch(err => {
+				console.error(err)
+			})
+
         return;
     }
 
@@ -261,32 +322,40 @@ function createUpdate() {
     form.onSubmit(
         function (formdata) {
             const formData = new FormData(document.forms.myForm);
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', server+'/upload', true);
-			xhr.withCredentials = true;
-            xhr.onload = xhr.onerror = function() {
-                if (this.status == 200) {
-                    console.log("success");
-                } else {
-                    console.log("error " + this.status);
-                }
-            }
-            xhr.send(formData);
-
-            AJAX.doPost({
-    			callback(xhr) {
-                    game.clear();
-                    createProfile();
-    			},
-				path: '/user/me',
-				baseURL: server,
-                body: {
-                    email: formdata.email.value,
-                    username: formdata.username.value,
-                    first_name: formdata.first_name.value,
-                    last_name: formdata.last_name.value,
-                }
-    		});
+			AJAX.doPost({
+				path: '/upload',
+				body: formData,
+			})
+				.then((response) => {
+					if (response.status >= 300) {
+						throw response;
+					}
+					console.log("success");
+				})
+				.then(() => {
+					AJAX.doPost({
+						path: '/user/me',
+						body: {
+					        email: formdata.email.value,
+		                    username: formdata.username.value,
+		                    first_name: formdata.first_name.value,
+		                    last_name: formdata.last_name.value,
+		                },
+					})
+						.then((response) => {
+							if (response.status >= 300) {
+								throw response;
+							}
+							game.clear();
+							createProfile();
+						})
+						.catch((error) => {
+							console.error(error);
+						});
+				})
+				.catch((err) => {
+					console.log("error " + err.status);
+				})
         }
     );
 
@@ -316,20 +385,23 @@ function createProfile(me) {
 		const img = Block.Create('img', {'src': `${me.avatar}`}, [])
 		profileSection.append(img)
     } else {
-        AJAX.doGet({
-            callback(xhr) {
-                if (!xhr.responseText) {
-					alert("Unauthorized")
-					game.clear()
-					createMenu();
-					return;
-                }
-                /*const*/ user = JSON.parse(xhr.responseText);
-                game.clear();
-                createProfile(user);
-            },
-            path: server+'/user/me',
-        });
+		AJAX.doGet({
+			path: '/user/me',
+		})
+		.then(res => res.text())
+		.then(res => {
+			if (!res) {
+				throw res
+			}
+			user = JSON.parse(res);
+			game.clear();
+			createProfile(user);
+		})
+		.catch(err => {
+			alert("Unauthorized");
+			game.clear();
+			createMenu();
+		});
     }
     game.append(profileSection);
 }
@@ -356,16 +428,19 @@ function createScoreboard(users, scoreboardPage = 0) {
 		scoreboardSection.append(Block.Create("em", {}, [], "Loading"))
 
 		AJAX.doGet({
-			callback(xhr) {
-				const response = JSON.parse(xhr.responseText)
-                canNext = response["CanNext"]
-                const users = response["Users"]
-                game.clear()
-                createScoreboard(users, scoreboardPage)
-			},
 			path: `/user?numPage=${scoreboardPage}`,
-			baseURL: server,
 		})
+			.then(res => res.text())
+			.then(res => {
+				const response = JSON.parse(res)
+				canNext = response["CanNext"]
+	            const users = response["Users"]
+	            game.clear()
+	            createScoreboard(users, scoreboardPage)
+			})
+			.catch(err => {
+				console.error(err)
+			})
 	} else {
 		const scoreboard = new Scoreboard({el: tableWrapper})
         scoreboard.data = users

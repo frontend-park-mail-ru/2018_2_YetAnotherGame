@@ -1,10 +1,10 @@
 import AjaxModule from '../js/modules/ajax.mjs'
 
 export default class UsersService {
-	static FetchUsers (pageNumber) {
+	static FetchUsers (pageNumber = 0) {
 		return AjaxModule
 			.doGet({
-				path: '/leaders?page={pageNumber}'
+				path: `/leaders`
 			})
 			.then((res) => res.text())
 			.then(res => {
