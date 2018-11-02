@@ -1,6 +1,6 @@
 "use strict"
 
-export class Profile {
+export default class Profile {
 	constructor ({el = document.body} = {}) {
 		this._el = el
 	}

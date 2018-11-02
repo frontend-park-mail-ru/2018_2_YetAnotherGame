@@ -20,9 +20,9 @@ export default class UsersService {
 },
 })
 .then(response => {
-	if (response.status >= 300) {
-		throw response;
-	}
+
+		return response;
+
 	//game.clear();
 //	createProfile();
 })
