@@ -28,7 +28,7 @@ export default class ScoreBoardView extends BaseView {
 
     setUsers (users) {
         this.users = users.Users;
-        this.canNext = users.canNext;
+        this.canNext = users.CanNext;
 		this.render();
 	}
 
@@ -56,31 +56,39 @@ export default class ScoreBoardView extends BaseView {
         .append(lb)
 		.append(rb)
 		const rBtnActive = document.getElementById('rBtn')
-		rBtnActive.addEventListener('click', this.nextPage)
+		rBtnActive.addEventListener('click', this.nextPage.bind(this))
         const lBtnActive = document.getElementById('lBtn')
-        lBtnActive.addEventListener('click', this.prevPage)
+        lBtnActive.addEventListener('click', this.prevPage.bind(this))
         if (!this.canNext) {
-            rBtnActive.disable = true
+            rBtnActive.disabled = true
 		} else if (this.pageNumber === 0) {
-			lBtnActive.disable = true
+			lBtnActive.disabled = true
 		} else {
-			lBtnActive.disable = false
-			rBtnActive.disable = false
+			lBtnActive.disabled = false
+			rBtnActive.disabled = false
         }
     }
 
     nextPage() {
-        this.pageNumber++
+        let pg = ++this.pageNumber
         AjaxModule.doGet({
-            path: `/leaders?page=${pageNumber}`
+            path: `/leaders?page=${pg}`
         }).then((res) => res.text())
         .then(res => {
-            JSON.parse(res)
-        }).then(this.setUsers.bind(this))
+            res = JSON.parse(res)
+            this.setUsers(res)
+        })
     }
 
     prevPage() {
-        mediator.emit('fetch-prev-page')
+        let pg = --this.pageNumber
+        AjaxModule.doGet({
+            path: `/leaders?page=${pg}`
+        }).then((res) => res.text())
+        .then(res => {
+            res = JSON.parse(res)
+            this.setUsers(res)
+        })    
     }
 
 }
