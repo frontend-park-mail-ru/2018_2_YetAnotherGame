@@ -1,8 +1,8 @@
 "use strict"
 
-import { Block } from "../block/block.mjs"
+import  Block  from "../block/block.mjs"
 
-export class Form extends Block {
+export default class Form extends Block {
 	constructor(fields = []) {
 		const el = document.createElement("form")
 		super(el)
