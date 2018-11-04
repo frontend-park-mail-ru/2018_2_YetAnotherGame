@@ -9,12 +9,20 @@ export default class LoginView extends BaseView {
 		super(el);
 	}
 
+	show() {
+		super.show()
+	}
+
+	hide() {
+		super.hide()
+	}
+
 	render () {
-		const game = new Block(document.getElementById("game"))
+		this.el.clear()
 		const signIn = window.signInFields
 		const signInSection = Block.Create('section', {'data-section-name': 'sign_in'}, []);
 		const header = Block.Create('h1', {}, [], 'Sign In');
-	const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 		const form = new Form(signIn);
 
 		signInSection
@@ -58,5 +66,6 @@ export default class LoginView extends BaseView {
 				// 		});
 				// }
 			})
-		game.append(signInSection);}}
+		this.el.append(signInSection);
+	}}
 
