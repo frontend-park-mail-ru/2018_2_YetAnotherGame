@@ -11,4 +11,23 @@ export default class UsersService {
 				return JSON.parse(res)
 			})
 	}
+	static Login (formdata){
+	return AjaxModule.doPost({
+					path: '/session',
+					body: {
+						email: formdata.email.value,
+	password: formdata.password.value,
+},
+})
+.then(response => {
+
+		return response;
+
+	//game.clear();
+//	createProfile();
+})
+	.catch(error => {
+		console.error(error);
+	});
+}
 };

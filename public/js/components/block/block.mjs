@@ -1,4 +1,4 @@
-"use strict"
+
 
 /**
  * Базовый класс блока
@@ -103,3 +103,4 @@ export default class Block {
 		return !this.el.hidden
 	}
 }
+

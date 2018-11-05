@@ -25,7 +25,7 @@ export default class MenuView extends BaseView {
             sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["header-button"], "Sign in"),
             sign_up: Block.Create("a", {"href": "sign_up", "data-href": "sign_up"}, ["header-button"], "Sign up"),
             log_out: Block.Create("a", {"href": "log_out", "data-href": "log_out"}, ["header-button"], "Log out"),
-            profile: Block.Create("a", {"href": "me", "data-href": "me"}, ["header-button"]),
+            profile: Block.Create("a", {"href": "me", "data-href": "me"}, ["header-button"],),
         }
 
         const titles = {
@@ -37,12 +37,14 @@ export default class MenuView extends BaseView {
 
         if (typeof user === "undefined") {
             header
+				.append(register.profile)
                 .append(register.sign_up)
                 .append(register.sign_in)
 
             mainInner
                 .append(titles.new_game)
                 .append(titles.leaders)
+			
         } else {
             register.profile.setText(`${user.username}`)
             header
