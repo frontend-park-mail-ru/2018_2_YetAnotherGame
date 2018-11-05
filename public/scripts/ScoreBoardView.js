@@ -70,9 +70,9 @@ export default class ScoreBoardView extends BaseView {
     }
 
     nextPage() {
-        let pg = ++this.pageNumber
+        this.pageNumber++
         AjaxModule.doGet({
-            path: `/leaders?page=${pg}`
+            path: `/leaders?page=${this.pageNumber}`
         }).then((res) => res.text())
         .then(res => {
             res = JSON.parse(res)
@@ -81,9 +81,9 @@ export default class ScoreBoardView extends BaseView {
     }
 
     prevPage() {
-        let pg = --this.pageNumber
+        this.pageNumber--
         AjaxModule.doGet({
-            path: `/leaders?page=${pg}`
+            path: `/leaders?page=${this.pageNumber}`
         }).then((res) => res.text())
         .then(res => {
             res = JSON.parse(res)

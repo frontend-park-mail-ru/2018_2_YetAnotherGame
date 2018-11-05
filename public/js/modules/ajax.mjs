@@ -1,6 +1,7 @@
 const noop = () => null;
 
-const baseURL = "http://127.0.0.1:8000/api"
+// const baseURL = "http://127.0.0.1:8000/api"
+const baseURL = "http://95.163.215.234/api"
 
 export class AjaxModule {
     static _ajax({callback = noop, method = 'GET', path = '/', body, baseURL = ""} = {}) {

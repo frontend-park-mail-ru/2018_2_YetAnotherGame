@@ -1,51 +1,58 @@
 import Block from "../js/components/block/block.mjs";
-import Profile from "../js/components/profile/profile.mjs"
 import BaseView from "./BaseView.js"
+import mediator from "./mediator.js";
 
-
+const templateFunc = window.fest[ 'js/components/profile/profile.tmpl' ]
 
 export default class ProfileView extends BaseView {
 	constructor (el) {
 		super(el);
+
+		this.profile = null;
+
+		mediator.on('profile-loaded', this.setProfile.bind(this))
 	}
 
-	render () {
-		function createProfile(me) {
-	const profileSection = Block.Create('section', {'data-section-name': 'profile'}, []);
-	const header = Block.Create('h1', {}, [], 'Profile');
-	const profileBlock = Block.Create('p', {}, []);
-
-	profileSection
-		.append(header)
-		.append(createMenuLink())
-		.append(profileBlock)
-
-
-	if (me) {
-		const profile = new Profile({el: profileBlock})
-		profile.data = me
-		profile.render()
-
-		const img = Block.Create('img', {'src': `${me.avatar}`}, [])
-		profileSection.append(img)
-	} else {
-		AJAX.doGet({
-			path: '/user/me',
-		})
-			.then(res => res.text())
-			.then(res => {
-				if (!res) {
-					throw res
-				}
-				let user = JSON.parse(res);
-				game.clear();
-				createProfile(user);
-			})
-			.catch(err => {
-				alert("Unauthorized");
-				game.clear();
-				createMenu();
-			});
+	setProfile(profile) {
+		this.profile = profile
+		this.render()
 	}
-	game.append(profileSection);
-}}}
+
+	show() {
+		super.show();
+
+		this.fetchProfile();
+	}
+
+	fetchProfile() {
+		mediator.emit('fetch-profile')
+	}
+
+	render() {
+        this.el.clear();
+
+		if (!this.profile) {
+			this.renderLoading();
+		} else {
+			this.renderProfile();
+		}
+    }
+
+    renderLoading () {
+		const loading = Block.Create('strong', {}, []);
+		loading.setText('Loading');
+		this.el.append(loading);
+	}
+
+	renderProfile () {
+		this.el.clear()
+		this.el.setInner(templateFunc(this.profile))
+		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+
+		const profileSection = Block.Create("div", {}, [])
+		profileSection		
+			.append(menuLink)
+
+		this.el.append(profileSection);
+	}
+}

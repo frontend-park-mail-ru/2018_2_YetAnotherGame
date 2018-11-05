@@ -1,7 +1,7 @@
 import AjaxModule from '../js/modules/ajax.mjs'
 
 export default class UsersService {
-	static FetchUsers (pageNumber = 0) {
+	static FetchUsers () {
 		return AjaxModule
 			.doGet({
 				path: `/leaders`
@@ -11,23 +11,35 @@ export default class UsersService {
 				return JSON.parse(res)
 			})
 	}
+
+	static FetchProfile () {
+		return AjaxModule
+			.doGet({
+				path: `/user/me`
+			})
+			.then((res) => res.text())
+			.then(res => {
+				return JSON.parse(res)
+			})
+	}
+
 	static Login (formdata){
-	return AjaxModule.doPost({
-					path: '/session',
-					body: {
-						email: formdata.email.value,
-	password: formdata.password.value,
-},
-})
-.then(response => {
+		return AjaxModule.doPost({
+			path: '/session',
+			body: {
+				email: formdata.email.value,
+				password: formdata.password.value,
+			},
+		})
+		.then(response => {
 
-		return response;
+			return response;
 
-	//game.clear();
-//	createProfile();
-})
-	.catch(error => {
-		console.error(error);
-	});
-}
+			//game.clear();
+			//createProfile();
+		})
+		.catch(error => {
+			console.error(error);
+		});
+	}
 };

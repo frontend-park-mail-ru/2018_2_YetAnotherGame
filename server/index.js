@@ -19,7 +19,8 @@ const port = process.env.PORT || 3000;
 //         return req.originalUrl;
 //    }}));
 app.all('*', function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
+    res.header('Access-Control-Allow-Origin', 'http://95.163.215.234/api');
+    // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();

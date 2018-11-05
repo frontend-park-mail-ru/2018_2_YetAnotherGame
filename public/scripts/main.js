@@ -17,6 +17,18 @@ mediator.on('fetch-users', function () {
 			console.error(error);
 		});
 });
+
+mediator.on('fetch-profile', function () {
+	UsersService
+		.FetchProfile()
+		.then(function (profile) {
+			mediator.emit('profile-loaded', profile);
+		})
+		.catch(function (error) {
+			console.error(error);
+		});
+});
+
 mediator.on('user-login', function (formdata) {
 	console.log(formdata)
 	UsersService
@@ -25,7 +37,7 @@ mediator.on('user-login', function (formdata) {
 
 			if (response.status<300){
 				//debugger
-			mediator.emit('user-logined');}
+				mediator.emit('user-logined');}
 			else{//debugger
 				console.log("error")}
 		})
@@ -35,7 +47,7 @@ mediator.on('user-login', function (formdata) {
 });
 mediator.on('user-logined', function () {
 	//debugger
-	const profile = new ProfileView()
+	router.open("/user/me")
 	//window.location = "http://127.0.0.1:3000";
 });
 
@@ -46,5 +58,5 @@ router
 	.register('/', MenuView)
 	.register('/leaders', ScoreBoardView)
 	.register('/sign_in', LoginView)
-	.register('/me', ProfileView);
+	.register('/user/me', ProfileView);
 router.start();
