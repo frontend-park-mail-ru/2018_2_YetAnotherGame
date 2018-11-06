@@ -1,6 +1,7 @@
 import mediator from "./mediator.js";
 import MenuView from './MenuView.js';
 import LoginView from './LoginView.js';
+import GameView from './GameView.js';
 import Router from './Router.js';
 import ScoreBoardView from './ScoreBoardView.js';
 import UsersService from './UsersService.js';
@@ -65,5 +66,6 @@ router
 	.register('/leaders', ScoreBoardView)
 	.register('/sign_in', LoginView)
 	.register('/sign_up', SignUpView)
+    .register('/new_game', GameView)
 	.register('/user/me', ProfileView);
 router.start();
