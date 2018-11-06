@@ -13,7 +13,7 @@ app.use(express.static(path.resolve('/')));
 app.use(body.json());
 app.use(cookie());
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 //  app.use('*', proxy('https://lolkek-tssjobwzfy.now.sh/', {
 //     proxyReqPathResolver: function (req) {
 //         return req.originalUrl;
