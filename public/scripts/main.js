@@ -6,6 +6,7 @@ import ScoreBoardView from './ScoreBoardView.js';
 import UsersService from './UsersService.js';
 import ProfileView from './ProfileView.js';
 import Block from "../js/components/block/block.mjs"
+import SignUpView from "./SignUpView.js";
 
 mediator.on('fetch-users', function () {
 	UsersService
@@ -45,11 +46,16 @@ mediator.on('user-login', function (formdata) {
 			//console.error(error);
 		});
 });
+
 mediator.on('user-logined', function () {
 	//debugger
 	router.open("/user/me")
 	//window.location = "http://127.0.0.1:3000";
 });
+
+mediator.on('user-register', function(formdata) {
+	console.log(formdata)
+})
 
 const root = new Block(document.getElementById('game'));
 const router = new Router(root);
@@ -58,5 +64,6 @@ router
 	.register('/', MenuView)
 	.register('/leaders', ScoreBoardView)
 	.register('/sign_in', LoginView)
+	.register('/sign_up', SignUpView)
 	.register('/user/me', ProfileView);
 router.start();

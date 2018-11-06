@@ -49,13 +49,22 @@ export default class ScoreBoardView extends BaseView {
 	}
 
     renderScoreboard() {
-        this.el.setInner(templateFunc(this.users))
+        const header = Block.Create('h1', {}, [], 'Leaders')
+        const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+
+        const scoreBoardSection = Block.Create('div', {}, [])
+        scoreBoardSection.setInner(templateFunc(this.users))
         let lb = Block.Create("input", {"id": "lBtn", "type": "button", "value": "<-", }, [], "kek")
         let rb = Block.Create("input", {"id": "rBtn", "type": "button", "value": "->", }, [], "kek")
+        let br = Block.Create("br")
         this.el
+        .append(header)
+        .append(scoreBoardSection)
         .append(lb)
-		.append(rb)
-		const rBtnActive = document.getElementById('rBtn')
+        .append(rb)
+        .append(br)
+        .append(menuLink)
+        const rBtnActive = document.getElementById('rBtn')
 		rBtnActive.addEventListener('click', this.nextPage.bind(this))
         const lBtnActive = document.getElementById('lBtn')
         lBtnActive.addEventListener('click', this.prevPage.bind(this))

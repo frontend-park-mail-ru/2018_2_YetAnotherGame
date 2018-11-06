@@ -46,12 +46,16 @@ export default class ProfileView extends BaseView {
 
 	renderProfile () {
 		this.el.clear()
-		this.el.setInner(templateFunc(this.profile))
+		const header = Block.Create('h1', {}, [], 'Profile')
+		const profile = Block.Create("div", {}, [])
+		profile.setInner(templateFunc(this.profile))
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 
 		const profileSection = Block.Create("div", {}, [])
 		profileSection		
+			.append(header)
 			.append(menuLink)
+			.append(profile)
 
 		this.el.append(profileSection);
 	}
