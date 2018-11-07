@@ -8,7 +8,6 @@ import UsersService from './UsersService.js';
 import ProfileView from './ProfileView.js';
 import Block from "../js/components/block/block.mjs"
 import SignUpView from "./SignUpView.js";
-import LogOutView from "./LogOutView.js";
 
 mediator.on('fetch-users', function () {
 	UsersService
@@ -80,17 +79,6 @@ mediator.on('user-register', function (formdata) {
     //window.location = "http://127.0.0.1:3000";
 });
 
-mediator.on('user-logout', function () {
-	UsersService
-		.LogOut()
-		.then(function (profile) {
-			mediator.emit('user-logouted', profile);
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
-});
-
 mediator.on('user-logouted', function() {
 	router.open("/")
 });
@@ -102,7 +90,6 @@ router
 	.register('/', MenuView)
 	.register('/leaders', ScoreBoardView)
 	.register('/sign_in', LoginView)
-	.register('/logout', LogOutView)
 	.register('/sign_up', SignUpView)
     .register('/new_game', GameView)
 	.register('/user/me', ProfileView);

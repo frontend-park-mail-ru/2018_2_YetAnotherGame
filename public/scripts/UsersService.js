@@ -68,10 +68,4 @@ export default class UsersService {
 		});
 	}
 	
-    static LogOut () {
-		return AjaxModule.doDelete({
-			path: '/session'
-		})
-		
-	}
 };
