@@ -58,12 +58,13 @@ export default class ScoreBoardView extends BaseView {
         let rb = Block.Create("input", {"id": "rBtn", "type": "button", "value": "->", }, [], "kek")
         let br = Block.Create("br")
         this.el
-        .append(header)
-        .append(scoreBoardSection)
-        .append(lb)
-        .append(rb)
-        .append(br)
-        .append(menuLink)
+            .append(header)
+            .append(scoreBoardSection)
+            .append(lb)
+            .append(rb)
+            .append(br)
+            .append(menuLink)
+            
         const rBtnActive = document.getElementById('rBtn')
 		rBtnActive.addEventListener('click', this.nextPage.bind(this))
         const lBtnActive = document.getElementById('lBtn')
@@ -97,7 +98,7 @@ export default class ScoreBoardView extends BaseView {
         .then(res => {
             res = JSON.parse(res)
             this.setUsers(res)
-        })    
+        })
     }
 
 }

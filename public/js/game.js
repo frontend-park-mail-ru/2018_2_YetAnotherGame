@@ -1,7 +1,7 @@
 "use strict"
 
 import Block from "./components/block/block.mjs"
-import AjaxModule from "./modules/ajax.mjs" 
+import AjaxModule from "./modules/ajax.mjs"
 import { Scoreboard } from "./components/scoreboard/scoreboard.mjs"
 import { Profile } from "./components/profile/profile.mjs"
 import { Form } from "./components/form/form.mjs"
@@ -211,7 +211,7 @@ game.append(signUpSection);
 		}
 
     });
-    
+
 
     form.onSubmit(
         function (formdata) {
