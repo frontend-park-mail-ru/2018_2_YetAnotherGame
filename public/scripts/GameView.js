@@ -24,7 +24,7 @@ export default class GameViewView extends BaseView {
         var enemy22 = new Image();
         var enemy23 = new Image();
         var enemy24 = new Image();
-        var img = ["scripts/1.png", "scripts/2.png", "scripts/3.png"];
+        var img = ["../textures/1.png", "../textures/2.png", "../textures/3.png"];
         var ctx = canvas.getContext("2d");
         var background = new Image();
 
@@ -128,7 +128,7 @@ export default class GameViewView extends BaseView {
             ctx.drawImage(background,0,0);
 
 
-            background.src = "scripts/4.png";
+            background.src = "../textures/4.png";
             ctx.font = "30px Arial";
             ctx.fillStyle = "#ff0000";
             ctx.fillText("level: " +level,20,40);
@@ -150,25 +150,19 @@ export default class GameViewView extends BaseView {
                 paddleX = (canvas.width - paddleWidth) / 2;
                 paddleY = (canvas.height) - 50;
                 tick = 0
-                upPressed=false
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.location.reload();
             }
             if (((paddleX > x2 && paddleX < x2 + 60) || (paddleX > x2 + 200 && paddleX < x2 + 60 + 200) || (paddleX > x2 + 400 && paddleX < x2 + 60 + 400) || (paddleX > x2 + 600 && paddleX < x2 + 60 + 600)) && (paddleY < y + 60 + 150 && paddleY > y + 150)) {
                 alert("Конец игры. Ваш счет - " + tick);
                 paddleX =(canvas.width - paddleWidth) / 2;
                 paddleY = (canvas.height) - 50;
-                tick = 0
-                upPressed=false
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.location.reload();
             }
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 - 250 && paddleY > y - 250)) {
                 alert("Конец игры. Ваш счет - " + tick);
                 paddleX = (canvas.width - paddleWidth) / 2;
                 paddleY = (canvas.height) - 50;
-                tick = 0
-                level=0
-                upPressed=false
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.location.reload();
             }
 
             if (rightPressed && paddleX < canvas.width - paddleWidth) {
