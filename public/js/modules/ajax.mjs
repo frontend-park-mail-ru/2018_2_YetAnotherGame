@@ -39,6 +39,7 @@ export class AjaxModule {
             mode: 'cors',
             credentials: 'include',
         };
+        
         if (method === 'POST') {
             if (body && body instanceof FormData) {
                 fetchOptions.body = body;

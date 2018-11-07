@@ -1,14 +1,50 @@
 import BaseView from './BaseView.js';
 import Block from "../js/components/block/block.mjs"
-
+import Form from "../js/components/form/form.mjs"
+import AjaxModule from '../js/modules/ajax.mjs'
+import mediator from "./mediator.js";
 
 export default class MenuView extends BaseView {
 	constructor (el) {
 		super(el);
-	}
+        this.data=null
+        mediator.on("profile-loaded", this.setData.bind(this))
+    }
+    
+    show() {
+        if (this.data === null) {
+            this.fetchProfile()
+        }
+        this.el.show()
+    }
+
+    fetchProfile() {
+        mediator.emit("fetch-profile")
+    }
+
+    setData(data) {
+        this.data = data
+        this.render()
+    }
 
 	render () {
         this.el.clear();
+
+        console.log(this.data)
+
+        // let user = undefined;
+        // AjaxModule.doGet({
+        //     path: '/user/me',
+        // })
+        //     .then(res => res.tex())
+        //     .then(res => {
+        //         if (res !== "") {
+        //             user = JSON.parse(res);
+        //         } else {
+        //             user = undefined;
+        //         }
+        //     })
+
 		const menuSection = Block.Create("section", {"data-section-name": "menu", "id": "mainMenu"}, [])
         const header = Block.Create("div", {"id": "header"}, ["background_white"])
         const logo = Block.Create("div", {"id": "logo"}, [])
@@ -25,17 +61,17 @@ export default class MenuView extends BaseView {
             sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["header-button"], "Sign in"),
             sign_up: Block.Create("a", {"href": "sign_up", "data-href": "sign_up"}, ["header-button"], "Sign up"),
             log_out: Block.Create("a", {"href": "log_out", "data-href": "log_out"}, ["header-button"], "Log out"),
-            profile: Block.Create("a", {"href": "me", "data-href": "me"}, ["header-button"],),
+            profile: Block.Create("a", {"href": "user/me", "data-href": "user/me"}, ["header-button"],),
         }
 
         const titles = {
-            new_game: Block.Create("a", {"href": "new_game", "data-href": "new_game"}, ["menu-button", "disableb"], "New Game"),
+            new_game: Block.Create("a", {"href": "new_game", "data-href": "new_game"}, ["menu-button", "disabled"], "New Game"),
             leaders: Block.Create("a", {"href": "leaders", "data-href": "leaders"}, ["menu-button"], "Scoreboard"),
-            me: Block.Create("a", {"href": "me", "data-href": "me"}, ["menu-button"], "Profile"),
+            me: Block.Create("a", {"href": "user/me", "data-href": "user/me"}, ["menu-button"], "Profile"),
             update: Block.Create("a", {"href": "update", "data-href": "update"}, ["menu-button"], "Update"),
         }
-
-        if (typeof user === "undefined") {
+        const mult = Block.Create('h1', {}, [], 'Test multiplayer');
+        if (typeof this.data === undefined || this.data == null) {
             header
 				.append(register.profile)
                 .append(register.sign_up)
@@ -44,9 +80,9 @@ export default class MenuView extends BaseView {
             mainInner
                 .append(titles.new_game)
                 .append(titles.leaders)
-			
+
         } else {
-            register.profile.setText(`${user.username}`)
+            register.profile.setText(`${this.data.username}`)
             header
                 .append(register.log_out)
                 .append(register.profile)
@@ -56,11 +92,47 @@ export default class MenuView extends BaseView {
             })
         }
 
+
+//const Block = window.Block;
+// вот здесь надо сделать поле ввода и кнопку отправить, при нажатии на которую выполняется код ниже
+// а в поле ввода вводится юзернейм
+
+        const wsFields = window.Ws
+
+        const wsSection = Block.Create('section', {'data-section-name': 'wsSection'}, []);
+
+        const form = new Form(wsFields);
+
+        wsSection
+            .append(form)
+
+        form.onSubmit(
+            function(formdata) {
+                const address = ['https', 'https:'].includes(location.protocol) ?
+                    `wss://127.0.0.1:9090/ws` :
+                    `ws://127.0.0.1:9090/ws`;
+
+
+                let ws = new WebSocket(address);
+
+                console.log(`WebSocket on address ${address} opened`);
+                ws.onopen = function() {
+                    ws.send(JSON.stringify({
+                        "type": "newPlayer",
+                        "payload": {
+                            "username": `${formdata.name.value}`
+                        }
+                    }));
+                }
+            }
+        )
+
         menuSection
             .append(header)
             .append(logo)
             .append(main)
+            .append(mult)
 
-		this.el.append(menuSection);
-	}
+        this.el.append(menuSection).append(wsSection);
+    }
 }
