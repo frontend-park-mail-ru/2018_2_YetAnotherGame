@@ -4,5 +4,3 @@ out
 node_modules
 *.tmpl.js
 index.js.old
-package.json
-package-lock.json
