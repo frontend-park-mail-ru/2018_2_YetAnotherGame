@@ -11,9 +11,7 @@ export default class MenuView extends BaseView {
     }
     
     show() {
-        if (this.data === null) {
-            this.fetchProfile()
-        }
+        this.fetchProfile()
         this.el.show()
     }
 
