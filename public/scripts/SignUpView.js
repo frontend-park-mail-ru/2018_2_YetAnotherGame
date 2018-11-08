@@ -80,9 +80,7 @@ export default class SignUpView extends BaseView {
 		form.onSubmit(
 			function (formdata) {
 				//debugger
-
 				mediator.emit("user-register", formdata);
-     
             })
 
     }

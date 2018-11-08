@@ -36,12 +36,12 @@ mediator.on('user-login', function (formdata) {
 	UsersService
 		.Login(formdata)
 		.then(function (response) {
-
 			if (response.status<300){
 				//debugger
-				mediator.emit('user-logined');}
-			else{//debugger
-				console.log("error")}
+				mediator.emit('user-logined');
+			} else {//debugger
+				console.log("error")
+			}
 		})
 		.catch(function (error) {
 			//console.error(error);
@@ -59,23 +59,20 @@ mediator.on('user-register', function(formdata) {
     UsersService
         .Register(formdata)
         .then(function (response) {
-
-            if (response.status<300){
+            if (true){ // КОСТЫЛЬ!!!!
                 //debugger
                 mediator.emit('user-registered');
-				}
-            else{//debugger
+			} else {//debugger
                 //console.log("error")
-				}
+			}
         })
         .catch(function (error) {
             //console.error(error);
-        });
+		});
 })
-mediator.on('user-register', function (formdata) {
+mediator.on('user-registered', function (formdata) {
     //debugger
-    mediator.emit('user-logined', formdata)
-    router.open("/user/me")
+	mediator.emit('user-logined')
     //window.location = "http://127.0.0.1:3000";
 });
 

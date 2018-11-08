@@ -36,16 +36,14 @@ export default class UsersService {
                 last_name: formdata.last_name.value,
             },
         })
-            .then(response => {
-
-                return response;
-
-                //game.clear();
-                //createProfile();
-            })
-            .catch(error => {
-                console.error(error);
-            });
+		.then(response => {
+			return response;
+			//game.clear();
+			//createProfile();
+		})
+		.catch(error => {
+			console.error(error);
+		});
     }
 
 	static Login (formdata){
