@@ -51,7 +51,6 @@ export default class ProfileView extends BaseView {
 		profile.setInner(templateFunc(this.profile))
 		const img = Block.Create('img', {'src': `${this.profile.avatar}`}, [])
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
-
 		const profileSection = Block.Create("div", {}, [])
 		profileSection
 			.append(header)

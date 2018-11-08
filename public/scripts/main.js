@@ -50,9 +50,7 @@ mediator.on('user-login', function (formdata) {
 });
 
 mediator.on('user-logined', function () {
-	//debugger
 	router.open("/user/me")
-	//window.location = "http://127.0.0.1:3000";
 });
 
 mediator.on('user-register', function(formdata) {
@@ -61,21 +59,17 @@ mediator.on('user-register', function(formdata) {
         .Register(formdata)
         .then(function (response) {
             if (true){ // КОСТЫЛЬ!!!!
-                //debugger
                 mediator.emit('user-registered');
 			} else {//debugger
                 //console.log("error")
 			}
         })
         .catch(function (error) {
-            //console.error(error);
 		});
 })
 mediator.on('user-registered', function (formdata) {
-    //debugger
 	mediator.emit('user-logined')
-    //window.location = "http://127.0.0.1:3000";
-});
+    });
 
 mediator.on('user-logouted', function() {
 	router.open("/")

@@ -8,31 +8,23 @@ export default class UpdateView extends BaseView {
 	constructor (el) {
 		super(el);
 	}
-
     render() {
 		this.el.clear()
-
 		const updateSection = Block.Create('section', {'data-section-name': 'update'}, []);
 		const header = Block.Create('h1', {}, [], 'Update');
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 		const update = window.updateFields
-
 		const form = new Form(update);
-
 		form.setAttribute({'id': 'myForm', 'name': 'myForm', 'enctype': 'multipart/form-data', 'method': 'POST'});
-
 		updateSection
 			.append(header)
 			.append(menuLink)
 			.append(form);
-
 		form.onSubmit(
 			function (formdata) {
-				// const formData = new FormData(document.forms.myForm);
 				mediator.emit("fetch-update", formdata)
 			}
 		);
-
 		this.el.append(updateSection);
     }
 }

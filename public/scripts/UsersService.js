@@ -38,8 +38,6 @@ export default class UsersService {
         })
 		.then(response => {
 			return response;
-			//game.clear();
-			//createProfile();
 		})
 		.catch(error => {
 			console.error(error);
@@ -55,11 +53,7 @@ export default class UsersService {
 			},
 		})
 		.then(response => {
-
 			return response;
-
-			//game.clear();
-			//createProfile();
 		})
 		.catch(error => {
 			console.error(error);

@@ -23,16 +23,12 @@ export default class SignUpView extends BaseView {
 		const header = Block.Create('h1', {}, [], 'Sign Up');
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 		const form = new Form(signUp);
-
 		signUpSection
 			.append(header)
 			.append(menuLink)
             .append(form)
-            
         this.el.append(signUpSection);
-
         const check = document.getElementsByName("password")[0]
-
         const check2 = document.getElementsByName("password_repeat")[0]
         check.addEventListener("keyup", () => {
             if (check.value.length < 4) {
@@ -41,10 +37,8 @@ export default class SignUpView extends BaseView {
                     const el = document.getElementById('err');
                     el.parentNode.removeChild(el)
                 }
-
                 const err = Block.Create('div', {'id': 'err'}, []);
                 form.append(err);
-
                 const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
                 err.append(att);
             }
@@ -53,10 +47,8 @@ export default class SignUpView extends BaseView {
                 const el = document.getElementById('err');
                 el.parentNode.removeChild(el)
             }
-
         });
         check2.addEventListener("keyup", ()=>{
-
             if(check2.value!==check.value){
                 if (document.getElementById('err') !== null) {
                     const el = document.getElementById('err');
@@ -65,7 +57,6 @@ export default class SignUpView extends BaseView {
                 check2.setAttribute("class", "error")
                 const err = Block.Create('div', {'id': 'err'}, []);
                 form.append(err);
-
                 const att = Block.Create('p', {}, [], 'password must be equal');
                 err.append(att);
             }
@@ -75,13 +66,10 @@ export default class SignUpView extends BaseView {
                 console.log(el)
                 el.parentNode.removeChild(el)
             }
-
         });
 		form.onSubmit(
 			function (formdata) {
-				//debugger
 				mediator.emit("user-register", formdata);
             })
-
     }
 }

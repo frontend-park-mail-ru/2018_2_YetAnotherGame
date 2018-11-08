@@ -15,9 +15,7 @@ export default class GameViewView extends BaseView {
         }, [])
         this.el.append(logo)
         let canvas = document.getElementById("myCanvas");
-
         let car = new Image();
-
         let enemy2 = new Image();
         let enemy3 = new Image();
         let enemy4 = new Image();
@@ -29,7 +27,6 @@ export default class GameViewView extends BaseView {
         let img = ["../textures/1.png", "../textures/2.png", "../textures/3.png"];
         let ctx = canvas.getContext("2d");
         let background = new Image();
-
         let paddleHeight = 50;
         let paddleWidth = 50;
         let paddleX = (canvas.width - paddleWidth) / 2;
@@ -38,9 +35,6 @@ export default class GameViewView extends BaseView {
         let x2 = canvas.width;
         let y = canvas.height - 300;
         let dx = 1;
-        let dx2 = 1;
-        let dy = -2;
-        // let ballRadius = 10;
         let rightPressed = false;
         let leftPressed = false;
         let upPressed = false;
@@ -59,82 +53,44 @@ export default class GameViewView extends BaseView {
             ctx.drawImage(enemy, x, y);
             enemy.src = img[1];
             ctx.drawImage(enemy2, x - 200, y);
-
             enemy2.src = img[1];
-
             ctx.drawImage(enemy3, x - 400, y);
-
-
             enemy3.src = img[1];
-
             ctx.drawImage(enemy4, x - 600, y);
-
-
             enemy4.src = img[1];
-
-
             ctx.drawImage(enemy21, x2, y + 150);
             enemy21.src = img[2];
             ctx.drawImage(enemy22, x2 + 200, y + 150);
-
             enemy22.src = img[2];
-
             ctx.drawImage(enemy23, x2 + 400, y + 150);
-
-
             enemy23.src = img[2];
-
             ctx.drawImage(enemy24, x2 + 600, y + 150);
-
-
             enemy24.src = img[2];
-
-
             ctx.drawImage(enemy, x, y - 250);
             enemy.src = img[1];
             ctx.drawImage(enemy2, x - 200, y - 250);
-
             enemy2.src = img[1];
-
             ctx.drawImage(enemy3, x - 400, y - 250);
-
-
             enemy3.src = img[1];
-
             ctx.drawImage(enemy4, x - 600, y - 250);
-
-
             enemy4.src = img[1];
-            //x += dx;
-
-
-            //y += dy;
         }
 
         function draw() {
-
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             ctx.drawImage(background, 0, 0);
-
-
             background.src = "../textures/4.png";
             ctx.font = "30px Arial";
             ctx.fillStyle = "#ff0000";
             ctx.fillText("level: " + level, 20, 40);
             ctx.fillText("score: " + tick, 20, 100);
-            //drawBall();
-
             if (x >= 1600) {
-                //debugger
                 x = 0
                 x2 = canvas.width;
-                // tick=0
             }
             console.log(x)
             drawrect();
             drawPaddle();
-            //setInterval(drawrect, 50);
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 && paddleY > y)) {
                 alert("Конец игры. Ваш счет - " + tick);
                 paddleX = (canvas.width - paddleWidth) / 2;
@@ -161,7 +117,6 @@ export default class GameViewView extends BaseView {
                 paddleX -= 1;
             } else if (upPressed) {
                 paddleY -= 1;
-                // y-=dy
                 tick++
 
             } else if (downPressed && paddleY < canvas.height - paddleHeight) {
@@ -176,7 +131,6 @@ export default class GameViewView extends BaseView {
 
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
-
         function keyDownHandler(e) {
             if (e.keyCode === 39) {
                 rightPressed = true;
@@ -200,7 +154,6 @@ export default class GameViewView extends BaseView {
                 downPressed = false;
             }
         }
-
         setInterval(draw, 1);
     }
 }
