@@ -20,8 +20,8 @@ export default class UsersService {
 			.then((res) => res.text())
 			.then(res => {
 				return JSON.parse(res)
-			}).catch(function(){
-				return 
+			}).catch(() => {
+				return
 			})
 	}
 
@@ -65,5 +65,43 @@ export default class UsersService {
 			console.error(error);
 		});
 	}
-	
+
+	static FetchUpdate (formdata) {
+		const formData = new FormData(document.forms.myForm);
+		return AjaxModule.doPost({
+			path: '/upload',
+			body: formData,
+		})
+			.then((response) => {
+				if (response.status >= 300) {
+					throw response;
+				}
+				console.log("success");
+			})
+			.then(() => {
+				AjaxModule.doPost({
+					path: '/user/me',
+					body: {
+						email: formdata.email.value,
+						username: formdata.username.value,
+						first_name: formdata.first_name.value,
+						last_name: formdata.last_name.value,
+					},
+				})
+					.then((response) => {
+						if (response.status >= 300) {
+							throw response;
+						}
+						this.el.clear();
+						createProfile();
+					})
+					.catch((error) => {
+						console.error(error);
+					});
+			})
+			.catch((err) => {
+				console.log("error " + err.status);
+			})
+	}
+
 };

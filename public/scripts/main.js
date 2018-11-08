@@ -8,6 +8,7 @@ import UsersService from './UsersService.js';
 import ProfileView from './ProfileView.js';
 import Block from "../js/components/block/block.mjs"
 import SignUpView from "./SignUpView.js";
+import UpdateView from "./UpdateView.js";
 
 mediator.on('fetch-users', function () {
 	UsersService
@@ -80,6 +81,16 @@ mediator.on('user-logouted', function() {
 	router.open("/")
 });
 
+mediator.on('fetch-update', function (formdata) {
+	console.log(formdata)
+	UsersService
+		.FetchUpdate(formdata)
+		.then(() => {
+			mediator.emit('fetch-profile')
+			router.open('/user/me')
+		})
+})
+
 const root = new Block(document.getElementById('game'));
 const router = new Router(root);
 
@@ -89,5 +100,6 @@ router
 	.register('/sign_in', LoginView)
 	.register('/sign_up', SignUpView)
     .register('/new_game', GameView)
-	.register('/user/me', ProfileView);
+	.register('/user/me', ProfileView)
+	.register('/update', UpdateView)
 router.start();
