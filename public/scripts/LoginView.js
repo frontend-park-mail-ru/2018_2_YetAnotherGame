@@ -37,35 +37,14 @@ export default class LoginView extends BaseView {
 						const el = document.getElementById('err');
 						el.parentNode.removeChild(el)
 					}
-
 					const err = Block.Create('div', {'id': 'err'}, []);
 					form.append(err);
-
 					const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
 					err.append(att);
-
 					return;
 				}
 				mediator.emit("user-login", formdata);
-				// 	AJAX.doPost({
-				// 		path: '/session',
-				// 		body: {
-				// 			email: formdata.email.value,
-				// 			password: formdata.password.value,
-				// 		},
-				// 	})
-				// 		.then(response => {
-				// 			if (response.status >= 300) {
-				// 				throw response;
-				// 			}
-				// 			game.clear();
-				// 			createProfile();
-				// 		})
-				// 		.catch(error => {
-				// 			console.error(error);
-				// 		});
-				// }
-			})
+		})
 		this.el.append(signInSection);
 	}}
 

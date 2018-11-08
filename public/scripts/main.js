@@ -8,6 +8,7 @@ import UsersService from './UsersService.js';
 import ProfileView from './ProfileView.js';
 import Block from "../js/components/block/block.mjs"
 import SignUpView from "./SignUpView.js";
+import UpdateView from "./UpdateView.js";
 
 mediator.on('fetch-users', function () {
 	UsersService
@@ -49,9 +50,7 @@ mediator.on('user-login', function (formdata) {
 });
 
 mediator.on('user-logined', function () {
-	//debugger
 	router.open("/user/me")
-	//window.location = "http://127.0.0.1:3000";
 });
 
 mediator.on('user-register', function(formdata) {
@@ -60,25 +59,31 @@ mediator.on('user-register', function(formdata) {
         .Register(formdata)
         .then(function (response) {
             if (true){ // КОСТЫЛЬ!!!!
-                //debugger
                 mediator.emit('user-registered');
 			} else {//debugger
                 //console.log("error")
 			}
         })
         .catch(function (error) {
-            //console.error(error);
 		});
 })
 mediator.on('user-registered', function (formdata) {
-    //debugger
 	mediator.emit('user-logined')
-    //window.location = "http://127.0.0.1:3000";
-});
+    });
 
 mediator.on('user-logouted', function() {
 	router.open("/")
 });
+
+mediator.on('fetch-update', function (formdata) {
+	console.log(formdata)
+	UsersService
+		.FetchUpdate(formdata)
+		.then(() => {
+			mediator.emit('fetch-profile')
+			router.open('/user/me')
+		})
+})
 
 const root = new Block(document.getElementById('game'));
 const router = new Router(root);
@@ -89,5 +94,6 @@ router
 	.register('/sign_in', LoginView)
 	.register('/sign_up', SignUpView)
     .register('/new_game', GameView)
-	.register('/user/me', ProfileView);
+	.register('/user/me', ProfileView)
+	.register('/update', UpdateView)
 router.start();
