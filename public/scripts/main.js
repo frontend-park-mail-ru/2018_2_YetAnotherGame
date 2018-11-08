@@ -9,6 +9,7 @@ import ProfileView from './ProfileView.js';
 import Block from "../js/components/block/block.mjs"
 import SignUpView from "./SignUpView.js";
 import UpdateView from "./UpdateView.js";
+import LogOutView from "./LogOutView.js";
 
 mediator.on('fetch-users', function () {
 	UsersService
@@ -69,11 +70,19 @@ mediator.on('user-register', function(formdata) {
 })
 mediator.on('user-registered', function (formdata) {
 	mediator.emit('user-logined')
-    });
+});
 
 mediator.on('user-logouted', function() {
 	router.open("/")
 });
+
+mediator.on('logout', function() {
+	UsersService
+		.LogOut()
+		.then(function(){
+			mediator.emit('user-logouted')
+		})
+})
 
 mediator.on('fetch-update', function (formdata) {
 	console.log(formdata)
@@ -93,6 +102,7 @@ router
 	.register('/leaders', ScoreBoardView)
 	.register('/sign_in', LoginView)
 	.register('/sign_up', SignUpView)
+	.register('/log_out', LogOutView)
     .register('/new_game', GameView)
 	.register('/user/me', ProfileView)
 	.register('/update', UpdateView)
