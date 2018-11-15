@@ -8,6 +8,7 @@ export default class GameViewView extends BaseView {
     }
 
     render() {
+        this.el.clear()
         const logo = Block.Create("canvas", {
             "id": "myCanvas",
             "width": "1024",

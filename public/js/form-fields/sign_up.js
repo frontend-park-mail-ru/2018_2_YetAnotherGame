@@ -44,6 +44,13 @@
 				placeholder: "Repeat Password",
 			},
 		},
+		// {
+		// 	attrs: {
+		// 		name: "image",
+		// 		type: "file",
+		// 		accept: "image/*",
+		// 	},
+		// },
 		{
 			attrs: {
 				name: "submit",

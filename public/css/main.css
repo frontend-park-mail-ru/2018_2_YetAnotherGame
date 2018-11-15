@@ -53,12 +53,17 @@
     color: #888;
 }
 
+input {
+    outline: none;
+    margin-bottom: 5px;
+}
+
 .error {
-      border-width: 2px;
-      border-color: red;
-    }
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.75);
+    border-color: rgba(255, 0, 0, 0.5);
+}
     
 .ok {
-    border-width: 2px;
-    border-color: green;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
+    border-color: rgba(0, 255, 0, 0.5);
 }

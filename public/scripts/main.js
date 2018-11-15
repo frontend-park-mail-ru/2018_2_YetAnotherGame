@@ -51,22 +51,16 @@ mediator.on('user-login', function (formdata) {
 });
 
 mediator.on('user-logined', function () {
-	router.open("/user/me")
+	router.open("/users/me")
 });
 
 mediator.on('user-register', function(formdata) {
 	console.log(formdata)
     UsersService
         .Register(formdata)
-        .then(function (response) {
-            if (true){ // КОСТЫЛЬ!!!!
-                mediator.emit('user-registered');
-			} else {//debugger
-                //console.log("error")
-			}
+        .then(function () {
+            mediator.emit('user-registered');
         })
-        .catch(function (error) {
-		});
 })
 mediator.on('user-registered', function (formdata) {
 	mediator.emit('user-logined')
@@ -90,7 +84,9 @@ mediator.on('fetch-update', function (formdata) {
 		.FetchUpdate(formdata)
 		.then(() => {
 			mediator.emit('fetch-profile')
-			router.open('/user/me')
+		})
+		.then(() => {
+			router.open('/users/me')
 		})
 })
 
@@ -104,6 +100,6 @@ router
 	.register('/sign_up', SignUpView)
 	.register('/log_out', LogOutView)
     .register('/new_game', GameView)
-	.register('/user/me', ProfileView)
+	.register('/users/me', ProfileView)
 	.register('/update', UpdateView)
 router.start();

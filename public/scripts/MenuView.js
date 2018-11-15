@@ -39,12 +39,12 @@ export default class MenuView extends BaseView {
             sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["header-button"], "Sign in"),
             sign_up: Block.Create("a", {"href": "sign_up", "data-href": "sign_up"}, ["header-button"], "Sign up"),
             log_out: Block.Create("a", {"href": "log_out", "data-href": "log_out"}, ["header-button"], "Log out"),
-            profile: Block.Create("a", {"href": "user/me", "data-href": "user/me"}, ["header-button"],),
+            profile: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["header-button"],),
         }
         const titles = {
             new_game: Block.Create("a", {"href": "new_game", "data-href": "new_game"}, ["menu-button", "disabled"], "New Game"),
             leaders: Block.Create("a", {"href": "leaders", "data-href": "leaders"}, ["menu-button"], "Scoreboard"),
-            me: Block.Create("a", {"href": "user/me", "data-href": "user/me"}, ["menu-button"], "Profile"),
+            me: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["menu-button"], "Profile"),
             update: Block.Create("a", {"href": "update", "data-href": "update"}, ["menu-button"], "Update"),
         }
         const mult = Block.Create('h1', {}, [], 'Test multiplayer');

@@ -8,6 +8,7 @@ export default class UsersService {
 			})
 			.then((res) => res.text())
 			.then(res => {
+				console.log(res)
 				return JSON.parse(res)
 			})
 	}
@@ -15,7 +16,7 @@ export default class UsersService {
 	static FetchProfile () {
 		return AjaxModule
 			.doGet({
-				path: `/user/me`
+				path: `/users/me`
 			})
 			.then((res) => res.text())
 			.then(res => {
@@ -86,9 +87,10 @@ export default class UsersService {
 		})
 		.then(() => {
 			AjaxModule.doPost({
-				path: '/user/me',
+				path: '/users/me',
 				body: {
 					email: formdata.email.value,
+					password: formdata.password.value,
 					username: formdata.username.value,
 					first_name: formdata.first_name.value,
 					last_name: formdata.last_name.value,
