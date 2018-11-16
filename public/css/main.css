@@ -1,13 +1,26 @@
-@-webkit-keyframes background_animation {}@keyframes background_animation {}* {
+@import url("https://fonts.googleapis.com/css?family=Poiret+One&subset=cyrillic");
+@-webkit-keyframes background_animation {}
+@keyframes background_animation {}* {
   padding: 0px;
   border: 0px;
   margin: 0px;
 }
 
+A:visited {
+  text-decoration: none;
+  color: greenyellow;
+}
+
+A:hover {
+  color: orange;
+  font-size: 110%;
+  font-weight: 700;
+}
+
 body {
   background: url(../textures/menu-back.png) fixed no-repeat;
-  background-size: contain;
-  font-family: Arial, Helvetica, sans-serif;
+  background-size: cover;
+  font-family: "Poiret One", cyrillic;
 }
 
 .header {
@@ -26,18 +39,10 @@ body {
   background-color: #143ba583;
 }
 
-.header__button {
-  background-color: #ffffff;
-  width: 100px;
-  margin: 10px;
-  text-align: center;
-  line-height: 30px;
-  font-size: 15px;
-}
-
 .MenuPage {
   width: 100vw;
   height: 100vh;
+  font-size: 16pt;
 }
 
 .menu {
@@ -62,17 +67,44 @@ body {
 }
 
 .menu__title {
-  font-size: 200%;
+  font-weight: 600;
+  font-size: 30pt;
   margin-bottom: 30px;
   color: orange;
 }
 
 .menu__button {
+  width: 120px;
   line-height: 50px;
-  margin-top: 15px;
+  margin: 7.5px 0px;
   display: inline-block;
   border: 2px solid lightblue;
-  padding: 10px 100px;
+  padding: 10px 90px;
+  border-radius: 30px;
+}
+
+.menu__smallButton {
+  font-size: 15px;
+  width: 80px;
+}
+
+.menu__button:hover {
+  -webkit-box-shadow: 0 0 10px orange;
+          box-shadow: 0 0 10px orange;
+}
+
+.qwe {
+  width: 300px;
+  margin: 15px auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
 }
 
 .button_disable {
