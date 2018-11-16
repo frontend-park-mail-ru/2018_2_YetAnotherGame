@@ -9,10 +9,13 @@ export default class MenuView extends BaseView {
         this.data=null
         mediator.on("profile-loaded", this.setData.bind(this))
     }
-    
+
     show() {
         this.fetchProfile()
         this.el.show()
+		if (typeof this.data === undefined || this.data == null) {
+			this.render()
+		}
     }
 
     fetchProfile() {
@@ -27,33 +30,33 @@ export default class MenuView extends BaseView {
 	render () {
         this.el.clear();
         console.log(this.data)
-		const menuSection = Block.Create("section", {"data-section-name": "menu", "id": "mainMenu"}, [])
-        const header = Block.Create("div", {"id": "header"}, ["background_white"])
-        const logo = Block.Create("div", {"id": "logo"}, [])
-        const logoHeader = Block.Create("h1", {}, [], "Yet Another Game")
-        logo.append(logoHeader)
-        const main = Block.Create("div", {"id": "main"}, [])
-        const mainInner = Block.Create("div", {}, [])
-        main.append(mainInner)
+		const menuSection = Block.Create("section", {"data-section-name": "menuPage", "id": "mainMenu"}, ["MenuPage"])
+        const header = Block.Create("div", {"id": "header"}, ["header"])
+        const title = Block.Create("div", {"id": "title"}, ["menu__title"])
+        const titleHeader = Block.Create("h1", {}, [], "Yet Another Game")
+        title.append(titleHeader)
+		const menu = Block.Create("section", {"data-section-name": "menu", "id": "mainMenu"}, ["menu"])
+        const menuInner = Block.Create("div", {}, [])
+        menu.append(title)
+        menu.append(menuInner)
         const register = {
-            sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["header-button"], "Sign in"),
-            sign_up: Block.Create("a", {"href": "sign_up", "data-href": "sign_up"}, ["header-button"], "Sign up"),
-            log_out: Block.Create("a", {"href": "log_out", "data-href": "log_out"}, ["header-button"], "Log out"),
-            profile: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["header-button"],),
+            sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["header__button"], "Sign in"),
+            sign_up: Block.Create("a", {"href": "sign_up", "data-href": "sign_up"}, ["header__button"], "Sign up"),
+            log_out: Block.Create("a", {"href": "log_out", "data-href": "log_out"}, ["header__button"], "Log out"),
+            profile: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["header__button"],),
         }
         const titles = {
-            new_game: Block.Create("a", {"href": "new_game", "data-href": "new_game"}, ["menu-button", "disabled"], "New Game"),
-            leaders: Block.Create("a", {"href": "leaders", "data-href": "leaders"}, ["menu-button"], "Scoreboard"),
-            me: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["menu-button"], "Profile"),
-            update: Block.Create("a", {"href": "update", "data-href": "update"}, ["menu-button"], "Update"),
+            new_game: Block.Create("a", {"href": "new_game", "data-href": "new_game"}, ["menu__button", "button_disable"], "New Game"),
+            leaders: Block.Create("a", {"href": "leaders", "data-href": "leaders"}, ["menu__button"], "Scoreboard"),
+            me: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["menu__button"], "Profile"),
+            update: Block.Create("a", {"href": "update", "data-href": "update"}, ["menu__button"], "Update"),
         }
         const mult = Block.Create('h1', {}, [], 'Test multiplayer');
         if (typeof this.data === undefined || this.data == null) {
             header
-				.append(register.profile)
                 .append(register.sign_up)
                 .append(register.sign_in)
-            mainInner
+                menuInner
                 .append(titles.new_game)
                 .append(titles.leaders)
         } else {
@@ -61,8 +64,9 @@ export default class MenuView extends BaseView {
             header
                 .append(register.log_out)
                 .append(register.profile)
+            titles.new_game.deleteClass("button_disable")
             Object.entries(titles).forEach(function (elem) {
-                mainInner.append(elem[1])
+                menuInner.append(elem[1])
             })
         }
         const wsFields = window.Ws
@@ -89,8 +93,7 @@ export default class MenuView extends BaseView {
         )
         menuSection
             .append(header)
-            .append(logo)
-            .append(main)
+            .append(menu)
             .append(mult)
         this.el.append(menuSection).append(wsSection);
     }

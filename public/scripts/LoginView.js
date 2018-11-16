@@ -20,12 +20,12 @@ export default class LoginView extends BaseView {
 	render () {
 		this.el.clear()
 		const signIn = window.signInFields
-		const signInSection = Block.Create('section', {'data-section-name': 'sign_in'}, []);
+		const signInSection = Block.Create('section', {'data-section-name': 'sign_in'}, ["form__outline_disable", "form"]);
 		const header = Block.Create('h1', {}, [], 'Sign In');
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 		const vkLoginSection = Block.Create('div', {}, [], "Войти через: ")
 		const vkLoginImg = Block.Create('img', {"src": "../vk-social-network-logo.png"})
-		const vkLogin = Block.Create('a', {'href': 'https://oauth.vk.com/authorize?client_id=6744106&redirect_uri=http://127.0.0.1:8000/&scope=4194306'}, [])
+		const vkLogin = Block.Create('a', {'href': 'https://oauth.vk.com/authorize?client_id=6752650&redirect_uri=http://127.0.0.1:8000/api/vkauth&scope=4194306'}, [])
 		vkLogin.append(vkLoginImg)
 		const form = new Form(signIn);
 		vkLoginSection.append(vkLogin)

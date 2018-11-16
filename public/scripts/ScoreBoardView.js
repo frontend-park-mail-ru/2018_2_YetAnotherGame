@@ -51,7 +51,7 @@ export default class ScoreBoardView extends BaseView {
     renderScoreboard() {
         const header = Block.Create('h1', {}, [], 'Leaders')
         const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
-        const scoreBoardSection = Block.Create('div', {}, [])
+        const scoreBoardSection = Block.Create('div', {}, ["form__outline_disable"])
         scoreBoardSection.setInner(templateFunc(this.users))
         
         let lb = Block.Create("input", {"id": "lBtn", "type": "button", "value": "<-", }, [], "kek")

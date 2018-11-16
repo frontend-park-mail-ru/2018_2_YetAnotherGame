@@ -10,7 +10,7 @@ export default class UpdateView extends BaseView {
 	}
     render() {
 		this.el.clear()
-		const updateSection = Block.Create('section', {'data-section-name': 'update'}, []);
+		const updateSection = Block.Create('section', {'data-section-name': 'update'}, ["form__outline_disable"]);
 		const header = Block.Create('h1', {}, [], 'Update');
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 		const update = window.updateFields

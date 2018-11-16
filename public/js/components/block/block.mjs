@@ -57,6 +57,26 @@ export default class Block {
 		}
 	}
 
+	/**
+	 * Добавить класс к списку классов
+	 * @param {string[]} [newClasses=[]] - список имён классов
+	 *
+	 * */
+	addClasses(newClasses = []) {
+		newClasses.forEach(function (newClass) {
+			this.el.classList.add(newClass)
+		})
+	}
+
+	/**
+	 * Заменяет старый класс новым
+	 * @param {string} delClass - Удаляемый класс
+	 */
+	deleteClass(delClass="") {
+		this.el.classList.remove(delClass)
+	}
+
+
 	setInner(str = "") {
 		this.el.innerHTML = str
 	}

@@ -1,69 +1,112 @@
-* {
-    font-family: Arial, Helvetica, sans-serif;
+@-webkit-keyframes background_animation {}@keyframes background_animation {}* {
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
 }
 
-#game {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+body {
+  background: url(../textures/menu-back.png) fixed no-repeat;
+  background-size: contain;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-#header {
-    display: flex;
-    flex-direction: row-reverse;
-    border-bottom: 1px solid #000;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  border-bottom: 1px solid #000;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  background-color: #143ba583;
 }
 
-.header-button {
-    background-color: #ffffff;
-    width: 100px;
-    margin: 10px;
-    text-align: center;
-    line-height: 30px;
-    font-size: 15px;
+.header__button {
+  background-color: #ffffff;
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 15px;
 }
 
-#mainMenu {
-    text-align: center;
-
-    margin-top: 10%;
-    width: 600px;
+.MenuPage {
+  width: 100vw;
+  height: 100vh;
 }
 
-#logo {
-    margin-bottom: 30px;
+.menu {
+  width: 300px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  padding-top: 10%;
+  position: relative;
+  margin: auto;
 }
 
-.menu-button {
-    line-height: 50px;
-    margin-top: 15px;
-    display: inline-block;
-    border: 2px solid lightblue;
-    width: 400px;
+.menu__title {
+  font-size: 200%;
+  margin-bottom: 30px;
+  color: orange;
 }
 
-.disableb {
-    pointer-events: none;
-    cursor: default;
-    color: #888;
+.menu__button {
+  line-height: 50px;
+  margin-top: 15px;
+  display: inline-block;
+  border: 2px solid lightblue;
+  padding: 10px 100px;
 }
 
-input {
-    outline: none;
-    margin-bottom: 5px;
+.button_disable {
+  pointer-events: none;
+  cursor: default;
+  color: #888;
+}
+
+.form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  text-align: center;
+}
+
+.form input {
+  outline: none;
+  margin-bottom: 5px;
 }
 
 .error {
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.75);
-    border-color: rgba(255, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 10px rgba(255, 0, 0, 0.75);
+          box-shadow: 0 0 10px rgba(255, 0, 0, 0.75);
+  border-color: rgba(255, 0, 0, 0.5);
 }
-    
+
 .ok {
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
-    border-color: rgba(0, 255, 0, 0.5);
+  -webkit-box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
+          box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
+  border-color: rgba(0, 255, 0, 0.5);
 }
+/*# sourceMappingURL=main.css.map */
