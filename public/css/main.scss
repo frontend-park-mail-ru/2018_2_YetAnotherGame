@@ -1,95 +1,169 @@
 @import url('https://fonts.googleapis.com/css?family=Poiret+One&subset=cyrillic');
 $font-stack: 'Poiret One', cyrillic;
+$font-size-s: 16pt;
+$font-size-m: 20pt;
+$font-size-l: 28pt;
+$font-size-xl: 36pt;
+$font-size-hover: 120%;
 
 @keyframes background_animation {
     
 }
 
-*{
+@keyframes hover-link {
+    0% {font-size: $font-size-m}
+    50% {font-size: $font-size-xl}
+    100% {font-size: $font-size-l}
+}
+
+* {
     padding: 0px;
     border: 0px;
     margin: 0px;
+    font-size: $font-size-s;
+    font-family: $font-stack;
+    font-weight: 400;
 }
 
-A:visited {
+A {
     text-decoration: none;
-    color:greenyellow;
+    color: greenyellow;
 }
 
 A:hover {
     color: orange;
-    font-size: 110%;
     font-weight: 700;
 }
 
-body {
-    background: url(../textures/menu-back.png) fixed no-repeat;
-    background-size: cover;
-    font-family: $font-stack;
-}
-
-.header {
-    display: flex;
-    flex-direction: row-reverse;
-    border-bottom: 1px solid #000;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    background-color: #143ba583;
-    
+.text_center {
+    text-align: center;
 }
 
 .MenuPage {
+    background: url(../textures/menu-back.png) fixed no-repeat;
+    background-size: auto 150%;
     width: 100vw;
     height: 100vh;
-    font-size: 16pt;
+    display: grid;
+    grid-template-rows: 50px 5fr 50px;
+    grid-template-columns: 2fr 3fr 2fr;
+
+    &__header {
+        grid-row-start: 1; 
+        grid-row-end: 2;
+        grid-column-start: 1;
+        grid-column-end: 4;
+        min-height: 10px;
+        border-bottom: 1px solid #143ba5c5;
+        background-color: #143ba583;
+    }
+
+    &__body {
+        grid-row-start: 2; 
+        grid-row-end: 3;
+        grid-column-start: 2; 
+        grid-column-end: 3;
+        display: grid;
+        grid-template-rows: 1fr 5fr 1fr;
+    }
+
+    &__footer {
+        grid-row-start: 3; 
+        grid-row-end: 4;
+        grid-column-start: 1;
+        grid-column-end: 4;
+        border-top: 1px solid #143ba5c5;
+        background-color: #143ba583;
+    }
 }
 
-.menu {
-    width: 300px;
+.table {
+    grid-row-start:2; 
+    grid-row-end:3; 
+    vertical-align: middle;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
-    padding-top: 10%;
-    position: relative;
-    margin: auto;
 
-    &__title {
-        font-weight: 600;
-        font-size: 30pt;
-        margin-bottom: 30px; 
+    &__header {
+        width: 100%;
+        font-weight: 700;
+        font-size: $font-size-xl;
         color: orange;
     }
-    
-    &__button {
-        width: 120px;
-        line-height: 50px;
-        margin: 7.5px 0px;
-        display: inline-block;
-        border: 2px solid lightblue;
-        padding: 10px 90px;
-        border-radius: 30px;
+
+    &__body {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 5px;
     }
 
-    &__smallButton {
-        font-size: 15px;
-        width: 80px;
-    }
-
-    &__button:hover {
-        box-shadow: 0 0 10px orange;
+    &__footer {
+        min-height: 30px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        justify-content: center;
     }
 }
 
-.qwe {
-    width: 300px;
-    margin: 15px auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+.button {
+    width: 100%;
+    line-height: 50px;
+    margin: 7.5px 0px;
+    display: inline-block;
+    border: 2px solid lightblue;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 30px;
+    transition: font-size, color, box-shadow, font-weight;
+    transition-duration: 0.3s;
+
+    &_small {
+        min-height: 30px;
+        min-width: 30%;
+        margin: 0 10px;
+        font-size: $font-size-s;
+        transition: font-size, color font-weight;
+        transition-duration: 0.3s;
+        
+        &:hover {
+            font-size: $font-size-hover;
+            font-weight: 700;
+        }
+    }
+
+    &:hover {
+        font-size: $font-size-hover;
+        box-shadow: 0 0 13px 3px orange;
+        font-weight: 700;
+    }
+
+    &__pagination {
+        margin: 0px -5px;
+        padding: 5px 20px;
+        font-size: $font-size-s;
+        background: linear-gradient(to bottom, rgba(255, 166, 0, 0.5), rgba(172, 255, 47, 0.5));
+
+        &:not()
+    }
+}
+
+.scoreboard {
+    table {
+        border: 2px solid lightblue;
+        background-color: rgba(0, 255, 255, 0.5);
+        border-collapse: collapse;
+    }
+    th {
+        min-width: 150px;
+        border: 2px solid lightblue;
+    }
+    td {
+        border: 2px solid lightblue;
+    }
 }
 
 .button_disable {

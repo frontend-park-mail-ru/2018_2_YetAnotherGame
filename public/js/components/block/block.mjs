@@ -63,7 +63,7 @@ export default class Block {
 	 *
 	 * */
 	addClasses(newClasses = []) {
-		newClasses.forEach(function (newClass) {
+		newClasses.forEach((newClass) => {
 			this.el.classList.add(newClass)
 		})
 	}
