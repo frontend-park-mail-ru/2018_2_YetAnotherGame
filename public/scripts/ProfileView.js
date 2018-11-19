@@ -1,10 +1,10 @@
 import Block from "../js/components/block/block.mjs";
-import BaseView from "./BaseView.js"
+import PageView from "./PageView.js"
 import mediator from "./mediator.js";
 
 const templateFunc = window.fest[ 'js/components/profile/profile.tmpl' ]
 
-export default class ProfileView extends BaseView {
+export default class ProfileView extends PageView {
 	constructor (el) {
 		super(el);
 
@@ -45,19 +45,22 @@ export default class ProfileView extends BaseView {
 	}
 
 	renderProfile () {
-		this.el.clear()
-		const header = Block.Create('h1', {}, [], 'Profile')
-		const profile = Block.Create("div", {}, [])
-		profile.setInner(templateFunc(this.profile))
-		const img = Block.Create('img', {'src': `${this.profile.avatar}`}, [])
-		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
-		const profileSection = Block.Create("div", {}, [])
-		profileSection
-			.append(header)
-			.append(menuLink)
-			.append(profile)
-			.append(img)
+		const ProfileHeader = Block.Create('div', {}, ["headerFont"], 'Profile')
+		const ProfileBody = Block.Create('div', {}, ["table", "profile__table"])
+		const Profile = Block.Create('div', {}, ["profile", "body__profile"])
 
-		this.el.append(profileSection);
+		const avatar = Block.Create('img', {'src': `${this.profile.avatar}`}, ["avatar-80"])
+		ProfileBody.setInner(templateFunc(this.profile))
+		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+		
+		Profile
+			.append(ProfileHeader)
+			.append(avatar)
+			.append(ProfileBody)
+		super.render({
+			header: [menuLink],
+			body: [Profile]
+		})
+
 	}
 }

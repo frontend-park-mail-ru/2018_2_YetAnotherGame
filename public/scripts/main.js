@@ -10,6 +10,7 @@ import Block from "../js/components/block/block.mjs"
 import SignUpView from "./SignUpView.js";
 import UpdateView from "./UpdateView.js";
 import LogOutView from "./LogOutView.js";
+import PageView from "./PageView.js";
 
 mediator.on('fetch-users', function () {
 	UsersService
