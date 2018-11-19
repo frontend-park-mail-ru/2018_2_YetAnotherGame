@@ -1,11 +1,11 @@
-import BaseView from "./BaseView.js";
+import PageView from "./PageView.js";
 import mediator from "./mediator.js";
 import Block from "../js/components/block/block.mjs";
 import AjaxModule from "../js/modules/ajax.mjs"
 
 const templateFunc = window.fest[ 'js/components/scoreboard/scoreboard.tmpl' ];
 
-export default class ScoreBoardView extends BaseView {
+export default class ScoreBoardView extends PageView {
     constructor(el) {
 		super(el);
 		this.pageNumber = 0;
@@ -49,21 +49,16 @@ export default class ScoreBoardView extends BaseView {
 	}
 
     renderScoreboard() {
-        const MenuPage = Block.Create("section", {"data-section-name": "menuPage", "id": "mainMenu"}, ["MenuPage"])
-        const MenuHeader = Block.Create("div", {"id": "MenuHeader"}, ["MenuPage__header"])
-        const MenuBody = Block.Create("div", {"id": "MenuBody"}, ["MenuPage__body"])
-        const MenuFooter = Block.Create("div", {"id": "MenuFooter"}, ["MenuPage__footer"])
         const BodyTable = Block.Create("div", {"id":"BodyTable"}, ["table"])
-        const TableHeader = Block.Create("div", {}, ["table", "table__header", "leaders"], "Leaders")
+        const TableHeader = Block.Create("div", {}, ["table", "headerFont"], "Leaders")
 		const TableBody = Block.Create("section", {"data-section-name": "menu", "id": "TableBody"}, ["table","table__body"])
         const TableFooter = Block.Create("div", {"data-section-name": "TableFooter",}, ["table", "table__footer"])
-        const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+        const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "⬅")
         let num = this.pageNumber + 1
-        let numDiv = Block.Create("span", {}, ["button__pagination"], num)
-        let lb = Block.Create("button", {"id": "lBtn", "type": "button", "value":"<-"}, ["button__pagination", "text_center"], "<-")
-        let rb = Block.Create("button", {"id": "rBtn", "type": "button", "value":"->"}, ["button__pagination", "text_center"], "->")
+        let numDiv = Block.Create("div", {}, ["numPage", "pagination__numPage"], num)
+        let lb = Block.Create("button", {"id": "lBtn", "type": "button", "value":"<-"}, ["button__pagination", "button__pagination_left", "text_center"], "⇦")
+        let rb = Block.Create("button", {"id": "rBtn", "type": "button", "value":"->"}, ["button__pagination","button__pagination_right", "text_center"], "⇨")
         let br = Block.Create("br")
-        MenuHeader.append(menuLink)
         TableBody.setInner(templateFunc(this.users))
         TableFooter
             .append(lb)
@@ -75,15 +70,11 @@ export default class ScoreBoardView extends BaseView {
             .append(TableHeader)
             .append(TableBody)
             .append(TableFooter)
-        
-        MenuBody.append(BodyTable)
-
-        MenuPage
-            .append(MenuHeader)
-            .append(MenuBody)
-            .append(MenuFooter)
     
-        this.el.append(MenuPage)
+        super.render({
+			header: [menuLink],
+			body: [BodyTable],
+		})
 
         const rBtnActive = document.getElementById('rBtn')
 		rBtnActive.addEventListener('click', this.nextPage.bind(this))
