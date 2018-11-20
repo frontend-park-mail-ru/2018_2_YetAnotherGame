@@ -20,13 +20,14 @@ export default class LoginView extends PageView {
 	render () {
 		this.el.clear()
 		const signIn = window.signInFields
-		const signinSection = Block.Create('div', {'data-section-name': 'sign_in'}, ["signin", "body__signin"]);
+		const signinSection = Block.Create('div', {'data-section-name': 'sign_in'}, ["form", "body__form"]);
 		const signinHeader = Block.Create('div', {}, ["headerFont"], 'Sign In');
-		const vkLoginSection = Block.Create('div', {}, [], "Войти через: ")
-		const vkLoginImg = Block.Create('img', {"src": "../vk-social-network-logo.png"})
+		const vkLoginSection = Block.Create('div', {}, ["vk", "form__vk"], "Войти через: ")
+		const vkLoginImg = Block.Create('img', {"src": "../vk.png"}, ["vk-logo"])
 		const vkLogin = Block.Create('a', {'href': 'https://oauth.vk.com/authorize?client_id=6752650&redirect_uri=http://127.0.0.1:8000/api/vkauth&scope=4194306'}, [])
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 
+		vkLogin.setInner("<br>")
 		vkLogin.append(vkLoginImg)
 		const form = new Form(signIn);
 		vkLoginSection.append(vkLogin)

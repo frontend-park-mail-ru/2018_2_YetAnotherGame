@@ -10,12 +10,32 @@
 
 A {
   text-decoration: none;
-  color: greenyellow;
+  color: #acff2f;
 }
 
 A:hover {
-  color: orange;
+  color: #ffa500;
   font-weight: 700;
+}
+
+::-webkit-input-placeholder {
+  color: rgba(221, 218, 218, 0.9);
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: rgba(221, 218, 218, 0.9);
+  opacity: 1;
+}
+
+::-ms-input-placeholder {
+  color: rgba(221, 218, 218, 0.9);
+  opacity: 1;
+}
+
+::placeholder {
+  color: rgba(221, 218, 218, 0.9);
+  opacity: 1;
 }
 
 .text_center {
@@ -65,18 +85,62 @@ A:hover {
   grid-row-end: 4;
 }
 
-.signin input {
+.form {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+  margin-top: 10%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  text-align: center;
+}
+
+.form__vk {
+  color: orange;
+}
+
+.form input {
   margin: 10px;
   outline: none;
   background-color: rgba(128, 0, 128, 0.5);
   border: 2px solid purple;
-  color: greenyellow;
+  color: #acff2f;
 }
 
-.signup {
-  -ms-grid-column: 2;
-      grid-column-start: 2;
-  grid-column-end: 3;
+.form input[type=file] {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.form__Usubmit {
+  position: relative;
+  top: 20px;
+}
+
+.file_field {
+  position: relative;
+  top: -80px;
+  width: 254px;
+  font-weight: 700;
+  color: #acff2f;
+  background-color: rgba(128, 0, 128, 0.5);
+  border: 2px solid purple;
+  display: inline-block;
+  margin: 0px auto;
+}
+
+.vk-logo {
+  width: 50px;
+  height: 50px;
 }
 
 .log-out {
@@ -143,7 +207,7 @@ A:hover {
 .nickname:hover {
   font-size: 120%;
   font-weight: 200%;
-  color: orange;
+  color: #ffa500;
 }
 
 .table {
@@ -196,7 +260,7 @@ A:hover {
   grid-column-end: 3;
 }
 
-.body__signin {
+.body__form {
   -ms-grid-column: 2;
       grid-column-start: 2;
   grid-column-end: 3;
@@ -221,7 +285,6 @@ A:hover {
   line-height: 50px;
   margin: 7.5px 0px;
   display: inline-block;
-  border: 2px solid lightblue;
   padding-top: 10px;
   padding-bottom: 10px;
   border-radius: 30px;
@@ -231,6 +294,7 @@ A:hover {
   transition: font-size, color, box-shadow, font-weight, -webkit-box-shadow;
   -webkit-transition-duration: 0.3s;
           transition-duration: 0.3s;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .button_small {
@@ -249,14 +313,14 @@ A:hover {
 
 .button:hover {
   font-size: 120%;
-  -webkit-box-shadow: 0 0 13px 3px orange;
-          box-shadow: 0 0 13px 3px orange;
+  -webkit-box-shadow: 0 0 13px 3px #ffa500;
+          box-shadow: 0 0 13px 3px #ffa500;
   font-weight: 700;
 }
 
 .button__pagination {
   background-color: rgba(255, 255, 255, 0);
-  color: greenyellow;
+  color: #acff2f;
   font-size: 16pt;
   -webkit-transition: font-size, color font-weight;
   transition: font-size, color font-weight;
@@ -271,7 +335,7 @@ A:hover {
 }
 
 .button__pagination_left:hover {
-  color: orange;
+  color: #ffa500;
   font-size: 120%;
   font-weight: 700;
 }
@@ -285,7 +349,7 @@ A:hover {
 }
 
 .button__pagination_right:hover {
-  color: orange;
+  color: #ffa500;
   font-size: 120%;
   font-weight: 700;
 }
@@ -294,7 +358,7 @@ A:hover {
   -ms-grid-column: 4;
       grid-column-start: 4;
   grid-column-end: 5;
-  color: greenyellow;
+  color: #acff2f;
   font-weight: 700;
 }
 
@@ -324,21 +388,14 @@ A:hover {
   color: #888;
 }
 
-.form {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  position: relative;
-  text-align: center;
-}
-
-.form input {
-  outline: none;
-  margin-bottom: 5px;
+@media only screen and (max-width: 500px) {
+  /* example */
+  .field > div {
+    display: none;
+  }
+  .field > button {
+    width: 100%;
+  }
 }
 
 .error {

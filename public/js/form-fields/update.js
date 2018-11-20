@@ -33,12 +33,15 @@
 		{
 			attrs: {
 				name: "image",
+				id: "image",
 				type: "file",
 				accept: "image/*",
+				class: "file-field form__file-field",
 			},
 		},
 		{
 			attrs: {
+				class: "form__Usubmit",
 				name: "submit",
 				type: "submit",
 			},
