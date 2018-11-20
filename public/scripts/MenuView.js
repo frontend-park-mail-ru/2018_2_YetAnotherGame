@@ -1,7 +1,5 @@
-import BaseView from './BaseView.js';
 import PageView from './PageView.js';
 import Block from "../js/components/block/block.mjs"
-import Form from "../js/components/form/form.mjs"
 import mediator from "./mediator.js";
 
 export default class MenuView extends PageView {

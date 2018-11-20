@@ -1,9 +1,9 @@
-import BaseView from './BaseView.js';
 import Block from "../js/components/block/block.mjs";
 import Form from "../js/components/form/form.mjs";
 import mediator from "./mediator.js";
+import PageView from './PageView.js';
 
-export default class SignUpView extends BaseView {
+export default class SignUpView extends PageView {
     constructor(el) {
         super(el)
     }
@@ -19,15 +19,18 @@ export default class SignUpView extends BaseView {
     render() {
         this.el.clear()
         const signUp = window.signUpFields
-		const signUpSection = Block.Create('section', {'data-section-name': 'sign_up'}, []);
-		const header = Block.Create('h1', {}, [], 'Sign Up');
+		const signupSection = Block.Create('section', {'data-section-name': 'sign_up'}, ["form", "body__form"]);
+		const signupHeader = Block.Create('div', {}, ["headerFont"], 'Sign Up');
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 		const form = new Form(signUp);
-		signUpSection
-			.append(header)
-			.append(menuLink)
+        signupSection
+            .append(signupHeader)
             .append(form)
-        this.el.append(signUpSection);
+        
+        super.render({
+            header:[menuLink],
+            body:[signupSection],
+        })
         const check = document.getElementsByName("password")[0]
         const check2 = document.getElementsByName("password_repeat")[0]
         check.addEventListener("keyup", () => {

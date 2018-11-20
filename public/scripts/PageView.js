@@ -47,11 +47,14 @@ export default class PageView extends BaseView {
         const register = {
             sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["button_small", "sign-in"], "Sign in"),
             sign_up: Block.Create("a", {"href": "sign_up", "data-href": "sign_up"}, ["button_small", "sign-up"], "Sign up"),
-            log_out: Block.Create("a", {"href": "log_out", "data-href": "log_out"}, ["log-out", "button_small"], "Log out"),
+            log_out: Block.Create("a", {"href": "log_out", "data-href": "log_out"}, ["log-out", "button_small"]),
             profile: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["button_small", "headerProfileName"],),
         }
 
-    
+        const log_out_img = Block.Create("img", {"src": "../logout.png"}, ["logoutpng"])
+        register.log_out.append(log_out_img)
+
+
         if (this.hasProfile === true) {
             const img = Block.Create('img', {'src': `${this.data.avatar}`}, ["avatar-40"])
             register.profile.setText(`${this.data.username}`)
