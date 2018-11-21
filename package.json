@@ -11,6 +11,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.0",
     "uuid": "^3.3.2",
+    "webpack": "^4.26.0",
     "express-history-api-fallback": "^2.2.1"
   },
   "devDependencies": {
