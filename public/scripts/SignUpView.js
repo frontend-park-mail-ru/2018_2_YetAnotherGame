@@ -21,12 +21,13 @@ export default class SignUpView extends PageView {
         const signUp = window.signUpFields
 		const signupSection = Block.Create('section', {'data-section-name': 'sign_up'}, ["form", "body__form"]);
 		const signupHeader = Block.Create('div', {}, ["headerFont"], 'Sign Up');
-		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+        // const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+        const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "⬅")
 		const form = new Form(signUp);
         signupSection
             .append(signupHeader)
             .append(form)
-        
+
         super.render({
             header:[menuLink],
             body:[signupSection],
@@ -42,7 +43,7 @@ export default class SignUpView extends PageView {
                 }
                 const err = Block.Create('div', {'id': 'err'}, []);
                 form.append(err);
-                const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
+                const att = Block.Create('p', {}, ['err-msg'], 'password must be at least 4 characters');
                 err.append(att);
             }
             else {
@@ -60,7 +61,7 @@ export default class SignUpView extends PageView {
                 check2.setAttribute("class", "error")
                 const err = Block.Create('div', {'id': 'err'}, []);
                 form.append(err);
-                const att = Block.Create('p', {}, [], 'password must be equal');
+                const att = Block.Create('p', {}, ['err-msg'], 'password must be equal');
                 err.append(att);
             }
             else{

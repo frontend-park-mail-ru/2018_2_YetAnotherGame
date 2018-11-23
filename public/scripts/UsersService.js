@@ -6,10 +6,10 @@ export default class UsersService {
 			.doGet({
 				path: `/leaders`
 			})
-			.then((res) => res.text())
-			.then(res => {
-				console.log(res)
-				return JSON.parse(res)
+			.then((res) => res.json())
+			.catch((err) => {
+				console.error(err)
+				return err
 			})
 	}
 
@@ -18,12 +18,7 @@ export default class UsersService {
 			.doGet({
 				path: `/users/me`
 			})
-			.then((res) => res.text())
-			.then(res => {
-				return JSON.parse(res)
-			}).catch(() => {
-				return
-			})
+			.then((res) => res.json())
 	}
 
 	static Register (formdata){
@@ -53,11 +48,15 @@ export default class UsersService {
 				password: formdata.password.value,
 			},
 		})
-		.then(response => {
-			return response;
+		.then(res => {
+			if (res.status >= 300) {
+				throw res;
+			}
+			return res;
 		})
 		.catch(error => {
 			console.error(error);
+			return error;
 		});
 	}
 
@@ -74,7 +73,10 @@ export default class UsersService {
 	}
 
 	static FetchUpdate (formdata) {
-		const formData = new FormData(document.forms.myForm);
+		const formData = new FormData()
+		if (formdata.image.files[0]) {
+			formData.append('image', formdata.image.files[0], formdata.image.files[0].name)
+		}
 		return AjaxModule.doPost({
 			path: '/upload',
 			body: formData,
@@ -84,13 +86,13 @@ export default class UsersService {
 				throw response;
 			}
 			console.log("success");
+			return response
 		})
-		.then(() => {
+		.then((response) => {
 			AjaxModule.doPost({
 				path: '/users/me',
 				body: {
 					email: formdata.email.value,
-					password: formdata.password.value,
 					username: formdata.username.value,
 					first_name: formdata.first_name.value,
 					last_name: formdata.last_name.value,
@@ -100,13 +102,14 @@ export default class UsersService {
 				if (response.status >= 300) {
 					throw response;
 				}
+				return response
 			})
-			.catch((error) => {
-				console.error(error);
-			});
+			.catch((err) => {
+				console.log("error " + err.status);
+			})
 		})
-		.catch((err) => {
-			console.log("error " + err.status);
-		})
+		.catch((error) => {
+			console.error(error);
+		});
 	}
 };

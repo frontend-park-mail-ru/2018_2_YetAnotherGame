@@ -39,15 +39,16 @@ mediator.on('user-login', function (formdata) {
 	UsersService
 		.Login(formdata)
 		.then(function (response) {
-			if (response.status<300){
-				//debugger
-				mediator.emit('user-logined');
-			} else {//debugger
-				console.log("error")
+			if (response.status >= 300) {
+				throw response
 			}
+			mediator.emit('user-logined');
 		})
 		.catch(function (error) {
-			//console.error(error);
+			const form = new Block(document.forms[0]);
+			const err = Block.Create('p', {}, ['err-msg'], 'Please, check correctness of writing of the email and password.');
+			form.append(err)
+			console.error(error)
 		});
 });
 
@@ -83,11 +84,14 @@ mediator.on('fetch-update', function (formdata) {
 	console.log(formdata)
 	UsersService
 		.FetchUpdate(formdata)
-		.then(() => {
+		.then((res) => {
 			mediator.emit('fetch-profile')
 		})
 		.then(() => {
 			router.open('/users/me')
+		})
+		.catch((err) => {
+			console.error(err)
 		})
 })
 

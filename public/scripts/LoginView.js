@@ -25,7 +25,8 @@ export default class LoginView extends PageView {
 		const vkLoginSection = Block.Create('div', {}, ["vk", "form__vk"], "Войти через: ")
 		const vkLoginImg = Block.Create('img', {"src": "../vk.png"}, ["vk-logo"])
 		const vkLogin = Block.Create('a', {'href': 'https://oauth.vk.com/authorize?client_id=6752650&redirect_uri=http://127.0.0.1:8000/api/vkauth&scope=4194306'}, [])
-		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+		// const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+        const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "⬅")
 
 		vkLogin.setInner("<br>")
 		vkLogin.append(vkLoginImg)
@@ -51,11 +52,10 @@ export default class LoginView extends PageView {
 					}
 					const err = Block.Create('div', {'id': 'err'}, []);
 					form.append(err);
-					const att = Block.Create('p', {}, [], 'password must be at least 4 characters');
+					const att = Block.Create('p', {}, ['err-msg'], 'password must be at least 4 characters');
 					err.append(att);
 					return;
 				}
 				mediator.emit("user-login", formdata);
 		})
 	}}
-

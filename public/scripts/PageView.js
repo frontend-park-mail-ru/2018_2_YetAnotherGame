@@ -41,7 +41,7 @@ export default class PageView extends BaseView {
         const MenuHeader = Block.Create("div", {"id": "MenuHeader"}, ["main__header"])
         const MenuBody = Block.Create("div", {"id": "MenuBody"}, ["main__body"])
         const MenuFooter = Block.Create("div", {"id": "MenuFooter"}, ["main__footer"])
-        
+
         const HeaderProfile = Block.Create("div", {}, ["profileHeader", "header__profileHeader"])
 
         const register = {
@@ -56,16 +56,20 @@ export default class PageView extends BaseView {
 
 
         if (this.hasProfile === true) {
+            // const profileImg = Block.Create("a", {"href": "users/me"}, [],)
             const img = Block.Create('img', {'src': `${this.data.avatar}`}, ["avatar-40"])
+            // profileImg.append(img)
+
             register.profile.setText(`${this.data.username}`)
             HeaderProfile
+            // .append(profileImg)
                 .append(img)
-                .append(register.profile)   
+                .append(register.profile)
                 .append(register.log_out)
         } else {
             HeaderProfile
                 .append(register.sign_in)
-                .append(register.sign_up) 
+                .append(register.sign_up)
         }
 
         header.forEach((newChild) => {

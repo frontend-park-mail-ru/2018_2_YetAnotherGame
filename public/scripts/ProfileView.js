@@ -1,6 +1,6 @@
-import Block from "../js/components/block/block.mjs";
-import PageView from "./PageView.js"
+import PageView from "./PageView.js";
 import mediator from "./mediator.js";
+import Block from "../js/components/block/block.mjs";
 
 const templateFunc = window.fest[ 'js/components/profile/profile.tmpl' ]
 
@@ -9,7 +9,6 @@ export default class ProfileView extends PageView {
 		super(el);
 
 		this.profile = null;
-
 		mediator.on('profile-loaded', this.setProfile.bind(this))
 	}
 
@@ -51,12 +50,14 @@ export default class ProfileView extends PageView {
 
 		const avatar = Block.Create('img', {'src': `${this.profile.avatar}`}, ["avatar-80"])
 		ProfileBody.setInner(templateFunc(this.profile))
-		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
-		
+		// const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "⬅")
+
 		Profile
 			.append(ProfileHeader)
 			.append(avatar)
 			.append(ProfileBody)
+
 		super.render({
 			header: [menuLink],
 			body: [Profile]

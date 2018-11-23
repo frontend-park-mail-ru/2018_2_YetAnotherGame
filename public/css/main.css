@@ -409,4 +409,8 @@ A:hover {
           box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
   border-color: rgba(0, 255, 0, 0.5);
 }
+
+.err-msg {
+    color: red;
+}
 /*# sourceMappingURL=main.css.map */

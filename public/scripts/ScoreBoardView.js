@@ -65,12 +65,12 @@ export default class ScoreBoardView extends PageView {
             .append(numDiv)
             .append(rb)
             .append(br)
-    
+
         BodyTable
             .append(TableHeader)
             .append(TableBody)
             .append(TableFooter)
-    
+
         super.render({
 			header: [menuLink],
 			body: [BodyTable],
@@ -83,11 +83,13 @@ export default class ScoreBoardView extends PageView {
 
         if (!this.canNext) {
             rBtnActive.disabled = true
-		} else if (this.pageNumber <= 0) {
+		}
+        if (this.pageNumber <= 0) {
 			lBtnActive.disabled = true
-		} else {
-			lBtnActive.disabled = false
-			rBtnActive.disabled = false
+		}
+        if (this.canNext && this.pageNumber > 0) {
+        	lBtnActive.disabled = false
+        	rBtnActive.disabled = false
         }
     }
 
@@ -95,9 +97,9 @@ export default class ScoreBoardView extends PageView {
         this.pageNumber++
         AjaxModule.doGet({
             path: `/leaders?page=${this.pageNumber}`
-        }).then((res) => res.text())
-        .then(res => {
-            res = JSON.parse(res)
+        })
+        .then((res) => res.json())
+        .then((res) => {
             this.setUsers(res)
         })
     }
@@ -106,11 +108,11 @@ export default class ScoreBoardView extends PageView {
         this.pageNumber--
         AjaxModule.doGet({
             path: `/leaders?page=${this.pageNumber}`
-        }).then((res) => res.text())
+        })
+        .then((res) => res.json())
         .then(res => {
-            res = JSON.parse(res)
             this.setUsers(res)
-        })    
+        })
     }
 
 }
