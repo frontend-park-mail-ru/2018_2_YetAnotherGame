@@ -12,6 +12,11 @@ import UpdateView from "./UpdateView.js";
 import LogOutView from "./LogOutView.js";
 import PageView from "./PageView.js";
 
+//----------------------
+import AjaxModule from "../js/modules/ajax.mjs"
+import Form from "../js/components/form/form.mjs"
+
+
 mediator.on('fetch-users', function () {
 	UsersService
 		.FetchUsers()
