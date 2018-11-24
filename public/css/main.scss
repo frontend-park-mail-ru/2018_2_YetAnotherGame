@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Poiret+One&subset=cyrillic');
-$font-stack: 'Poiret One', cyrillic;
+@import url("https://fonts.googleapis.com/css?family=Poiret+One&subset=cyrillic");
+$font-stack: "Poiret One", cyrillic;
 $font-size-xs: 12pt;
 $font-size-s: 16pt;
 $font-size-m: 20pt;
@@ -18,7 +18,7 @@ $background-purple: rgba(128, 0, 128, 0.5);
 
 
 // @keyframes background_animation {
-    
+
 // }
 
 // @keyframes hover-link {
@@ -46,9 +46,9 @@ A:hover {
     font-weight: 700;
 }
 
-::placeholder { 
+::placeholder {
     color: rgba(221, 218, 218, 0.9);
-    opacity: 1; 
+    opacity: 1;
 }
 
 .text_center {
@@ -64,7 +64,7 @@ A:hover {
 }
 
 .main {
-    background: url(../textures/menu-back.png) fixed no-repeat;
+    background: url(../img/menu-back.png) fixed no-repeat;
     background-size: auto 150%;
     width: 100vw;
     height: 100vh;
@@ -72,20 +72,20 @@ A:hover {
     grid-template-rows: 50px 5fr 50px;
 
     &__header {
-        grid-row-start: 1; 
+        grid-row-start: 1;
         grid-row-end: 2;
         display: grid;
     }
 
     &__body {
-        grid-row-start: 2; 
+        grid-row-start: 2;
         grid-row-end: 3;
         display: grid;
         grid-template-columns: 3fr 5fr 3fr;
     }
 
     &__footer {
-        grid-row-start: 3; 
+        grid-row-start: 3;
         grid-row-end: 4;
     }
 }
@@ -111,7 +111,7 @@ A:hover {
         border: 2px solid purple;
         color: $link-color;
     }
-    
+
     input[type=file]{
         width: 0.1px;
         height: 0.1px;
@@ -123,7 +123,7 @@ A:hover {
 
     &__Usubmit {
         position: relative;
-        
+
         top: 20px;
     }
 }
@@ -146,7 +146,7 @@ A:hover {
 }
 
 .signup {
-    
+
 }
 
 .log-out {
@@ -155,8 +155,8 @@ A:hover {
 
 .header__profileHeader {
     font-size: $font-size-s;
-    grid-column-start:3; 
-    grid-column-end:4; 
+    grid-column-start:3;
+    grid-column-end:4;
 }
 
 .profileHeader {
@@ -193,7 +193,7 @@ A:hover {
     font-size: $font-size-m;
     transition: font-size, color font-weight;
     transition-duration: 0.3s;
-    
+
     &:hover {
         font-size: $font-size-hover;
         font-weight: $font-weight-hover;
@@ -202,10 +202,10 @@ A:hover {
 }
 
 .table {
-    grid-row-start:2; 
-    grid-row-end:3; 
-    grid-column-start:2; 
-    grid-column-end:3; 
+    grid-row-start:2;
+    grid-row-end:3;
+    grid-column-start:2;
+    grid-column-end:3;
     vertical-align: middle;
     display: flex;
     flex-direction: column;
@@ -230,7 +230,7 @@ A:hover {
         min-height: 50px;
         width: 100%;
         display: grid;
-        grid-template-columns: repeat(7, 1fr); 
+        grid-template-columns: repeat(7, 1fr);
     }
 }
 
@@ -249,7 +249,7 @@ A:hover {
 
 .profile {
     text-align: center;
-    
+
     &__table {
         margin: 10px;
         text-align: left;
@@ -280,7 +280,7 @@ A:hover {
         font-size: $font-size-s;
         transition: font-size, color font-weight;
         transition-duration: 0.3s;
-        
+
         &:hover {
             font-size: $font-size-hover;
             font-weight: 700;
@@ -298,13 +298,13 @@ A:hover {
         color: $link-color;
         font-size: $font-size-s;
         transition: font-size, color font-weight;
-            
-        
+
+
         &_left {
             grid-column-start: 3;
             grid-column-end: 4;
             transition-duration: 0.3s;
-            
+
             &:hover {
                 color: $link-hover-color;
                 font-size: $font-size-hover;
@@ -322,7 +322,7 @@ A:hover {
                 font-weight: 700;
             }
         }
-        
+
     }
 }
 
@@ -350,7 +350,7 @@ A:hover {
         border: 2px solid rgba(173, 216, 230, 0);
     }
     td {
-        padding-bottom: 5px; 
+        padding-bottom: 5px;
         border: 2px solid rgba(173, 216, 230, 0);
     }
 }
@@ -374,10 +374,8 @@ A:hover {
     box-shadow: 0 0 10px rgba(255, 0, 0, 0.75);
     border-color: rgba(255, 0, 0, 0.5);
 }
-    
+
 .ok {
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
     border-color: rgba(0, 255, 0, 0.5);
 }
-
-        

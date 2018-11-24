@@ -51,7 +51,7 @@ A:hover {
 }
 
 .main {
-  background: url(../textures/menu-back.png) fixed no-repeat;
+  background: url(../img/menu-back.png) fixed no-repeat;
   background-size: auto 150%;
   width: 100vw;
   height: 100vh;

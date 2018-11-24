@@ -1,51 +1,55 @@
-import PageView from "./PageView.js";
-import mediator from "./mediator.js";
-import Block from "../js/components/block/block.mjs";
-import AjaxModule from "../js/modules/ajax.mjs"
+import PageView from "./PageView.js"
+import mediator from "../scripts/mediator.js"
+import Block from "../components/block/block.mjs"
+import AjaxModule from "../modules/ajax.mjs"
 
-const templateFunc = window.fest[ 'js/components/scoreboard/scoreboard.tmpl' ];
+const templateFunc = window.fest["js/components/scoreboard/scoreboard.tmpl"]
+
+// const fest = require("fest")
+// const template = "../components/scoreboard/scoreboard.tmpl.xml"
+// import template from "../components/scoreboard/scoreboard.tmpl.xml"
 
 export default class ScoreBoardView extends PageView {
     constructor(el) {
-		super(el);
-		this.pageNumber = 0;
+		super(el)
+		this.pageNumber = 0
 
-        this.users = null;
-        this.canNext = false;
+        this.users = null
+        this.canNext = false
 
-		mediator.on('users-loaded', this.setUsers.bind(this));
+		mediator.on("users-loaded", this.setUsers.bind(this))
     }
 
     show() {
-        super.show();
+        super.show()
 
-        this.fetchUsers();
+        this.fetchUsers()
     }
 
     fetchUsers() {
-        mediator.emit("fetch-users");
+        mediator.emit("fetch-users")
     }
 
     setUsers (users) {
-        this.users = users.Scoreboard.Users;
-        this.canNext = users.CanNext;
-		this.render();
+        this.users = users.Scoreboard.Users
+        this.canNext = users.CanNext
+		this.render()
 	}
 
     render() {
-        this.el.clear();
+        this.el.clear()
 
 		if (!this.users) {
-			this.renderLoading();
+			this.renderLoading()
 		} else {
-			this.renderScoreboard();
+			this.renderScoreboard()
 		}
     }
 
     renderLoading () {
-		const loading = Block.Create('strong', {}, []);
-		loading.setText('Loading');
-		this.el.append(loading);
+		const loading = Block.Create("strong", {}, [])
+		loading.setText("Loading")
+		this.el.append(loading)
 	}
 
     renderScoreboard() {
@@ -59,7 +63,10 @@ export default class ScoreBoardView extends PageView {
         let lb = Block.Create("button", {"id": "lBtn", "type": "button", "value":"<-"}, ["button__pagination", "button__pagination_left", "text_center"], "⇦")
         let rb = Block.Create("button", {"id": "rBtn", "type": "button", "value":"->"}, ["button__pagination","button__pagination_right", "text_center"], "⇨")
         let br = Block.Create("br")
+
         TableBody.setInner(templateFunc(this.users))
+        // TableBody.setInner(fest.render(template, this.users, {beautify: false}))
+
         TableFooter
             .append(lb)
             .append(numDiv)
@@ -76,10 +83,10 @@ export default class ScoreBoardView extends PageView {
 			body: [BodyTable],
 		})
 
-        const rBtnActive = document.getElementById('rBtn')
-		rBtnActive.addEventListener('click', this.nextPage.bind(this))
-        const lBtnActive = document.getElementById('lBtn')
-        lBtnActive.addEventListener('click', this.prevPage.bind(this))
+        const rBtnActive = document.getElementById("rBtn")
+		rBtnActive.addEventListener("click", this.nextPage.bind(this))
+        const lBtnActive = document.getElementById("lBtn")
+        lBtnActive.addEventListener("click", this.prevPage.bind(this))
 
         if (!this.canNext) {
             rBtnActive.disabled = true

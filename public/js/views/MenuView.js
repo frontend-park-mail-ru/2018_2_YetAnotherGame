@@ -1,13 +1,13 @@
-import PageView from './PageView.js';
-import Block from "../js/components/block/block.mjs"
-import mediator from "./mediator.js";
+import PageView from "./PageView.js"
+import Block from "../components/block/block.mjs"
+import mediator from "../scripts/mediator.js"
 
 export default class MenuView extends PageView {
 	constructor (el) {
-        super(el);
+        super(el)
         this.hasProfile = false
         mediator.on("profile-loaded", ()=>{
-            this.hasProfile = true;
+            this.hasProfile = true
         })
         mediator.on("user-logout", () => {
             this.hasProfile = false
@@ -15,11 +15,11 @@ export default class MenuView extends PageView {
     }
 
     show() {
-        super.show();
+        super.show()
     }
 
 	render () {
-        this.el.clear();
+        this.el.clear()
         console.log(this.data)
         const BodyTable = Block.Create("div", {"id":"BodyTable"}, ["table"])
         const TableHeader = Block.Create("div", {}, ["table", "headerFont"], "STARSHIP")

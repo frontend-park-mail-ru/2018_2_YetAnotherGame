@@ -1,4 +1,4 @@
-import AjaxModule from '../js/modules/ajax.mjs'
+import AjaxModule from "../modules/ajax.mjs"
 
 export default class UsersService {
 	static FetchUsers () {
@@ -23,7 +23,7 @@ export default class UsersService {
 
 	static Register (formdata){
         return AjaxModule.doPost({
-            path: '/session/new',
+            path: "/session/new",
             body: {
                 email: formdata.email.value,
                 password: formdata.password.value,
@@ -33,16 +33,16 @@ export default class UsersService {
             },
         })
 		.then(response => {
-			return response;
+			return response
 		})
 		.catch(error => {
-			console.error(error);
-		});
+			console.error(error)
+		})
     }
 
 	static Login (formdata){
 		return AjaxModule.doPost({
-			path: '/session',
+			path: "/session",
 			body: {
 				email: formdata.email.value,
 				password: formdata.password.value,
@@ -50,47 +50,47 @@ export default class UsersService {
 		})
 		.then(res => {
 			if (res.status >= 300) {
-				throw res;
+				throw res
 			}
-			return res;
+			return res
 		})
 		.catch(error => {
-			console.error(error);
-			return error;
-		});
+			console.error(error)
+			return error
+		})
 	}
 
 	static LogOut (){
 		return AjaxModule.doDelete({
-			path: '/session',
+			path: "/session",
 		})
 		.then(response => {
-			return response;
+			return response
 		})
 		.catch(error => {
-			console.error(error);
-		});
+			console.error(error)
+		})
 	}
 
 	static FetchUpdate (formdata) {
 		const formData = new FormData()
 		if (formdata.image.files[0]) {
-			formData.append('image', formdata.image.files[0], formdata.image.files[0].name)
+			formData.append("image", formdata.image.files[0], formdata.image.files[0].name)
 		}
 		return AjaxModule.doPost({
-			path: '/upload',
+			path: "/upload",
 			body: formData,
 		})
 		.then((response) => {
 			if (response.status >= 300) {
-				throw response;
+				throw response
 			}
-			console.log("success");
+			console.log("success")
 			return response
 		})
 		.then((response) => {
 			AjaxModule.doPost({
-				path: '/users/me',
+				path: "/users/me",
 				body: {
 					email: formdata.email.value,
 					username: formdata.username.value,
@@ -100,16 +100,16 @@ export default class UsersService {
 			})
 			.then((response) => {
 				if (response.status >= 300) {
-					throw response;
+					throw response
 				}
 				return response
 			})
 			.catch((err) => {
-				console.log("error " + err.status);
+				console.log("error " + err.status)
 			})
 		})
 		.catch((error) => {
-			console.error(error);
-		});
+			console.error(error)
+		})
 	}
-};
+}

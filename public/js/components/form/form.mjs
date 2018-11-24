@@ -15,14 +15,14 @@ export default class Form extends Block {
 	}
 
 	onSubmit(callback) {
-		this.el.addEventListener('submit', function (event) {
-			event.preventDefault();
+		this.el.addEventListener("submit", function (event) {
+			event.preventDefault()
 
-			const formdata = {};
-			const elements = this.el.elements;
+			const formdata = {}
+			const elements = this.el.elements
 			for (let iter in elements) {
-				const name = elements[iter].name;
-				formdata[name] = elements[iter];
+				const name = elements[iter].name
+				formdata[name] = elements[iter]
 			}
 
 			callback(formdata)

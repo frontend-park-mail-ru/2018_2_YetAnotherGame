@@ -1,6 +1,6 @@
-import BaseView from "./BaseView.js";
-import Block from "../js/components/block/block.mjs"
-import mediator from "./mediator.js";
+import BaseView from "./BaseView.js"
+import Block from "../components/block/block.mjs"
+import mediator from "../scripts/mediator.js"
 
 export default class PageView extends BaseView {
     constructor(el) {
@@ -11,7 +11,7 @@ export default class PageView extends BaseView {
     }
 
     hide() {
-        super.hide();
+        super.hide()
     }
 
     show() {
@@ -51,13 +51,13 @@ export default class PageView extends BaseView {
             profile: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["button_small", "headerProfileName"],),
         }
 
-        const log_out_img = Block.Create("img", {"src": "../logout.png"}, ["logoutpng"])
+        const log_out_img = Block.Create("img", {"src": "../../img/logout.png"}, ["logoutpng"])
         register.log_out.append(log_out_img)
 
 
         if (this.hasProfile === true) {
             // const profileImg = Block.Create("a", {"href": "users/me"}, [],)
-            const img = Block.Create('img', {'src': `${this.data.avatar}`}, ["avatar-40"])
+            const img = Block.Create("img", {"src": `${this.data.avatar}`}, ["avatar-40"])
             // profileImg.append(img)
 
             register.profile.setText(`${this.data.username}`)
