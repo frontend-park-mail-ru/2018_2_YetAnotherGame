@@ -10,6 +10,7 @@ import SignUpView from "./views/SignUpView.js"
 import UpdateView from "./views/UpdateView.js"
 import LogOutView from "./views/LogOutView.js"
 import PageView from "./views/PageView.js"
+import MultView from './views/MultView.js'
 
 //----------------------
 import Block from "./components/block/block.mjs"
@@ -24,6 +25,12 @@ import "./form-fields/update.js"
 // import "./components/scoreboard/scoreboard.tmpl.xml"
 // import "./components/profile/profile.tmpl.js"
 // import "./components/scoreboard/scoreboard.tmpl.js"
+
+/*
+	ПОПРАВИТ БАГИ:
+		1. В логине не исчезают ошибки (если не правильный пароль)
+		2. Не подсвечиваются поля ввода
+*/
 
 mediator.on("fetch-users", function () {
 	UsersService
@@ -120,4 +127,5 @@ router
     .register("/new_game", GameView)
 	.register("/users/me", ProfileView)
 	.register("/update", UpdateView)
+	.register('/mult', MultView)
 router.start()
