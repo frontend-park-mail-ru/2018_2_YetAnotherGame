@@ -41,8 +41,25 @@ export default class PageView extends BaseView {
         const MenuHeader = Block.Create("div", {"id": "MenuHeader"}, ["main__header"])
         const MenuBody = Block.Create("div", {"id": "MenuBody"}, ["main__body"])
         const MenuFooter = Block.Create("div", {"id": "MenuFooter"}, ["main__footer"])
-
         const HeaderProfile = Block.Create("div", {}, ["profileHeader", "header__profileHeader"])
+
+        const chat = Block.Create("iframe", {}, ["chat"])
+        const chatHead = Block.Create("div", {}, [])
+        const chatBody = Block.Create("div", {}, [])
+        const chatSideBar = Block.Create("div", {}, [])
+        const chatWindow = Block.Create("div", {}, [])
+        const chatInput = Block.Create("input", {"type":"text", "size":"40"}, [])
+        const chatSubmit = Block.Create("input", {"type":"text", "size":"40"}, [])
+
+        chatWindow.append(chatInput)
+
+        chatBody
+            .append(chatSideBar)
+            .append(chatWindow)
+
+        chat
+            .append(chatHead)
+            .append(chatBody)
 
         const register = {
             sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["button_small", "sign-in"], "Sign in"),
@@ -72,6 +89,10 @@ export default class PageView extends BaseView {
                 .append(register.sign_up)
         }
 
+
+        MenuBody
+            .append(chat)
+
         header.forEach((newChild) => {
             MenuHeader.append(newChild)
 		})
@@ -80,7 +101,7 @@ export default class PageView extends BaseView {
 		})
         footer.forEach((newChild) => {
             MenuFooter.append(newChild)
-		})
+        })
 
         MenuPage
             .append(MenuHeader.append(HeaderProfile))

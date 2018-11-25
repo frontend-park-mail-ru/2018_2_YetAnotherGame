@@ -90,6 +90,13 @@ A:hover {
     }
 }
 
+.chat {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: $background-purple;
+}
+
 .form {
     background-color: $background-black;
     border-radius: 30px;
