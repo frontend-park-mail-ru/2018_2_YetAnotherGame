@@ -16,7 +16,7 @@ export default class Block {
 
 	/**
 	 * Фабричный метод, который ползволяет удобро создавать блоки с заданными характеристиками
-	 * @param {string} [tagName='div'] - tagName блока
+	 * @param {string} [tagName="div"] - tagName блока
 	 * @param {*} [attrs={}] - объект с атрибутами блока
 	 * @param {string[]} [classes=[]] - список имён классов
 	 * @param {string|null} [text=null] - опциональный текст блока
@@ -57,6 +57,26 @@ export default class Block {
 		}
 	}
 
+	/**
+	 * Добавить класс к списку классов
+	 * @param {string[]} [newClasses=[]] - список имён классов
+	 *
+	 * */
+	addClasses(newClasses = []) {
+		newClasses.forEach((newClass) => {
+			this.el.classList.add(newClass)
+		})
+	}
+
+	/**
+	 * Заменяет старый класс новым
+	 * @param {string} delClass - Удаляемый класс
+	 */
+	deleteClass(delClass="") {
+		this.el.classList.remove(delClass)
+	}
+
+
 	setInner(str = "") {
 		this.el.innerHTML = str
 	}
@@ -92,11 +112,11 @@ export default class Block {
 	}
 
 	hide() {
-		this.el.hidden = true;
+		this.el.hidden = true
 	}
 
 	show() {
-		this.el.hidden = false;
+		this.el.hidden = false
 	}
 
 	isActive () {

@@ -1,13 +1,12 @@
 import BaseView from "./BaseView.js"
-import Block from "../js/components/block/block.mjs"
-import Form from "../js/components/form/form.mjs"
+import Block from "../components/block/block.mjs"
+import Form from "../components/form/form.mjs"
 
 
 export default class MultView extends BaseView {
 	constructor(el) {
 		super(el)
 	}
-
 
 	render() {
 		this.el.clear()
@@ -82,7 +81,7 @@ export default class MultView extends BaseView {
 		)
 		let onload = 0
 		let canvas = document.getElementById("myCanvas")
-		canvas.style.background = "url('../textures/4.png')"
+		canvas.style.background = "url('../../img/textures/4.png')"
 		let car = new Image()
 		let enemy2 = new Image()
 		let enemy3 = new Image()
@@ -93,7 +92,7 @@ export default class MultView extends BaseView {
 		let enemy23 = new Image()
 		let enemy24 = new Image()
 		let enemy5 = new Image()
-		let img = ["../textures/1.png", "../textures/2.png", "../textures/3.png", , "../textures/5.png"]
+		let img = ["../../img/textures/1.png", "../../img/textures/2.png", "../../img/textures/3.png", , "../../img/textures/5.png"]
 		let ctx = canvas.getContext("2d")
 		let background = new Image()
 		var msg = undefined
