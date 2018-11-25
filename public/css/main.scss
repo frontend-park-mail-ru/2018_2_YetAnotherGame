@@ -97,8 +97,64 @@ A:hover {
 }
 
 .chat {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
     background-color: $background-black;
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    &__header {
+        grid-row-start: 1;
+        grid-row-end: 2;
+        display: grid;
+        grid-template-columns: 6fr 1fr; 
+    }
+
+    &__body {
+        grid-row-start: 2;
+        grid-row-end: 3;
+        display: grid;
+        grid-template-columns: 4fr 6fr;
+        
+        &__sb {
+            grid-column-start: 1; 
+            grid-column-end: 2;
+        }
+
+        &__mb {
+            grid-column-start: 2; 
+            grid-column-end: 3;
+            display: grid;
+            grid-template-rows: 10fr 1fr;
+        }
+    }
+
+    &__mb_msg {
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+
+    &__mb_input {
+        grid-row-start: 2;
+        grid-row-end: 3;
+    }
+
+    &_input {
+        background-color: $background-purple;
+        min-width: 50%;
+        max-width: 80%;
+    }
+
+    &_submit {
+        min-width: 50px;
+    }
+
+    &__msg {
+        color: $text-color;
+    }
 }
+
 
 .form {
     background-color: $background-black;
