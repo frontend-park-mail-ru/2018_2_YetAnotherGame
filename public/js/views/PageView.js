@@ -43,23 +43,9 @@ export default class PageView extends BaseView {
         const MenuFooter = Block.Create("div", {"id": "MenuFooter"}, ["main__footer"])
         const HeaderProfile = Block.Create("div", {}, ["profileHeader", "header__profileHeader"])
 
-        const chat = Block.Create("iframe", {}, ["chat"])
-        const chatHead = Block.Create("div", {}, [])
-        const chatBody = Block.Create("div", {}, [])
-        const chatSideBar = Block.Create("div", {}, [])
-        const chatWindow = Block.Create("div", {}, [])
-        const chatInput = Block.Create("input", {"type":"text", "size":"40"}, [])
-        const chatSubmit = Block.Create("input", {"type":"text", "size":"40"}, [])
+        const chat = Block.Create("iframe", {"src": "http://127.0.0.1:3000/chat"}, ["chat"])
 
-        chatWindow.append(chatInput)
-
-        chatBody
-            .append(chatSideBar)
-            .append(chatWindow)
-
-        chat
-            .append(chatHead)
-            .append(chatBody)
+        this.el.append(chat)
 
         const register = {
             sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["button_small", "sign-in"], "Sign in"),
@@ -88,10 +74,6 @@ export default class PageView extends BaseView {
                 .append(register.sign_in)
                 .append(register.sign_up)
         }
-
-
-        MenuBody
-            .append(chat)
 
         header.forEach((newChild) => {
             MenuHeader.append(newChild)

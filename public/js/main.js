@@ -9,7 +9,7 @@ import ProfileView from "./views/ProfileView.js"
 import SignUpView from "./views/SignUpView.js"
 import UpdateView from "./views/UpdateView.js"
 import LogOutView from "./views/LogOutView.js"
-import PageView from "./views/PageView.js"
+import ChatView from "./views/ChatView.js"
 import MultView from './views/MultView.js'
 
 //----------------------
@@ -128,4 +128,5 @@ router
 	.register("/users/me", ProfileView)
 	.register("/update", UpdateView)
 	.register('/mult', MultView)
+	.register('/chat', ChatView)
 router.start()
