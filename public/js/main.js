@@ -20,17 +20,10 @@ import Form from "./components/form/form.mjs"
 import "./form-fields/sign_in.js"
 import "./form-fields/sign_up.js"
 import "./form-fields/update.js"
+import "./form-fields/chat.js"
 
-// import "./components/profile/profile.tmpl.xml"
-// import "./components/scoreboard/scoreboard.tmpl.xml"
-// import "./components/profile/profile.tmpl.js"
-// import "./components/scoreboard/scoreboard.tmpl.js"
+// import "../css/main.css"
 
-/*
-	ПОПРАВИТ БАГИ:
-		1. В логине не исчезают ошибки (если не правильный пароль)
-		2. Не подсвечиваются поля ввода
-*/
 
 mediator.on("fetch-users", function () {
 	UsersService
@@ -65,9 +58,6 @@ mediator.on("user-login", function (formdata) {
 			mediator.emit("user-logined")
 		})
 		.catch(function (error) {
-			const form = new Block(document.forms[0])
-			const err = Block.Create("p", {}, ["err-msg"], "Please, check correctness of writing of the email and password.")
-			form.append(err)
 			console.error(error)
 		})
 })

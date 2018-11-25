@@ -48,7 +48,11 @@ export default class ProfileView extends PageView {
 		const ProfileBody = Block.Create("div", {}, ["table", "profile__table"])
 		const Profile = Block.Create("div", {}, ["profile", "body__profile"])
 
-		const avatar = Block.Create("img", {"src": `${this.profile.avatar}`}, ["avatar-80"])
+		const avatar = Block.Create("img", {"src": "../../img/default_avatar.png"}, ["avatar-80"])
+		if (this.profile.avatar) {
+			avatar.setAttribute({"src": `${this.profile.avatar}`})
+		}
+
 		ProfileBody.setInner(templateFunc(this.profile))
 		// const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "⬅")
