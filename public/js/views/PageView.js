@@ -43,7 +43,7 @@ export default class PageView extends BaseView {
         const MenuFooter = Block.Create("div", {"id": "MenuFooter"}, ["main__footer"])
         const HeaderProfile = Block.Create("div", {}, ["profileHeader", "header__profileHeader"])
 
-        const chat = Block.Create("iframe", {"src": "http://127.0.0.1:3000/chat"}, ["chat"])
+        const chat = Block.Create("iframe", {"src": "http://127.0.0.1:3000/chat", "height": "300px", "id":"iframe"}, ["main__chat"])
 
         this.el.append(chat)
 

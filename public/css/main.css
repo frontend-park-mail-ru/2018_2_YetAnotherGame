@@ -85,11 +85,14 @@ A:hover {
   grid-row-end: 4;
 }
 
-.chat {
+.main__chat {
   position: absolute;
   right: 10px;
   bottom: 10px;
-  background-color: rgba(128, 0, 128, 0.5);
+}
+
+.chat {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .form {

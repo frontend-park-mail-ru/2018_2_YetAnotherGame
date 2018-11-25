@@ -31,12 +31,14 @@ export default class MenuView extends PageView {
             leaders: Block.Create("a", {"href": "leaders", "data-href": "leaders"}, ["button"], "Scoreboard"),
             me: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["button"], "Profile"),
             update: Block.Create("a", {"href": "update", "data-href": "update"}, ["button"], "Update"),
+            chat: Block.Create("a", {"href": "chat", "data-href": "chat"}, ["button"], "Chat"),
         }
         if (this.hasProfile === false) {
             titles.new_game.addClasses(["button_disable"])
             TableBody
                 .append(titles.new_game)
                 .append(titles.leaders)
+                .append(titles.chat)
         } else {
             titles.new_game.deleteClass("button_disable")
             Object.entries(titles).forEach(function (elem) {

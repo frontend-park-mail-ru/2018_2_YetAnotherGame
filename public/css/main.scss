@@ -88,13 +88,16 @@ A:hover {
         grid-row-start: 3;
         grid-row-end: 4;
     }
+
+    &__chat {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+    }
 }
 
 .chat {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    background-color: $background-purple;
+    background-color: $background-black;
 }
 
 .form {
