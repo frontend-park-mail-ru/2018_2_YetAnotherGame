@@ -115,16 +115,16 @@ mediator.on("fetch-update", function (formdata) {
 		})
 })
 
-mediator.on("fetch-chats", function () {
-	UsersService
-		.FetchChats()
-		.then(function (chats) {
-			mediator.emit("chats-loaded", chats)
-		})
-		.catch(function (error) {
-			console.error(error)
-		})
-})
+// mediator.on("fetch-chats", function () {
+// 	UsersService
+// 		.FetchChats()
+// 		.then(function (chats) {
+// 			mediator.emit("chats-loaded", chats)
+// 		})
+// 		.catch(function (error) {
+// 			console.error(error)
+// 		})
+// })
 
 const root = new Block(document.getElementById("game"))
 const router = new Router(root)

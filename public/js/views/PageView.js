@@ -15,11 +15,11 @@ export default class PageView extends BaseView {
     }
 
     show() {
-        if (this.data === null) {
+        if (this.hasProfile === false) {
             this.fetchProfile()
         }
         this.el.show()
-		if (typeof this.data === undefined || this.data == null) {
+		if (this.hasProfile === false) {
 			this.render()
 		}
     }
@@ -47,7 +47,6 @@ export default class PageView extends BaseView {
 
         const chat = Block.Create("iframe", {"src": "http://127.0.0.1:3000/chat?mode=iframe", "height": "300px", "id":"iframe"}, ["main__chat"])
 
-        this.el.append(chat)
 
         const register = {
             sign_in: Block.Create("a", {"href": "sign_in", "data-href": "sign_in"}, ["button_small", "sign-in"], "Sign in"),
@@ -86,6 +85,8 @@ export default class PageView extends BaseView {
         footer.forEach((newChild) => {
             MenuFooter.append(newChild)
         })
+
+        MenuBody.append(chat)
 
         MenuPage
             .append(MenuHeader.append(HeaderProfile))

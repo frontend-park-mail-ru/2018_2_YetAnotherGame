@@ -112,10 +112,23 @@ export default class UsersService {
 			console.error(error)
 		})
 	}
+
 	static FetchChats () {
 		return AjaxModule
 			.doGet({
 				path: `/chats`
+			})
+			.then((res) => res.json())
+			.catch((err) => {
+				console.error(err)
+				return err
+			})
+	}
+
+	static FetchHistory () {
+		return AjaxModule
+			.doGet({
+				path: `/history`
 			})
 			.then((res) => res.json())
 			.catch((err) => {
