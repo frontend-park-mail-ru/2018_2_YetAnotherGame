@@ -15,7 +15,9 @@ export default class PageView extends BaseView {
     }
 
     show() {
-        this.fetchProfile()
+        if (this.data === null) {
+            this.fetchProfile()
+        }
         this.el.show()
 		if (typeof this.data === undefined || this.data == null) {
 			this.render()
@@ -43,7 +45,7 @@ export default class PageView extends BaseView {
         const MenuFooter = Block.Create("div", {"id": "MenuFooter"}, ["main__footer"])
         const HeaderProfile = Block.Create("div", {}, ["profileHeader", "header__profileHeader"])
 
-        const chat = Block.Create("iframe", {"src": "http://127.0.0.1:3000/chat", "height": "300px", "id":"iframe"}, ["main__chat"])
+        const chat = Block.Create("iframe", {"src": "http://127.0.0.1:3000/chat?mode=iframe", "height": "300px", "id":"iframe"}, ["main__chat"])
 
         this.el.append(chat)
 

@@ -92,6 +92,7 @@ A:hover {
 }
 
 .chat {
+  color: orange;
   -ms-grid-row: 2;
       grid-row-start: 2;
   grid-row-end: 3;

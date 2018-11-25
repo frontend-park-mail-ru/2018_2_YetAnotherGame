@@ -97,6 +97,7 @@ A:hover {
 }
 
 .chat {
+    color: $title-color;
     grid-row-start: 2;
     grid-row-end: 3;
     grid-column-start: 2;
@@ -138,6 +139,10 @@ A:hover {
     &__mb_input {
         grid-row-start: 2;
         grid-row-end: 3;
+    }
+
+    &_form {
+        
     }
 
     &_input {
