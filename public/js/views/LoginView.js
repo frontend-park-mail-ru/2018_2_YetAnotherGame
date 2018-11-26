@@ -31,6 +31,7 @@ export default class LoginView extends PageView {
 		vkLogin.setInner("<br>")
 		vkLogin.append(vkLoginImg)
 		const form = new Form(signIn)
+        form.setAttribute({"id": "form"})
 		vkLoginSection.append(vkLogin)
 
 		signinSection
@@ -43,19 +44,27 @@ export default class LoginView extends PageView {
 			body: [signinSection],
 		})
 
+        const check = document.getElementsByName("password")[0]
+        check.addEventListener("keyup", () => {
+            const el = document.getElementById("err")
+            if (check.value.length < 4) {
+                check.setAttribute("class", "error")
+                if (el !== null) {
+                    el.parentNode.removeChild(el)
+                }
+                const err = Block.Create("div", {"id": "err"}, [])
+                form.append(err)
+                const att = Block.Create("p", {}, ["err-msg"], "password must be at least 4 characters")
+                err.append(att)
+            } else {
+                check.setAttribute("class", "ok")
+                const el = document.getElementById("err")
+                el.parentNode.removeChild(el)
+            }
+        })
+
 		form.onSubmit(
 			function (formdata) {
-				if (formdata.password.value.length < 4) {
-					if (document.getElementById("err") !== null) {
-						const el = document.getElementById("err")
-						el.parentNode.removeChild(el)
-					}
-					const err = Block.Create("div", {"id": "err"}, [])
-					form.append(err)
-					const att = Block.Create("p", {}, ["err-msg"], "password must be at least 4 characters")
-					err.append(att)
-					return
-				}
 				mediator.emit("user-login", formdata)
 		})
 	}}

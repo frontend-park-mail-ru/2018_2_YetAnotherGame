@@ -89,14 +89,21 @@ export default class GameViewView extends BaseView {
                 x = 0
                 x2 = canvas.width
             }
-            console.log(x)
+            // console.log(x)
             drawrect()
             drawPaddle()
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 && paddleY > y)) {
                 alert("Конец игры. Ваш счет - " + tick)
+                // const game_over = Block.Create("section", {}, [])
+                // const text = Block.Create("p", {}, [], "YOU LOSE")
+                // text.setInner("YOU LOSE")
+                // game_over.append(text)
+                // logo.append(game_over)
+
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
                 tick = 0
+                level = 0
                 upPressed=false
                 downPressed=false
                 leftPressed=false
@@ -106,30 +113,42 @@ export default class GameViewView extends BaseView {
             }
             if (((paddleX > x2 && paddleX < x2 + 60) || (paddleX > x2 + 200 && paddleX < x2 + 60 + 200) || (paddleX > x2 + 400 && paddleX < x2 + 60 + 400) || (paddleX > x2 + 600 && paddleX < x2 + 60 + 600)) && (paddleY < y + 60 + 150 && paddleY > y + 150)) {
                 alert("Конец игры. Ваш счет - " + tick)
+                // const game_over = Block.Create("section", {}, [])
+                // const text = Block.Create("p", {}, [], "YOU LOSE")
+                // text.setInner("YOU LOSE")
+                // game_over.append(text)
+                // logo.append(game_over)
+
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
-                tick=0
-                upPressed=false
-                downPressed=false
-                leftPressed=false
-                rightPressed=false
+                tick = 0
+                level = 0
+                upPressed = false
+                downPressed = false
+                leftPressed = false
+                rightPressed = false
 
 
                 //document.location.reload()
-                
+
             }
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 - 250 && paddleY > y - 250)) {
                 alert("Конец игры. Ваш счет - " + tick)
+                // const game_over = Block.Create("section", {}, [])
+                // const text = Block.Create("p", {}, [], "YOU LOSE")
+                // text.setInner("YOU LOSE")
+                // game_over.append(text)
+                // logo.append(game_over)
+
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
                 //document.location.reload()
-                tick=0
-                upPressed=false
-                downPressed=false
-                leftPressed=false
-                rightPressed=false
-
-
+                tick = 0
+                level = 0
+                upPressed = false
+                downPressed = false
+                leftPressed = false
+                rightPressed = false
             }
 
             if (rightPressed && paddleX < canvas.width - paddleWidth) {

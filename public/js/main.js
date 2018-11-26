@@ -58,6 +58,12 @@ mediator.on("user-login", function (formdata) {
 			mediator.emit("user-logined")
 		})
 		.catch(function (error) {
+			const err = document.getElementById("err-text")
+			if (!err) {
+				const form = new Block(document.getElementById("form"))
+				const errText = Block.Create("p", {"id": "err-text"}, ["err-msg"], "Please, check correctness of writing of the email and password.")
+				form.append(errText)
+			}
 			console.error(error)
 		})
 })
