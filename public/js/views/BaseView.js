@@ -11,12 +11,12 @@ export default class BaseView {
     }
 
     hide() {
-        this.el.hide();
+        this.el.hide()
     }
 
     show() {
-        this.el.show();
-        this.render();
+        this.el.show()
+        this.render()
     }
 
     render() {

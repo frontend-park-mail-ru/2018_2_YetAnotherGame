@@ -11,7 +11,7 @@ class mediator {
     off(event, callback) {
         this.listeners[event] = this.listeners[event]
             .filter (function (listener) {
-                return listener!==callback;
+                return listener!==callback
             })
     }
 
@@ -22,4 +22,4 @@ class mediator {
     }
 }
 
-export default new mediator;
+export default new mediator
