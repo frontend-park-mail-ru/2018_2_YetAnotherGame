@@ -3,11 +3,9 @@ import mediator from "../scripts/mediator.js"
 import Block from "../components/block/block.mjs"
 import AjaxModule from "../modules/ajax.mjs"
 
+// import boardTmpl from "../components/scoreboard/scoreboard.tmpl.xml"
+import "../components/scoreboard/scoreboard.tmpl.js"
 const templateFunc = window.fest["js/components/scoreboard/scoreboard.tmpl"]
-
-// const fest = require("fest")
-// const template = "../components/scoreboard/scoreboard.tmpl.xml"
-// import template from "../components/scoreboard/scoreboard.tmpl.xml"
 
 export default class ScoreBoardView extends PageView {
     constructor(el) {
@@ -65,7 +63,9 @@ export default class ScoreBoardView extends PageView {
         let br = Block.Create("br")
 
         TableBody.setInner(templateFunc(this.users))
-        // TableBody.setInner(fest.render(template, this.users, {beautify: false}))
+        // const fest = require('fest');
+        // const data = this.users
+        // TableBody.setInner(fest.render(boardTmpl, data))
 
         TableFooter
             .append(lb)

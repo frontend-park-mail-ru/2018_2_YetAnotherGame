@@ -2,6 +2,7 @@ import PageView from "./PageView.js"
 import Block from "../components/block/block.mjs"
 import mediator from "../scripts/mediator.js"
 
+import "../components/profile/profile.tmpl.js"
 const templateFunc = window.fest["js/components/profile/profile.tmpl"]
 
 export default class ProfileView extends PageView {
@@ -54,7 +55,7 @@ export default class ProfileView extends PageView {
 		}
 
 		ProfileBody.setInner(templateFunc(this.profile))
-		// const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "Back to main menu")
+
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "⬅")
 
 		Profile

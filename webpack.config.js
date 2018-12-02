@@ -31,9 +31,10 @@ module.exports = {
             loader: "url-loader?name=[path][name].[ext]&limit=4096"
         }, {
             test: /\.xml$/,
-            use: {
-                loader: "fest-loader"
-            }
+            use: [{
+                // loader: "fest-loader"
+                loader: "fest-webpack-loader"
+            }]
         }]
     },
     plugins: [

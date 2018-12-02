@@ -2,6 +2,7 @@ import Block from "../components/block/block.mjs"
 import Form from "../components/form/form.mjs"
 import mediator from "../scripts/mediator.js"
 import PageView from "./PageView.js"
+import "../form-fields/sign_up.js"
 
 export default class SignUpView extends PageView {
     constructor(el) {

@@ -2,7 +2,7 @@
  import Block from "../components/block/block.mjs"
  import Form from "../components/form/form.mjs"
  import mediator from "../scripts/mediator.js"
-
+ import "../form-fields/sign_in.js"
 
 export default class LoginView extends PageView {
 	constructor (el) {

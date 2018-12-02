@@ -3,6 +3,7 @@ import Block from "../components/block/block.mjs"
 import Form from "../components/form/form.mjs"
 import AjaxModule from "../modules/ajax.mjs"
 import mediator from "../scripts/mediator.js"
+import "../form-fields/update.js"
 
 export default class UpdateView extends PageView {
 	constructor (el) {
