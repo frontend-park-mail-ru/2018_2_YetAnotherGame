@@ -322,6 +322,7 @@ A:hover {
   background-color: rgba(255, 255, 255, 0);
   color: #acff2f;
   font-size: 16pt;
+  /* font-size: 24pt; */
   -webkit-transition: font-size, color font-weight;
   transition: font-size, color font-weight;
 }

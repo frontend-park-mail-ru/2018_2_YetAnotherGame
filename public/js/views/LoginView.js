@@ -44,6 +44,7 @@ export default class LoginView extends PageView {
 			body: [signinSection],
 		})
 
+        let isValid = false
         const check = document.getElementsByName("password")[0]
         check.addEventListener("keyup", () => {
             const el = document.getElementById("err")
@@ -56,15 +57,19 @@ export default class LoginView extends PageView {
                 form.append(err)
                 const att = Block.Create("p", {}, ["err-msg"], "password must be at least 4 characters")
                 err.append(att)
+                isValid = false
             } else {
                 check.setAttribute("class", "ok")
                 const el = document.getElementById("err")
                 el.parentNode.removeChild(el)
+                isValid = true
             }
         })
 
-		form.onSubmit(
+        form.onSubmit(
 			function (formdata) {
-				mediator.emit("user-login", formdata)
+                if (isValid) {
+                    mediator.emit("user-login", formdata)
+                }
 		})
 	}}

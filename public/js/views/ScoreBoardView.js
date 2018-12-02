@@ -90,9 +90,11 @@ export default class ScoreBoardView extends PageView {
 
         if (!this.canNext) {
             rBtnActive.disabled = true
+            rb.addClasses(["button_disable"])
 		}
         if (this.pageNumber <= 0) {
 			lBtnActive.disabled = true
+            lb.addClasses(["button_disable"])
 		}
         if (this.canNext && this.pageNumber > 0) {
         	lBtnActive.disabled = false
