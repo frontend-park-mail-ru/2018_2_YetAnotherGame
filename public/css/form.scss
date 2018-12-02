@@ -1,0 +1,39 @@
+@import "./vars.scss";
+
+.form {
+    background-color: $background-black;
+    border-radius: 30px;
+    margin-top:10%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+    // overflow: hidden;
+
+    &__vk {
+        color: $title-color;
+    }
+
+    input {
+        margin: 10px;
+        outline: none;
+        background-color: $background-purple;
+        border: 2px solid purple;
+        color: $link-color;
+    }
+
+    input[type=file]{
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    &__Usubmit {
+        position: relative;
+
+        top: 20px;
+    }
+}

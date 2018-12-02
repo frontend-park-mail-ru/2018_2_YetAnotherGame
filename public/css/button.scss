@@ -1,0 +1,93 @@
+@import "./vars.scss";
+
+.button {
+    width: 100%;
+    line-height: 50px;
+    margin: 7.5px 0px;
+    display: inline-block;
+    // border: 2px solid lightblue;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 30px;
+    transition: font-size, color, box-shadow, font-weight;
+    transition-duration: 0.3s;
+    background-color: $background-black;
+
+    &_small {
+        margin: 0 10px;
+        font-size: $font-size-s;
+        transition: font-size, color font-weight;
+        transition-duration: 0.3s;
+
+        &:hover {
+            font-size: $font-size-hover;
+            font-weight: 700;
+        }
+    }
+
+    &:hover {
+        font-size: $font-size-hover;
+        box-shadow: 0 0 13px 3px $link-hover-color;
+        font-weight: 700;
+    }
+
+    &__pagination {
+        background-color: rgba(255, 255, 255, 0);
+        color: $link-color;
+        // font-size: $font-size-s;
+        font-size: $font-size-l;
+        transition: font-size, color font-weight;
+
+
+        &_left {
+            grid-column-start: 3;
+            grid-column-end: 4;
+            transition-duration: 0.3s;
+
+            &:hover {
+                color: $link-hover-color;
+                font-size: $font-size-hover;
+                font-weight: 700;
+            }
+        }
+
+        &_right {
+            grid-column-start: 5;
+            grid-column-end: 6;
+            transition-duration: 0.3s;
+            &:hover {
+                color: $link-hover-color;
+                font-size: $font-size-hover;
+                font-weight: 700;
+            }
+        }
+
+    }
+}
+
+.pagination {
+    &__numPage {
+        grid-column-start: 4;
+        grid-column-end: 5;
+        color: $link-color;
+        font-weight: 700;
+    }
+}
+
+.button_disable {
+    pointer-events: none;
+    cursor: default;
+    color: #888;
+}
+
+.file_field {
+    position: relative;
+    top: -80px;
+    width: 254px;
+    font-weight: 700;
+    color: $link-color;
+    background-color: $background-purple;
+    border: 2px solid purple;
+    display: inline-block;
+    margin: 0px auto;
+}

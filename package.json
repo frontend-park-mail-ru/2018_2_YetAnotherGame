@@ -25,6 +25,8 @@
     "fest-webpack-loader": "^1.1.1",
     "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "^0.4.5",
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2"
   },

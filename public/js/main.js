@@ -22,7 +22,7 @@ import "./form-fields/sign_up.js"
 import "./form-fields/update.js"
 import "./form-fields/chat.js"
 
-// import "../css/main.css"
+import "../css/main.scss"
 
 
 mediator.on("fetch-users", function () {
