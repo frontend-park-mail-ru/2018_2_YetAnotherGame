@@ -1,5 +1,6 @@
 const path = require("path")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin")
 
 module.exports = {
     mode: "development",
@@ -40,6 +41,9 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: "style.css"
+        }),
+        new ServiceWorkerWebpackPlugin({
+            entry: path.join(__dirname, "public/sw.js"),
         }),
     ],
     node: {
