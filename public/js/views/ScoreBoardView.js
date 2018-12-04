@@ -47,7 +47,8 @@ export default class ScoreBoardView extends PageView {
     renderLoading () {
 		const loading = Block.Create("strong", {}, [])
 		loading.setText("Loading")
-		this.el.append(loading)
+        const loader = Block.Create("div", {"id": "load", "class": "loader"}, [])
+		this.el.append(loading).append(loader)
 	}
 
     renderScoreboard() {
