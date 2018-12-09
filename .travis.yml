@@ -1,17 +1,9 @@
+
 language: node_js
-node_js: 
-  -10
-
-script:
--echo "hellof"
-
-branches:
-  except:
-
-    - experimental
-
-# whitelist
-branches:
-  only:
+node_js: -10
+script: 
+  - "echo \"hello\""
+branches: 
+  only: 
     - master
     - collisions
