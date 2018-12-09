@@ -1,10 +1,17 @@
 language: node_js
 node_js: 
-	-10
+  -10
 
-scrip:
+script:
 -echo "hellof"
 
 branches:
-	only:
-		-collisions
+  except:
+    - legacy
+    - experimental
+
+# whitelist
+branches:
+  only:
+    - master
+    - collisions
