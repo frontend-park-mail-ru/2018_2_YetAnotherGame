@@ -3,7 +3,7 @@ node_js:
 	-10
 
 scrip:
--echo "hello"
+-echo "hellof"
 
 branches:
 	only:
