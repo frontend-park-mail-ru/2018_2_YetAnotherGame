@@ -32,7 +32,7 @@ export default class GameView extends BaseView {
         const restart = document.getElementById("restart")
         restart.addEventListener("click", () => {
             this.el.clear()
-            this.render()
+            this.start()
         })
     }
 
