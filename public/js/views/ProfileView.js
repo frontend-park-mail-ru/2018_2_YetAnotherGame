@@ -57,11 +57,13 @@ export default class ProfileView extends PageView {
 		ProfileBody.setInner(templateFunc(this.profile))
 
 		const menuLink = Block.Create("a", {"href": "menu", "data-href": "menu", "id": "back_button"}, [], "⬅")
+		const updateButton = Block.Create("a", {"href": "update", "data-href": "update"}, ["button"], "Update")
 
 		Profile
 			.append(ProfileHeader)
 			.append(avatar)
 			.append(ProfileBody)
+			.append(updateButton)
 
 		super.render({
 			header: [menuLink],

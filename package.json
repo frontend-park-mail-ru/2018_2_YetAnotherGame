@@ -36,7 +36,7 @@
     "clean:out": "del-cli public/out/**",
     "build": "npm run clean:out && webpack",
     "prestart": "fest-build --dir=public",
-    "start": "npm run build && node index",
+    "start": "npm run build",
     "pretest": "eslint --ignore-path .gitignore .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
