@@ -15,16 +15,16 @@ import Block from "./components/block/block.mjs"
 import "./form-fields/chat.js"
 import "../css/main.scss"
 
-if ("serviceWorker" in navigator) {
-	navigator.serviceWorker
-		.register("/sw.js", { scope: "/" })
-		.then((registration) => {
-			console.log("SW registration OK:", registration)
-		})
-		.catch((err) => {
-			console.log("SW registration FAIL:", err)
-		})
-}
+// if ("serviceWorker" in navigator) {
+// 	navigator.serviceWorker
+// 		.register("/sw.js", { scope: "/" })
+// 		.then((registration) => {
+// 			console.log("SW registration OK:", registration)
+// 		})
+// 		.catch((err) => {
+// 			console.log("SW registration FAIL:", err)
+// 		})
+// }
 
 mediator.on("fetch-users", function () {
 	UsersService
@@ -105,7 +105,8 @@ mediator.on("fetch-update", function (formdata) {
 			mediator.emit("fetch-profile")
 		})
 		.then(() => {
-			router.open("/users/me")
+			// router.open("/users/me")
+			router.open("/update")
 		})
 		.catch((err) => {
 			console.error(err)

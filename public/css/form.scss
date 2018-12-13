@@ -8,6 +8,7 @@
     flex-direction: column;
     position: relative;
     text-align: center;
+    align-self: center;
     // overflow: hidden;
 
     &__vk {
@@ -20,6 +21,7 @@
         background-color: $background-purple;
         border: 2px solid purple;
         color: $link-color;
+        border-radius: 5px;
     }
 
     input[type=file]{

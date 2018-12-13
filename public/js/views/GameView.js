@@ -2,13 +2,48 @@ import BaseView from "./BaseView.js"
 import Block from "../components/block/block.mjs"
 
 
-export default class GameViewView extends BaseView {
+export default class GameView extends BaseView {
     constructor(el) {
         super(el)
     }
 
+    start() {
+        this.render()
+    }
+
+    stop() {
+        clearInterval(this.timer, 1)
+    }
+
+    renderGameOver() {
+        const gameOverBlock = Block.Create("div", {"id": "game_over"}, ["gameover__block"])
+        const gameOverText = Block.Create("div", {}, ["gameover__text"], "GAME OVER")
+        const restartButton = Block.Create("div", {"id": "restart"}, ["button"], "Try again")
+        const exitButton = Block.Create("a", {"href": "menu", "data-href": "menu"}, ["button"], "Back to main menu")
+
+        gameOverBlock
+            .append(gameOverText)
+            .append(restartButton)
+            .append(exitButton)
+        this.el.append(gameOverBlock)
+
+        this.stop()
+
+        const restart = document.getElementById("restart")
+        restart.addEventListener("click", () => {
+            this.el.clear()
+            this.render()
+        })
+    }
+
     render() {
         this.el.clear()
+
+        if (document.getElementById("game_over")) {
+            const el = document.getElementById("game_over")
+            el.parentNode.removeChild(el)
+        }
+
         const canv=Block.Create("canvas", {"id": "myCanvas" }, [])
         let canvas
 		let ctx
@@ -136,12 +171,9 @@ export default class GameViewView extends BaseView {
             drawrect()
             drawPaddle()
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 && paddleY > y)) {
-                alert("Конец игры. Ваш счет - " + tick)
-                // const game_over = Block.Create("section", {}, [])
-                // const text = Block.Create("p", {}, [], "YOU LOSE")
-                // text.setInner("YOU LOSE")
-                // game_over.append(text)
-                // logo.append(game_over)
+                this.renderGameOver()
+                // gameOverBlock.deleteClass("gameover__block_hide")
+                // alert("Конец игры. Ваш счет - " + tick)
 
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
@@ -154,7 +186,9 @@ export default class GameViewView extends BaseView {
 
             }
             if (((paddleX > x2 && paddleX < x2 + 60) || (paddleX > x2 + 200 && paddleX < x2 + 60 + 200) || (paddleX > x2 + 400 && paddleX < x2 + 60 + 400) || (paddleX > x2 + 600 && paddleX < x2 + 60 + 600)) && (paddleY < y + 60 + 150 && paddleY > y + 150)) {
-				alert("Конец игры. Ваш счет - " + tick)
+				// alert("Конец игры. Ваш счет - " + tick)
+                this.renderGameOver()
+
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
 				leftPressed = false
@@ -165,7 +199,9 @@ export default class GameViewView extends BaseView {
 
             }
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 - 250 && paddleY > y - 250)) {
-				alert("Конец игры. Ваш счет - " + tick)
+				// alert("Конец игры. Ваш счет - " + tick)
+                this.renderGameOver()
+
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
 
@@ -246,6 +282,6 @@ export default class GameViewView extends BaseView {
                 downPressed = false
             }
         }
-        setInterval(draw, 1)
+        this.timer = setInterval(draw.bind(this), 1)
     }
 }

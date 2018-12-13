@@ -3,9 +3,12 @@
         width: 750px;
         height: 580px;
         margin: auto;
-        margin-top: 20px;
+        margin-top: -750px;
         border-radius: 40px;
         border: 4px double red;
+        position: absolute;
+        margin-left: 150px;
+        background-color: red;
     }
 
     &__text {
@@ -13,6 +16,5 @@
         height: auto;
         padding-top: 60px;
         background: none;
-        border: 4px double red;
     }
 }
