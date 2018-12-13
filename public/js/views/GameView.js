@@ -16,10 +16,17 @@ export default class GameView extends BaseView {
     }
 
     renderGameOver() {
-        const gameOverBlock = Block.Create("div", {"id": "game_over"}, ["gameover__block"])
+        const gameOverBlock = Block.Create("div", {
+            "id": "game_over"
+        }, ["gameover__block"])
         const gameOverText = Block.Create("div", {}, ["gameover__text"], "GAME OVER")
-        const restartButton = Block.Create("div", {"id": "restart"}, ["button"], "Try again")
-        const exitButton = Block.Create("a", {"href": "menu", "data-href": "menu"}, ["button"], "Back to main menu")
+        const restartButton = Block.Create("div", {
+            "id": "restart"
+        }, ["button"], "Try again")
+        const exitButton = Block.Create("a", {
+            "href": "menu",
+            "data-href": "menu"
+        }, ["button"], "Back to main menu")
 
         gameOverBlock
             .append(gameOverText)
@@ -44,56 +51,51 @@ export default class GameView extends BaseView {
             el.parentNode.removeChild(el)
         }
 
-        const canv=Block.Create("canvas", {"id": "myCanvas" }, [])
+        const canv = Block.Create("canvas", {"id": "myCanvas"}, [])
         let canvas
-		let ctx
+        let ctx
         let k1
         let k2
         let mousePos
-		this.el.append(canv)
+        this.el.append(canv)
         canvas = document.getElementById('myCanvas');
-		let paddleHeight = 50
-		let paddleWidth = 50
-		let paddleX = (canvas.width - paddleWidth) / 2
-		let paddleY = (canvas.height) - 50
-			if (canvas.getContext) {
-				ctx = canvas.getContext("2d");
+        let paddleHeight = 50
+        let paddleWidth = 50
+        let paddleX = (canvas.width - paddleWidth) / 2
+        let paddleY = (canvas.height) - 50
+        if (canvas.getContext) {
+            ctx = canvas.getContext("2d");
+            resizeCanvas();
+        }
 
+        function getTouchPos(canvasDom, touchEvent) {
+            var rect = canvasDom.getBoundingClientRect();
+            if (touchEvent.touches[0] !== undefined) {
+                return {
 
-				resizeCanvas();
-			}
+                    x: touchEvent.touches[0].clientX - rect.left,
+                    y: touchEvent.touches[0].clientY - rect.top
+                }
+            }
+        }
+        window.addEventListener('resize', resizeCanvas, false);
+        window.addEventListener('orientationchange', resizeCanvas, false);
 
-		function getTouchPos(canvasDom, touchEvent) {
-			var rect = canvasDom.getBoundingClientRect();
-			if(touchEvent.touches[0]!==undefined){
-			return {
-
-				x: touchEvent.touches[0].clientX - rect.left,
-				y: touchEvent.touches[0].clientY - rect.top}
-			}
-		}
-		window.addEventListener('resize', resizeCanvas, false);
-		window.addEventListener('orientationchange', resizeCanvas, false);
-
-
-		function resizeCanvas() {
-		    k1=canvas.width / window.innerWidth;
-		    k2=canvas.height / window.innerHeight;
-		    if(k1===k2&&k1===0){
-		        k1=1
-                k2=1
+        function resizeCanvas() {
+            k1 = canvas.width / window.innerWidth;
+            k2 = canvas.height / window.innerHeight;
+            if (k1 === k2 && k1 === 0) {
+                k1 = 1
+                k2 = 1
             }
 
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			paddleY=paddleY/k2
-			paddleX=paddleX/k1
-		}
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            paddleY = paddleY / k2
+            paddleX = paddleX / k1
+        }
 
-
-
-
-       // let canvas = document.getElementById("myCanvas")
+        // let canvas = document.getElementById("myCanvas")
         let car = new Image()
         let enemy2 = new Image()
         let enemy3 = new Image()
@@ -106,7 +108,6 @@ export default class GameView extends BaseView {
         let img = ["../../img/textures/1.png", "../../img/textures/2.png", "../../img/textures/3.png"]
 
         let background = new Image()
-
 
         let x = 0
         let x2 = canvas.width
@@ -155,10 +156,10 @@ export default class GameView extends BaseView {
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
-           // ctx.drawImage(background, 0, 0)
+            // ctx.drawImage(background, 0, 0)
             //background.src = "../../img/textures/4.png"
-			ctx.fillStyle="#000000";
-			ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.font = "30px Arial"
             ctx.fillStyle = "#ff0000"
             ctx.fillText("level: " + level, 20, 40)
@@ -172,45 +173,37 @@ export default class GameView extends BaseView {
             drawPaddle()
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 && paddleY > y)) {
                 this.renderGameOver()
-                // gameOverBlock.deleteClass("gameover__block_hide")
-                // alert("Конец игры. Ваш счет - " + tick)
 
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
                 tick = 0
-				leftPressed = false
-				rightPressed = false
-				upPressed = false
-				downPressed = false
-				level=0
-
+                leftPressed = false
+                rightPressed = false
+                upPressed = false
+                downPressed = false
+                level = 0
             }
             if (((paddleX > x2 && paddleX < x2 + 60) || (paddleX > x2 + 200 && paddleX < x2 + 60 + 200) || (paddleX > x2 + 400 && paddleX < x2 + 60 + 400) || (paddleX > x2 + 600 && paddleX < x2 + 60 + 600)) && (paddleY < y + 60 + 150 && paddleY > y + 150)) {
-				// alert("Конец игры. Ваш счет - " + tick)
                 this.renderGameOver()
 
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
-				leftPressed = false
-				rightPressed = false
-				upPressed = false
-				downPressed = false
-				level=0
-
+                leftPressed = false
+                rightPressed = false
+                upPressed = false
+                downPressed = false
+                level = 0
             }
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 - 250 && paddleY > y - 250)) {
-				// alert("Конец игры. Ваш счет - " + tick)
                 this.renderGameOver()
 
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
-
-				leftPressed = false
-				rightPressed = false
-				upPressed = false
-				downPressed = false
-				level=0
-
+                leftPressed = false
+                rightPressed = false
+                upPressed = false
+                downPressed = false
+                level = 0
             }
 
             if (rightPressed && paddleX < canvas.width - paddleWidth) {
@@ -220,10 +213,10 @@ export default class GameView extends BaseView {
             } else if (upPressed) {
                 paddleY -= 1
                 tick++
-
             } else if (downPressed && paddleY < canvas.height - paddleHeight) {
                 paddleY += 1
             }
+
             if (paddleY === 0) {
                 paddleY = (canvas.height)
                 y = Math.floor(Math.random() * canvas.height) + 100
@@ -233,32 +226,28 @@ export default class GameView extends BaseView {
 
         document.addEventListener("keydown", keyDownHandler, false)
         document.addEventListener("keyup", keyUpHandler, false)
-		canvas.addEventListener("touchstart", function (a) {
-			mousePos = getTouchPos(canvas, a);
-			console.log(mousePos)
-            if(mousePos.x>0&&mousePos.x<30){
-				leftPressed=true
+        canvas.addEventListener("touchstart", function(a) {
+            mousePos = getTouchPos(canvas, a);
+            console.log(mousePos)
+            if (mousePos.x > 0 && mousePos.x < 30) {
+                leftPressed = true
             }
-			if(mousePos.x>canvas.width-30&&mousePos.x<canvas.width){
-				rightPressed=true
-			}
-			if(mousePos.y>canvas.height-30&&mousePos.y<canvas.height){
-				upPressed=true
-			}
-		})
-		canvas.addEventListener("touchend", function (a) {
-			mousePos = getTouchPos(canvas, a);
-			console.log(mousePos)
+            if (mousePos.x > canvas.width - 30 && mousePos.x < canvas.width) {
+                rightPressed = true
+            }
+            if (mousePos.y > canvas.height - 30 && mousePos.y < canvas.height) {
+                upPressed = true
+            }
+        })
 
-				leftPressed=false
+        canvas.addEventListener("touchend", function(a) {
+            mousePos = getTouchPos(canvas, a);
+            console.log(mousePos)
+            leftPressed = false
+            rightPressed = false
+            upPressed = false
+        })
 
-
-				rightPressed=false
-
-
-				upPressed=false
-
-		})
         function keyDownHandler(e) {
             if (e.keyCode === 39) {
                 rightPressed = true
@@ -282,6 +271,7 @@ export default class GameView extends BaseView {
                 downPressed = false
             }
         }
+        
         this.timer = setInterval(draw.bind(this), 1)
     }
 }
