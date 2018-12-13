@@ -56,14 +56,17 @@ export default class PageView extends BaseView {
 
 
         if (this.hasProfile === true) {
+            const avatarHref = Block.Create("a", {"href": "users/me"}, [])
             const img = Block.Create("img", {"src": "../../img/default_avatar.png"}, ["avatar-40"])
             if (this.data.avatar) {
                 img.setAttribute({"src": `${this.data.avatar}`})
             }
+            avatarHref
+                .append(img)
 
             register.profile.setText(`${this.data.username}`)
             HeaderProfile
-                .append(img)
+                .append(avatarHref)
                 .append(register.profile)
                 .append(register.log_out)
         } else {
