@@ -37,8 +37,10 @@
     "build": "npm run clean:out && webpack",
     "prestart": "fest-build --dir=public",
     "start": "npm run build && node index",
+    "start:dev": "node index",
     "pretest": "eslint --ignore-path .gitignore .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "npm run clean:out && webpack -w"
   },
   "repository": {
     "type": "git",
