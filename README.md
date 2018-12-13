@@ -1,5 +1,5 @@
 # YetAnotherGame    
-Можно потыкать [туточки](https://www.frontend-yag.now.sh)  
+Можно потыкать [туточки](https://yet-another-game.ml)  
 Репа бэкенда [здесь](https://github.com/go-park-mail-ru/2018_2_YetAnotherGame)  
 Локально можно запустить – npm start  
 Команда:  

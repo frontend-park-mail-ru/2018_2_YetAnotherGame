@@ -19,8 +19,8 @@ export default class MultView extends BaseView {
 
 		var rand = 0
 		const address = ["https", "https:"].includes(location.protocol) ?
-			`wss://127.0.0.1:8000/ws` :
-			`ws://127.0.0.1:8000/ws`
+			`wss://127.0.0.1:8081/ws` :
+			`ws://127.0.0.1:8081/ws`
 
 
 		let ws = new WebSocket(address)
@@ -202,21 +202,37 @@ export default class MultView extends BaseView {
 
 			ws.onmessage = function (msgevent) {
 				msg = JSON.parse(msgevent.data)
-				//console.log(msg)
+				console.log(msg, rand)
 				if (msg !== undefined) {
 					if (msg.Message !== null) {
 
 						const newp = document.createElement("p")
-						if (parseInt(msg.Message.author) !== rand) {
+						if (parseInt(msg.Message.author) !== rand&&(msg.Message.author) !=="") {
 							newp.innerHTML = "Противник: "+msg.Message.message
 						}
-					else{
+						else{
+							if((msg.Message.author) !=="")
+							{
 								newp.innerHTML = "Вы: "+msg.Message.message
-						}
-						let text = document.getElementById("kek")
-						text.appendChild(newp)
+							}
 
-					}
+							let text = document.getElementById("kek")
+							text.appendChild(newp)
+							if ((msg.Message.author===rand.toString()) &&msg.Message.message==="Collision"){
+
+								alert("Game over")
+								paddleX = (canvas.width - paddleWidth) / 2
+								paddleY = (canvas.height) - 50
+								tick = 0
+								leftPressed = false
+								rightPressed = false
+								upPressed = false
+								downPressed = false
+								level=0
+
+							}
+
+						}}
 
 					if (msg.Players !== null && (parseInt(msg.Players[0].Username)) !== rand) {
 
@@ -260,48 +276,6 @@ export default class MultView extends BaseView {
 			drawPaddle()
 			drawenemy()
 
-			if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 && paddleY > y)) {
-                alert("Конец игры. Ваш счет - " + tick)
-                paddleX = (canvas.width - paddleWidth) / 2
-                paddleY = (canvas.height) - 50
-				tick = 0
-				level = 0
-                upPressed = false
-                downPressed = false
-                leftPressed = false
-                rightPressed = false
-
-     //document.location.reload()
-            }
-            if (((paddleX > x2 && paddleX < x2 + 60) || (paddleX > x2 + 200 && paddleX < x2 + 60 + 200) || (paddleX > x2 + 400 && paddleX < x2 + 60 + 400) || (paddleX > x2 + 600 && paddleX < x2 + 60 + 600)) && (paddleY < y + 60 + 150 && paddleY > y + 150)) {
-                alert("Конец игры. Ваш счет - " + tick)
-                paddleX = (canvas.width - paddleWidth) / 2
-                paddleY = (canvas.height) - 50
-				tick = 0
-				level = 0
-                upPressed = false
-                downPressed = false
-                leftPressed = false
-                rightPressed = false
-
-
-                //document.location.reload()
-
-            }
-            if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 - 250 && paddleY > y - 250)) {
-                alert("Конец игры. Ваш счет - " + tick)
-                paddleX = (canvas.width - paddleWidth) / 2
-                paddleY = (canvas.height) - 50
-                //document.location.reload()
-                tick = 0
-				level = 0
-                upPressed = false
-                downPressed = false
-                leftPressed = false
-                rightPressed = false
-
-
-            }
 
 			if (rightPressed && paddleX < canvas.width - paddleWidth) {
 				paddleX += 1
@@ -322,11 +296,16 @@ export default class MultView extends BaseView {
 			wsSend(JSON.stringify({
 				"type": "Info",
 				"payload": {
+					"user": rand.toString(),
 					"score": tick.toString(),
 					"x": paddleX.toString(),
-					"y": paddleY.toString()
+					"y": paddleY.toString(),
+					"xblock": x.toString(),
+					"x2block": x2.toString(),
+					"yblock": y.toString()
 				}
 			}))
+			console.log(paddleX)
 		}
 
 
@@ -382,6 +361,6 @@ export default class MultView extends BaseView {
 			}
 		}
 
-		setInterval(draw, 5)
+		setInterval(draw, 1)
 	}
 }
