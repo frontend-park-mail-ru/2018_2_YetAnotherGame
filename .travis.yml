@@ -8,6 +8,7 @@ node_js:
 script:
 - chmod 600 ./2018_2_YetAnotherGame_id_rsa.pem
 - ssh-keyscan -H 95.163.215.234 >> ~/.ssh/known_hosts
+- npm start
 - scp -r -i ./2018_2_YetAnotherGame_id_rsa.pem ./public ubuntu@95.163.215.234:/home/ubuntu/frontend2
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./package.json ubuntu@95.163.215.234:/home/ubuntu/frontend2
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./package-lock.json ubuntu@95.163.215.234:/home/ubuntu/frontend2
