@@ -9,7 +9,8 @@ script:
 - chmod 600 ./2018_2_YetAnotherGame_id_rsa.pem
 - ssh-keyscan -H 95.163.215.234 >> ~/.ssh/known_hosts
 - npm start
-- scp -r -i ./2018_2_YetAnotherGame_id_rsa.pem ./public ubuntu@95.163.215.234:/home/ubuntu/frontend/public
+- ssh -i ./2018_2_YetAnotherGame_id_rsa.pem ubuntu@95.163.215.234 'mkdir frontend; cd frontend; mkdir public'
+- scp -r -i ./2018_2_YetAnotherGame_id_rsa.pem ./public ubuntu@95.163.215.234:/home/ubuntu/frontend/
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./package.json ubuntu@95.163.215.234:/home/ubuntu/frontend
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./package-lock.json ubuntu@95.163.215.234:/home/ubuntu/frontend
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./webpack.config.js ubuntu@95.163.215.234:/home/ubuntu/frontend
