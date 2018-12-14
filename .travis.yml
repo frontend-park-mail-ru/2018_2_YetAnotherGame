@@ -9,14 +9,12 @@ script:
 - chmod 600 ./2018_2_YetAnotherGame_id_rsa.pem
 - ssh-keyscan -H 95.163.215.234 >> ~/.ssh/known_hosts
 - npm start
-- ssh -i ./2018_2_YetAnotherGame_id_rsa.pem ubuntu@95.163.215.234 'mkdir frontend'
-- ssh -i ./2018_2_YetAnotherGame_id_rsa.pem ubuntu@95.163.215.234 'cd frontend'
-- ssh -i ./2018_2_YetAnotherGame_id_rsa.pem ubuntu@95.163.215.234 'mkdir public'
+- ssh -i ./2018_2_YetAnotherGame_id_rsa.pem ubuntu@95.163.215.234 'mkdir frontend; cd frontend; mkdir public'
 - scp -r -i ./2018_2_YetAnotherGame_id_rsa.pem ./public ubuntu@95.163.215.234:/home/ubuntu/frontend/public
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./package.json ubuntu@95.163.215.234:/home/ubuntu/frontend
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./package-lock.json ubuntu@95.163.215.234:/home/ubuntu/frontend
 - scp -i ./2018_2_YetAnotherGame_id_rsa.pem ./webpack.config.js ubuntu@95.163.215.234:/home/ubuntu/frontend
-- ssh -i ./2018_2_YetAnotherGame_id_rsa.pem ubuntu@95.163.215.234 'sudo npm install'
+- ssh -i ./2018_2_YetAnotherGame_id_rsa.pem ubuntu@95.163.215.234 'cd frontend; sudo npm install'
 before_install:
 - openssl aes-256-cbc -K $encrypted_e7346fc74e21_key -iv $encrypted_e7346fc74e21_iv
   -in 2018_2_YetAnotherGame_id_rsa.pem.enc -out ./2018_2_YetAnotherGame_id_rsa.pem
