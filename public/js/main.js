@@ -1,4 +1,4 @@
-import mediator from "./scripts/mediator.js"
+import mediator from "./scripts/mediator.js" 
 import Router from "./scripts/Router.js"
 import UsersService from "./scripts/UsersService.js"
 import MenuView from "./views/MenuView.js"
