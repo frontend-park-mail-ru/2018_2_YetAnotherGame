@@ -1,6 +1,9 @@
 import BaseView from "./BaseView.js"
 import Block from "../components/block/block.mjs"
 
+ import "../../img/textures/1.png"
+import "../../img/textures/2.png"
+import "../../img/textures/3.png"
 
 export default class GameView extends BaseView {
     constructor(el) {
@@ -105,7 +108,8 @@ export default class GameView extends BaseView {
         let enemy22 = new Image()
         let enemy23 = new Image()
         let enemy24 = new Image()
-        let img = ["../../img/textures/1.png", "../../img/textures/2.png", "../../img/textures/3.png"]
+        // let img = ["../../img/textures/1.png", "../../img/textures/2.png", "../../img/textures/3.png"]
+        let img = ["../../out/public/img/textures/1.png", "../../out/public/img/textures/2.png", "../../out/public/img/textures/3.png"]
 
         let background = new Image()
 
@@ -121,37 +125,37 @@ export default class GameView extends BaseView {
         let level = 1
 
         function drawPaddle() {
-            ctx.drawImage(car, paddleX, paddleY)
             car.src = img[0]
+            ctx.drawImage(car, paddleX, paddleY)
         }
 
         function drawrect() {
             x += dx
             x2 -= dx
+            enemy.src = img[1]
             ctx.drawImage(enemy, x, y)
-            enemy.src = img[1]
+            enemy2.src = img[1]
             ctx.drawImage(enemy2, x - 200, y)
-            enemy2.src = img[1]
+            enemy3.src = img[1]
             ctx.drawImage(enemy3, x - 400, y)
-            enemy3.src = img[1]
+            enemy4.src = img[1]
             ctx.drawImage(enemy4, x - 600, y)
-            enemy4.src = img[1]
+            enemy21.src = img[1] // img[2]
             ctx.drawImage(enemy21, x2, y + 150)
-            enemy21.src = img[2]
+            enemy22.src = img[1] // img[2]
             ctx.drawImage(enemy22, x2 + 200, y + 150)
-            enemy22.src = img[2]
+            enemy23.src = img[1] // img[2]
             ctx.drawImage(enemy23, x2 + 400, y + 150)
-            enemy23.src = img[2]
+            enemy24.src = img[1] // img[2]
             ctx.drawImage(enemy24, x2 + 600, y + 150)
-            enemy24.src = img[2]
-            ctx.drawImage(enemy, x, y - 250)
             enemy.src = img[1]
-            ctx.drawImage(enemy2, x - 200, y - 250)
+            ctx.drawImage(enemy, x, y - 250)
             enemy2.src = img[1]
-            ctx.drawImage(enemy3, x - 400, y - 250)
+            ctx.drawImage(enemy2, x - 200, y - 250)
             enemy3.src = img[1]
-            ctx.drawImage(enemy4, x - 600, y - 250)
+            ctx.drawImage(enemy3, x - 400, y - 250)
             enemy4.src = img[1]
+            ctx.drawImage(enemy4, x - 600, y - 250)
         }
 
         function draw() {
@@ -271,7 +275,7 @@ export default class GameView extends BaseView {
                 downPressed = false
             }
         }
-        
+
         this.timer = setInterval(draw.bind(this), 1)
     }
 }

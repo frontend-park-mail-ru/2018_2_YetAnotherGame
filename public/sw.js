@@ -8,6 +8,9 @@ const cacheList = [
 	"/out/build.js",
 	"/out/style.css",
 	"/out/public/img/menu-back.png",
+	"/out/public/img/textures/1.png",
+	"/out/public/img/textures/2.png",
+	"/out/public/img/textures/3.png",
 ]
 
 self.addEventListener("install", (event) => {

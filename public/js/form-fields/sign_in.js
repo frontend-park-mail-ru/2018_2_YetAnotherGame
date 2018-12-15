@@ -20,6 +20,7 @@
 			attrs: {
 				name: "submit",
 				type: "submit",
+				value: "Send data",
 			},
 		},
 	]
