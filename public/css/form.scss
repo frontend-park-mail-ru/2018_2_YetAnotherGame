@@ -8,6 +8,7 @@
     flex-direction: column;
     position: relative;
     text-align: center;
+    align-self: center;
     // overflow: hidden;
 
     &__vk {
@@ -20,6 +21,7 @@
         background-color: $background-purple;
         border: 2px solid purple;
         color: $link-color;
+        border-radius: 5px;
     }
 
     input[type=file]{
@@ -33,7 +35,18 @@
 
     &__Usubmit {
         position: relative;
-
-        top: 20px;
+        top: 25px;
     }
+}
+
+.file_field {
+    position: relative;
+    top: -80px;
+    width: 239px;
+    font-weight: 700;
+    color: $link-color;
+    background-color: $background-purple;
+    border: 2px solid purple;
+    display: inline-block;
+    margin: 5px auto;
 }

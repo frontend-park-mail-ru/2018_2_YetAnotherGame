@@ -29,7 +29,14 @@ module.exports = {
             ]
         }, {
             test: /\.(png|jpg|svg|ttf)$/,
-            loader: "url-loader?name=[path][name].[ext]&limit=4096"
+            use: {
+               loader: "url-loader",
+               options: {
+                   name: "[path][name].[ext]",
+                   limit: 1500,
+               },
+            },
+            // loader: "url-loader?name=[path][name].[ext]&limit=4096"
         }, {
             test: /\.xml$/,
             use: [{

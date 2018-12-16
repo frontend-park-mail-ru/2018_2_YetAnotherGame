@@ -44,17 +44,11 @@
 				placeholder: "Repeat Password",
 			},
 		},
-		// {
-		// 	attrs: {
-		// 		name: "image",
-		// 		type: "file",
-		// 		accept: "image/*",
-		// 	},
-		// },
 		{
 			attrs: {
 				name: "submit",
 				type: "submit",
+				value: "Sign up",
 			},
 		}
 	]

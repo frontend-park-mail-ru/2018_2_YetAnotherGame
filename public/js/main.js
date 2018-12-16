@@ -105,7 +105,8 @@ mediator.on("fetch-update", function (formdata) {
 			mediator.emit("fetch-profile")
 		})
 		.then(() => {
-			router.open("/users/me")
+			// router.open("/users/me")
+			router.open("/update")
 		})
 		.catch((err) => {
 			console.error(err)
