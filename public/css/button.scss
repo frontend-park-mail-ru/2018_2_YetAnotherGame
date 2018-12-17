@@ -64,6 +64,15 @@
         }
 
     }
+
+    &__restart {
+        color: $link-color;
+
+        &:hover {
+            color: $link-hover-color;
+            font-weight: 700;
+        }
+    }
 }
 
 .pagination {
