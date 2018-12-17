@@ -1,20 +1,26 @@
 .gameover {
     &__block {
-        width: 750px;
-        height: 580px;
-        margin: auto;
-        margin-top: -750px;
+        width: 50vw;
+        height: 70vh;
         border-radius: 40px;
-        border: 4px double red;
+        border: 2px solid purple;
         position: absolute;
-        margin-left: 150px;
-        background-color: red;
+        top: 10vh;
+        left: 25vw;
+        background-color: $background-purple;
+
+        @media screen and (max-width: 500px) {
+            width: 98vw;
+            left: 0vw;
+        }
     }
 
     &__text {
-        width: 750px;
+        text-align: center;
+        color: $title-color;
+        font-weight: 700;
+        width: inherit;
         height: auto;
         padding-top: 60px;
-        background: none;
     }
 }

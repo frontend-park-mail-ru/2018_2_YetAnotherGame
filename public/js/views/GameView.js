@@ -23,7 +23,7 @@ export default class GameView extends BaseView {
             "id": "game_over"
         }, ["gameover__block"])
         const gameOverText = Block.Create("div", {}, ["gameover__text"], "GAME OVER")
-        const restartButton = Block.Create("div", {
+        const restartButton = Block.Create("a", {
             "id": "restart"
         }, ["button"], "Try again")
         const exitButton = Block.Create("a", {
