@@ -1,0 +1,53 @@
+@import "./vars.scss";
+
+.log-out {
+    font-size: $font-size-xs;
+}
+
+.header__profileHeader {
+    font-size: $font-size-s;
+    grid-column-start:3;
+    grid-column-end:4;
+}
+
+.profileHeader {
+    margin-top:10px;
+    margin-right:10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
+}
+
+.avatar-40 {
+    width: 40px;
+    height: 40px;
+    border: 1px solid $border-color;
+    border-radius: 50%;
+}
+.avatar-60 {
+    width: 60px;
+    height: 60px;
+    border: 1px solid $border-color;
+    border-radius: 50%;
+}
+.avatar-80 {
+    width: 80px;
+    height: 80px;
+    border: 1px solid $border-color;
+    border-radius: 50%;
+}
+
+.nickname {
+    color: $title-color;
+    font-size: $font-size-m;
+    transition: font-size, color font-weight;
+    transition-duration: 0.3s;
+
+    &:hover {
+        font-size: $font-size-hover;
+        font-weight: $font-weight-hover;
+        color:$link-hover-color;
+    }
+}

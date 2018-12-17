@@ -9,21 +9,22 @@ import ProfileView from "./views/ProfileView.js"
 import SignUpView from "./views/SignUpView.js"
 import UpdateView from "./views/UpdateView.js"
 import LogOutView from "./views/LogOutView.js"
-import PageView from "./views/PageView.js"
 import MultView from './views/MultView.js'
 
-//----------------------
 import Block from "./components/block/block.mjs"
-import AjaxModule from "./modules/ajax.mjs"
-import Form from "./components/form/form.mjs"
-
-import "./form-fields/sign_in.js"
-import "./form-fields/sign_up.js"
-import "./form-fields/update.js"
 import "./form-fields/chat.js"
+import "../css/main.scss"
 
-// import "../css/main.css"
-
+if ("serviceWorker" in navigator) {
+	navigator.serviceWorker
+		.register("/sw.js", { scope: "/" })
+		.then((registration) => {
+			console.log("SW registration OK:", registration)
+		})
+		.catch((err) => {
+			console.log("SW registration FAIL:", err)
+		})
+}
 
 mediator.on("fetch-users", function () {
 	UsersService
@@ -104,7 +105,8 @@ mediator.on("fetch-update", function (formdata) {
 			mediator.emit("fetch-profile")
 		})
 		.then(() => {
-			router.open("/users/me")
+			// router.open("/users/me")
+			router.open("/update")
 		})
 		.catch((err) => {
 			console.error(err)

@@ -3,11 +3,9 @@ import mediator from "../scripts/mediator.js"
 import Block from "../components/block/block.mjs"
 import AjaxModule from "../modules/ajax.mjs"
 
+// import boardTmpl from "../components/scoreboard/scoreboard.tmpl.xml"
+import "../components/scoreboard/scoreboard.tmpl.js"
 const templateFunc = window.fest["js/components/scoreboard/scoreboard.tmpl"]
-
-// const fest = require("fest")
-// const template = "../components/scoreboard/scoreboard.tmpl.xml"
-// import template from "../components/scoreboard/scoreboard.tmpl.xml"
 
 export default class ScoreBoardView extends PageView {
     constructor(el) {
@@ -49,7 +47,8 @@ export default class ScoreBoardView extends PageView {
     renderLoading () {
 		const loading = Block.Create("strong", {}, [])
 		loading.setText("Loading")
-		this.el.append(loading)
+        const loader = Block.Create("div", {"id": "load", "class": "loader"}, [])
+		this.el.append(loading).append(loader)
 	}
 
     renderScoreboard() {
@@ -65,7 +64,9 @@ export default class ScoreBoardView extends PageView {
         let br = Block.Create("br")
 
         TableBody.setInner(templateFunc(this.users))
-        // TableBody.setInner(fest.render(template, this.users, {beautify: false}))
+        // const fest = require('fest');
+        // const data = this.users
+        // TableBody.setInner(fest.render(boardTmpl, data))
 
         TableFooter
             .append(lb)
@@ -90,9 +91,11 @@ export default class ScoreBoardView extends PageView {
 
         if (!this.canNext) {
             rBtnActive.disabled = true
+            rb.addClasses(["button_disable"])
 		}
         if (this.pageNumber <= 0) {
 			lBtnActive.disabled = true
+            lb.addClasses(["button_disable"])
 		}
         if (this.canNext && this.pageNumber > 0) {
         	lBtnActive.disabled = false

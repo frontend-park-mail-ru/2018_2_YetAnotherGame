@@ -20,6 +20,7 @@
 			attrs: {
 				name: "submit",
 				type: "submit",
+				value: "Sign in",
 			},
 		},
 	]

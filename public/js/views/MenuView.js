@@ -33,12 +33,10 @@ export default class MenuView extends PageView {
             update: Block.Create("a", {"href": "update", "data-href": "update"}, ["button"], "Update"),
         }
         if (this.hasProfile === false) {
-            titles.new_game.addClasses(["button_disable"])
             TableBody
                 .append(titles.new_game)
                 .append(titles.leaders)
         } else {
-            titles.new_game.deleteClass("button_disable")
             Object.entries(titles).forEach(function (elem) {
                 TableBody.append(elem[1])
             })

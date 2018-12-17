@@ -4,13 +4,6 @@
 	window.updateFields = [
 		{
 			attrs: {
-				name: "email",
-				type: "email",
-				placeholder: "Email",
-			},
-		},
-		{
-			attrs: {
 				name: "username",
 				type: "text",
 				placeholder: "Username",
@@ -44,6 +37,7 @@
 				class: "form__Usubmit",
 				name: "submit",
 				type: "submit",
+				value: "Send data",
 			},
 		}
 	]
