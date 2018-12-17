@@ -21,9 +21,9 @@ export default class MultView extends BaseView {
             "id": "game_over"
         }, ["gameover__block"])
         const gameOverText = Block.Create("div", {}, ["gameover__text"], "GAME OVER")
-        const restartButton = Block.Create("a", {
+        const restartButton = Block.Create("div", {
             "id": "restart"
-        }, ["button"], "Try again")
+        }, ["button", "button__restart"], "Try again")
         const exitButton = Block.Create("a", {
             "href": "menu",
             "data-href": "menu"
@@ -296,7 +296,7 @@ export default class MultView extends BaseView {
                 }
 
                 // message received, do something
-            }
+            }.bind(this)
 
 
             if (msg === undefined) {

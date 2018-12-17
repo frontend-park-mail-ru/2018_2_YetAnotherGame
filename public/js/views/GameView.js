@@ -23,9 +23,9 @@ export default class GameView extends BaseView {
             "id": "game_over"
         }, ["gameover__block"])
         const gameOverText = Block.Create("div", {}, ["gameover__text"], "GAME OVER")
-        const restartButton = Block.Create("a", {
+        const restartButton = Block.Create("div", {
             "id": "restart"
-        }, ["button"], "Try again")
+        }, ["button", "button__restart"], "Try again")
         const exitButton = Block.Create("a", {
             "href": "menu",
             "data-href": "menu"
@@ -177,7 +177,7 @@ export default class GameView extends BaseView {
             drawPaddle()
             if (((paddleX > x && paddleX < x + 60) || (paddleX > x - 200 && paddleX < x + 60 - 200) || (paddleX > x - 400 && paddleX < x + 60 - 400) || (paddleX > x - 600 && paddleX < x + 60 - 600)) && (paddleY < y + 60 && paddleY > y)) {
                 this.renderGameOver()
-               
+
                 paddleX = (canvas.width - paddleWidth) / 2
                 paddleY = (canvas.height) - 50
                 tick = 0
