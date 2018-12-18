@@ -18,6 +18,7 @@ export default class SignUpView extends PageView {
     }
 
     render() {
+        // debugger
         this.el.clear()
         const signUp = window.signUpFields
 		const signupSection = Block.Create("section", {"data-section-name": "sign_up"}, ["form", "body__form"])
@@ -35,7 +36,7 @@ export default class SignUpView extends PageView {
         })
 
         let isValidPsw = false
-        const checkPsw = document.getElementsByName("password")[0]
+        const checkPsw = document.getElementsByName("password_main")[0]
         checkPsw.addEventListener("keyup", () => {
             if (checkPsw.value.length < 4) {
                 checkPsw.setAttribute("class", "error")
@@ -59,22 +60,21 @@ export default class SignUpView extends PageView {
         })
 
         let isValidPswRep = false
-        const checkPswRepeap = document.getElementsByName("password_repeat")[0]
-        // TODO: ПОМЕНЯТЬ СОБЫТИЕ "mousemove"
-        checkPswRepeap.addEventListener("mousemove", () => {
-            if(checkPswRepeap.value !== checkPsw.value){
+        const checkPswRepeat = document.getElementsByName("password_repeat")[0]
+        checkPswRepeat.addEventListener("keyup", () => {
+            if(checkPswRepeat.value !== checkPsw.value){
                 if (document.getElementById("err2") !== null) {
                     const el = document.getElementById("err2")
                     el.parentNode.removeChild(el)
                 }
-                checkPswRepeap.setAttribute("class", "error")
+                checkPswRepeat.setAttribute("class", "error")
                 const err = Block.Create("div", {"id": "err2"}, [])
                 form.append(err)
                 const att = Block.Create("p", {}, ["err-msg"], "password must be equal")
                 err.append(att)
                 isValidPswRep = false
             } else {
-                checkPswRepeap.setAttribute("class", "ok")
+                checkPswRepeat.setAttribute("class", "ok")
                 if (document.getElementById("err2") !== null) {
                     const el = document.getElementById("err2")
                     el.parentNode.removeChild(el)

@@ -32,7 +32,7 @@
 		},
 		{
 			attrs: {
-				name: "password",
+				name: "password_main",
 				type: "password",
 				placeholder: "Password",
 			},
