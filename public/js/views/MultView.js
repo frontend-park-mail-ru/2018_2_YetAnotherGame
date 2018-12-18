@@ -8,43 +8,7 @@ export default class MultView extends BaseView {
         super(el)
     }
 
-	start() {
-        this.render()
-    }
-
-    stop() {
-        clearInterval(this.timer, 1)
-    }
-
-    renderGameOver() {
-        const gameOverBlock = Block.Create("div", {
-            "id": "game_over"
-        }, ["gameover__block"])
-        const gameOverText = Block.Create("div", {}, ["gameover__text"], "GAME OVER")
-        const restartButton = Block.Create("div", {
-            "id": "restart"
-        }, ["button", "button__restart"], "Try again")
-        const exitButton = Block.Create("a", {
-            "href": "menu",
-            "data-href": "menu"
-        }, ["button"], "Back to main menu")
-
-        gameOverBlock
-            .append(gameOverText)
-            .append(restartButton)
-            .append(exitButton)
-        this.el.append(gameOverBlock)
-
-        this.stop()
-
-        const restart = document.getElementById("restart")
-        restart.addEventListener("click", () => {
-            this.el.clear()
-            this.start()
-        })
-    }
-
-    render() {
+	start(ws, rand) {
         this.el.clear()
         const loader = Block.Create("div", {
             "id": "load",
@@ -52,29 +16,6 @@ export default class MultView extends BaseView {
         }, [])
         this.el.append(loader)
 
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min
-        }
-
-        let rand = 0
-        const address = ["https", "https:"].includes(location.protocol) ?
-            `wss://127.0.0.1:8081/ws` :
-            `ws://127.0.0.1:8081/ws`
-
-
-        let ws = new WebSocket(address)
-
-        console.log(`WebSocket on address ${address} opened`)
-        ws.onopen = function() {
-            rand = getRandomInt(1, 1234)
-            ws.send(JSON.stringify({
-                "type": "newPlayer",
-                "payload": {
-                    "username": rand.toString()
-
-                }
-            }))
-        }
         let wsSend = function(data) {
             if (!ws.readyState) {
                 setTimeout(function() {
@@ -164,9 +105,6 @@ export default class MultView extends BaseView {
             paddleX = paddleX / k1
         }
 
-
-
-
         // let canvas = document.getElementById("myCanvas")
         let car = new Image()
         let enemy2 = new Image()
@@ -181,7 +119,6 @@ export default class MultView extends BaseView {
         let img = ["../../img/textures/1.png", "../../img/textures/2.png", "../../img/textures/3.png", "../../img/textures/3.png", "../../img/textures/3.png"]
 
         let background = new Image()
-
 
         let x = 0
         let x2 = canvas.width
@@ -208,7 +145,7 @@ export default class MultView extends BaseView {
                 ctx.drawImage(enemy5, xenemy, yenemy)
                 enemy5.src = img[4]
                 //
-                //	console.log(yenemy, paddleY)
+                //	//console.log(yenemy, paddleY)
             }
         }
 
@@ -224,13 +161,13 @@ export default class MultView extends BaseView {
             ctx.drawImage(enemy4, x - 600, y)
             enemy4.src = img[1]
             ctx.drawImage(enemy21, x2, y + 150)
-            enemy21.src = img[2]
+            enemy21.src = img[1]
             ctx.drawImage(enemy22, x2 + 200, y + 150)
-            enemy22.src = img[2]
+            enemy22.src = img[1]
             ctx.drawImage(enemy23, x2 + 400, y + 150)
-            enemy23.src = img[2]
+            enemy23.src = img[1]
             ctx.drawImage(enemy24, x2 + 600, y + 150)
-            enemy24.src = img[2]
+            enemy24.src = img[1]
             ctx.drawImage(enemy, x, y - 250)
             enemy.src = img[1]
             ctx.drawImage(enemy2, x - 200, y - 250)
@@ -248,7 +185,7 @@ export default class MultView extends BaseView {
 
             ws.onmessage = function(msgevent) {
                 msg = JSON.parse(msgevent.data)
-                console.log(msg, rand)
+                //console.log(msg, rand)
                 if (msg !== undefined) {
                     if (msg.Message !== null) {
 
@@ -273,9 +210,7 @@ export default class MultView extends BaseView {
                                 upPressed = false
                                 downPressed = false
                                 level = 0
-
                             }
-
                         }
                     }
 
@@ -286,12 +221,9 @@ export default class MultView extends BaseView {
                         yenemy = msg.Players[0].Position.Y
 
                     } else if (msg.Players !== null && (parseInt(msg.Players[1].Username)) !== rand) {
-
                         msg2 = msg.Players[1].Score
-
                         xenemy = msg.Players[1].Position.X
                         yenemy = msg.Players[1].Position.Y
-
                     }
                 }
 
@@ -316,7 +248,7 @@ export default class MultView extends BaseView {
                 x = 0
                 x2 = canvas.width
             }
-            //console.log(x)
+            ////console.log(x)
             drawrect()
             drawPaddle()
             drawenemy()
@@ -350,7 +282,7 @@ export default class MultView extends BaseView {
                     "yblock": y.toString()
                 }
             }))
-            console.log(paddleX)
+            //console.log(paddleX)
         }
 
 
@@ -358,7 +290,7 @@ export default class MultView extends BaseView {
         document.addEventListener("keyup", keyUpHandler, false)
         canvas.addEventListener("touchstart", function(a) {
             mousePos = getTouchPos(canvas, a);
-            console.log(mousePos)
+            //console.log(mousePos)
             if (mousePos.x > 0 && mousePos.x < 30) {
                 leftPressed = true
             }
@@ -371,7 +303,7 @@ export default class MultView extends BaseView {
         })
         canvas.addEventListener("touchend", function(a) {
             mousePos = getTouchPos(canvas, a);
-            console.log(mousePos)
+            //console.log(mousePos)
             leftPressed = false
             rightPressed = false
             upPressed = false
@@ -402,5 +334,66 @@ export default class MultView extends BaseView {
         }
 
         this.timer = setInterval(draw.bind(this), 1)
+    }
+
+    stop() {
+        clearInterval(this.timer, 1)
+    }
+
+    renderGameOver() {
+        const gameOverBlock = Block.Create("div", {
+            "id": "game_over"
+        }, ["gameover__block"])
+        const gameOverText = Block.Create("div", {}, ["gameover__text"], "GAME OVER")
+        const restartButton = Block.Create("div", {
+            "id": "restart"
+        }, ["button", "button__restart"], "Try again")
+        const exitButton = Block.Create("a", {
+            "href": "menu",
+            "data-href": "menu"
+        }, ["button"], "Back to main menu")
+
+        gameOverBlock
+            .append(gameOverText)
+            .append(restartButton)
+            .append(exitButton)
+        this.el.append(gameOverBlock)
+
+        this.stop()
+
+        const restart = document.getElementById("restart")
+        restart.addEventListener("click", () => {
+            this.el.clear()
+            this.start(this.ws, this.rand)
+        })
+    }
+
+    render() {
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min
+        }
+
+        this.rand = 0
+        const address = ["https", "https:"].includes(location.protocol) ?
+            `wss://127.0.0.1:8081/ws` :
+            `ws://127.0.0.1:8081/ws`
+
+
+        let webSocket = new WebSocket(address)
+
+        console.log(`WebSocket on address ${address} opened`)
+        webSocket.onopen = function() {
+            this.rand = getRandomInt(1, 1234)
+            webSocket.send(JSON.stringify({
+                "type": "newPlayer",
+                "payload": {
+                    "username": this.rand.toString()
+                }
+            }))
+        }
+
+        this.ws = webSocket
+
+        this.start(this.ws, this.rand)
     }
 }
