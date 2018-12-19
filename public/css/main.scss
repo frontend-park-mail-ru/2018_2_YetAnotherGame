@@ -15,6 +15,7 @@
     font-size: $font-size-m;
     font-family: $font-stack;
     font-weight: 400;
+    user-select: none;
 }
 
 A {
@@ -45,8 +46,8 @@ A:hover {
 }
 
 .main {
-    background: url(../img/menu-back.png) fixed no-repeat;
-    background-size: auto 150%;
+    background: url(../img/menu-back.jpg) no-repeat;
+    background-size: cover;
     background-color: #1a1247;
     width: 100vw;
     height: 100vh;
