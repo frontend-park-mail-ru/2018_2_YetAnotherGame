@@ -65,7 +65,7 @@ export default class GameView extends BaseView {
         let paddleHeight = 50
         let paddleWidth = 50
         let paddleX = (canvas.width - paddleWidth) / 2
-        let paddleY = (canvas.height) - 50
+        let paddleY = (canvas.height) - 30
         if (canvas.getContext) {
             ctx = canvas.getContext("2d");
             resizeCanvas();
@@ -221,10 +221,11 @@ export default class GameView extends BaseView {
                 paddleY += 1
             }
 
-            if (paddleY === 0) {
+            if (paddleY < 0) {
                 paddleY = (canvas.height)
                 y = Math.floor(Math.random() * canvas.height) + 100
                 level++
+             dx=dx+1
             }
         }
 
