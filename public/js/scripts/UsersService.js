@@ -74,25 +74,27 @@ export default class UsersService {
 
 	static FetchUpdate (formdata) {
 		const formData = new FormData()
-		if (formdata.image.files[0]) {
+		const file = formdata.image.files[0]
+		if (file) {
 			formData.append("image", formdata.image.files[0], formdata.image.files[0].name)
+			AjaxModule.doPost({
+				path: "/upload",
+				body: formData,
+			})
+			.then((response) => {
+				if (response.status >= 300) {
+					throw response
+				}
+				console.log("success")
+				// return response
+			})
+			.catch((error) => {
+				console.error(error)
+			})
 		}
 		return AjaxModule.doPost({
-			path: "/upload",
-			body: formData,
-		})
-		.then((response) => {
-			if (response.status >= 300) {
-				throw response
-			}
-			console.log("success")
-			return response
-		})
-		.then((response) => {
-			AjaxModule.doPost({
 				path: "/users/me",
 				body: {
-					email: formdata.email.value,
 					username: formdata.username.value,
 					first_name: formdata.first_name.value,
 					last_name: formdata.last_name.value,
@@ -106,10 +108,7 @@ export default class UsersService {
 			})
 			.catch((err) => {
 				console.log("error " + err.status)
+				return err
 			})
-		})
-		.catch((error) => {
-			console.error(error)
-		})
 	}
 }

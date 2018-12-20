@@ -1,7 +1,7 @@
 import BaseView from "./BaseView.js"
 import Block from "../components/block/block.mjs"
 
- import "../../img/textures/1.png"
+import "../../img/textures/1.png"
 import "../../img/textures/2.png"
 import "../../img/textures/3.png"
 
@@ -55,6 +55,7 @@ export default class GameView extends BaseView {
         }
 
         const canv = Block.Create("canvas", {"id": "myCanvas"}, [])
+        let displayProp = 1.775
         let canvas
         let ctx
         let k1
@@ -67,8 +68,9 @@ export default class GameView extends BaseView {
         let paddleX = (canvas.width - paddleWidth) / 2
         let paddleY = (canvas.height) - 50
         if (canvas.getContext) {
-            ctx = canvas.getContext("2d");
-            resizeCanvas();
+            ctx = canvas.getContext("2d")
+
+            resizeCanvas()
         }
 
         function getTouchPos(canvasDom, touchEvent) {
@@ -85,17 +87,25 @@ export default class GameView extends BaseView {
         window.addEventListener('orientationchange', resizeCanvas, false);
 
         function resizeCanvas() {
-            k1 = canvas.width / window.innerWidth;
-            k2 = canvas.height / window.innerHeight;
-            if (k1 === k2 && k1 === 0) {
-                k1 = 1
-                k2 = 1
+            if (window.innerHeight / window.innerWidth < displayProp) {
+                canvas.height = window.innerHeight
+                canvas.width = canvas.height / displayProp
+            } else {
+                canvas.width = window.innerWidth
+                canvas.height = canvas.width * displayProp
             }
 
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            paddleY = paddleY / k2
-            paddleX = paddleX / k1
+            // k1 = canvas.width / window.innerWidth;
+            // k2 = canvas.height / window.innerHeight;
+            // if (k1 === k2 && k1 === 0) {
+            //     k1 = 1
+            //     k2 = 1
+            // }
+            //
+            // canvas.width = window.innerWidth;
+            // canvas.height = window.innerHeight;
+            // paddleY = paddleY / k2
+            // paddleX = paddleX / k1
         }
 
         // let canvas = document.getElementById("myCanvas")

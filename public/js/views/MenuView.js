@@ -30,7 +30,7 @@ export default class MenuView extends PageView {
 			mult_game: Block.Create("a", {"href": "mult", "data-href": "mult"}, ["button"], "Multiplayer"),
             leaders: Block.Create("a", {"href": "leaders", "data-href": "leaders"}, ["button"], "Scoreboard"),
             me: Block.Create("a", {"href": "users/me", "data-href": "users/me"}, ["button"], "Profile"),
-            update: Block.Create("a", {"href": "update", "data-href": "update"}, ["button"], "Update"),
+            about: Block.Create("a", {"href": "about", "data-href": "about"}, ["button"], "About"),
         }
         if (this.hasProfile === false) {
             TableBody

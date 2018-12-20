@@ -10,6 +10,7 @@ import SignUpView from "./views/SignUpView.js"
 import UpdateView from "./views/UpdateView.js"
 import LogOutView from "./views/LogOutView.js"
 import MultView from './views/MultView.js'
+import AboutView from './views/AboutView.js'
 
 import Block from "./components/block/block.mjs"
 import "./form-fields/chat.js"
@@ -105,8 +106,7 @@ mediator.on("fetch-update", function (formdata) {
 			mediator.emit("fetch-profile")
 		})
 		.then(() => {
-			// router.open("/users/me")
-			router.open("/update")
+			router.open("/users/me")
 		})
 		.catch((err) => {
 			console.error(err)
@@ -124,6 +124,7 @@ router
 	.register("/log_out", LogOutView)
     .register("/new_game", GameView)
 	.register("/users/me", ProfileView)
-	.register("/update", UpdateView)
+	.register("/users/update", UpdateView)
 	.register('/mult', MultView)
+	.register('/about', AboutView)
 router.start()
